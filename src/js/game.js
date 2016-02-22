@@ -3,7 +3,7 @@
 PIXI.loader
         .add("mobs", "img/mobs.png")
         .add("mobBar", "img/mobBar.png")
-        .add("towers", "img/towers@2x.png")
+        .add("towers", "img/towers.png")
         .add("shots", "img/shots.png")
         .add("pathMark", "img/pathMark@2x.png")
         .load(game.setup);

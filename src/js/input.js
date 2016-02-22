@@ -28,7 +28,7 @@ game.setupInput = function () {
         stopBtn.disabled = true;
         startBtn.disabled = false;
     });
-    
+
     document.getElementById("towerRand").addEventListener("click", function () {
         randomTowers();
     });
@@ -139,12 +139,10 @@ var endPlaceHandlerTouch = function (e) {
 
 // TODO hier könnte man die Textur des Towers anzeigen
 var updatePlace = function (cx, cy) {
-    game.selectGr.visible = true;
-    game.selectCircleGr.visible = true;
+    game.showSelection();
     // Kreis und Platzhalter mitbewegen, wenn im Feld
     if (game.fieldRect.contains(cx, cy)) {
-        game.selectGr.x = game.selectCircleGr.x = utils.cell2Pos(cx) + game.cellCenter;
-        game.selectGr.y = game.selectCircleGr.y = utils.cell2Pos(cy) + game.cellCenter;
+        game.moveSelectionTo(cx, cy);
     }
 };
 

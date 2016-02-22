@@ -70,15 +70,15 @@ game.setup = function () {
 
     // Grafik für Radius-anzeige
     game.selectCircleGr = new PIXI.Graphics();
-    game.setSelectedTower(null);
 
     // Grafik beim Tower setzten
     // TODO könnte Grafik vom passenden Tower selber sein
     game.selectGr = new PIXI.Graphics();
     game.selectGr.beginFill(0xFFFFFF, 0.5);
     game.selectGr.drawRect(-game.cellCenter, -game.cellCenter, game.cellSize, game.cellSize);
-    game.selectGr.visible = false;
-
+    
+    game.setSelectedTower(null);
+    
     // Mob Kram
     game.mobsCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobsBarCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
@@ -242,6 +242,14 @@ game.drawSelectCircle = function (type) {
         game.selectCircleGr.drawCircle(0, 0, type.radius * game.cellSize);
     }
 };
+game.showSelection = function () {
+    game.selectGr.visible = true;
+    game.selectCircleGr.visible = true;
+};
+game.hideSelection = function () {
+    game.selectGr.visible = false;
+    game.selectCircleGr.visible = false;
+};
 
 game.getSelectedTower = function () {
     return selectedTower;
@@ -249,14 +257,17 @@ game.getSelectedTower = function () {
 
 game.setSelectedTower = function (tower) {
     if (tower === null) {
-        game.selectCircleGr.visible = false;
+        game.hideSelection();
     } else if (selectedTower !== tower) {
         console.log("select", tower);
         game.drawSelectCircle(tower.type);
-        game.selectCircleGr.x = utils.cell2Pos(tower.cx) + game.cellCenter;
-        game.selectCircleGr.y = utils.cell2Pos(tower.cy) + game.cellCenter;
-        game.selectCircleGr.visible = true;
+        game.moveSelectionTo(tower.cx, tower.cy);
+        game.showSelection();
     }
     selectedTower = tower;
 };
 
+game.moveSelectionTo = function (cx, cy) {
+    game.selectGr.x = game.selectCircleGr.x = utils.cell2Pos(cx) + game.cellCenter;
+    game.selectGr.y = game.selectCircleGr.y = utils.cell2Pos(cy) + game.cellCenter;
+};
