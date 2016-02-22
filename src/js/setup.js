@@ -16,6 +16,7 @@ var map = {};
 map.start = new PIXI.Point(2, 0);
 map.finish = new PIXI.Point(6, 14);
 map.bgColor = 0xD3D3D3;
+map.walls = [[1, 2], [2, 2], [3, 2], [4, 2], [7, 5], [6, 5], [5, 5], [4, 5], [2, 8], [3, 8], [4, 8], [4, 9], [4, 10], [4, 1], [3, 5]];
 
 // ParticleContainer für gute Performance (wird auf GPU berechnet)
 // Alle bekommen die gleichen Optionen, wegen PIXI Bug
@@ -25,7 +26,7 @@ var particleConOptions = {
     scale: true,
     position: true,
     rotation: true,
-    // uvs, damit Texturen getaucht werden können
+    // uvs, damit Texturen getauscht werden können
     uvs: true,
     alpha: false
 };
@@ -38,37 +39,39 @@ game.setup = function () {
     game.map = map;
 
     game.renderer = PIXI.autoDetectRenderer(game.resX, game.resY, {
-        antialias: false
+        antialias: true
     });
     // Canvas in DOM rein
     game.canvasEl = game.renderer.view;
     document.getElementById("gameField").appendChild(game.canvasEl);
-    
+
     // Position für Input merken
     game.canvasoffsetX = game.canvasEl.offsetLeft;
     game.canvasoffsetY = game.canvasEl.offsetTop;
 
     game.collGrid = new CollisionGrid(game.cellsX, game.cellsY);
 
-    game.stage = new PIXI.Container();
+    var stage = new PIXI.Container();
+    game.stage = stage;
 
-    game.drawMap();
-    
-    // Pfad Anzeige
-    game.pathGr = new PIXI.Graphics();
+    // Map
+    game.mapCont = new PIXI.Container();
+
+    // Pfad
+    game.pathCont = new PIXI.Container();
     game.path = game.findPath();
     game.drawPath();
-    
+
     // Tower Kram
     game.shotCon = new PIXI.ParticleContainer(1000, particleConOptions, 1000);
 //    game.shotCon = new PIXI.Container();
     game.towersCon = new PIXI.ParticleContainer(200, particleConOptions, 200);
     game.towers = new FastSet();
-    
+
     // Grafik für Radius-anzeige
     game.selectCircleGr = new PIXI.Graphics();
-    game.selectCircleGr.visible = false;
-    
+    game.setSelectedTower(null);
+
     // Grafik beim Tower setzten
     // TODO könnte Grafik vom passenden Tower selber sein
     game.selectGr = new PIXI.Graphics();
@@ -80,23 +83,25 @@ game.setup = function () {
     game.mobsCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobsBarCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobs = new FastSet();
-    
-    // Alle Layer hinzufügen
-    game.stage.addChild(game.pathGr);
-    game.stage.addChild(game.selectCircleGr);
-    game.stage.addChild(game.shotCon);
-    game.stage.addChild(game.towersCon);
-    game.stage.addChild(game.selectGr);
-    game.stage.addChild(game.mobsCon);
-    game.stage.addChild(game.mobsBarCon);
 
-    game.fpsmeter = new PIXI.Text("0", {font: "14px Arial"});
-    game.stage.addChild(game.fpsmeter);
+    // Alle Layer hinzufügen
+    stage.addChild(game.mapCont);
+    stage.addChild(game.pathCont);
+    stage.addChild(game.selectCircleGr);
+    stage.addChild(game.shotCon);
+    stage.addChild(game.towersCon);
+    stage.addChild(game.selectGr);
+    stage.addChild(game.mobsCon);
+    stage.addChild(game.mobsBarCon);
+
+    game.fpsmeter = new PIXI.Text("0", {font: "16px Arial"});
+    stage.addChild(game.fpsmeter);
 
     game.testGr = new PIXI.Graphics();
-    game.stage.addChild(game.testGr);
+    stage.addChild(game.testGr);
     game.testGr.beginFill(0xFF00FF);
 
+    game.setupMap();
     game.setupInput();
     game.startGameLoop();
 };
@@ -113,35 +118,43 @@ game.setup = function () {
 game.setupTextures = function () {
     game.tex = {};
 
-    game.tex.mobTexEmpty = texFromCache("img/mobs.png", 0, 0, 32, 32);
-    game.tex.mobBarTex = texFromCache("img/mobBar.png", 0, 0, 32, 4);
-    game.tex.mobBarTexEmpty = texFromCache("img/mobBar.png", 0, 6, 32, 4);
-    
-    mobTypes[0].tex = texFromCache("img/mobs.png", 34, 0, 32, 32);
-    mobTypes[1].tex = texFromCache("img/mobs.png", 68, 0, 32, 32);
+    game.tex.mobTexEmpty = texFromCache("mobs", 0, 0, 32, 32);
+    game.tex.mobBarTex = texFromCache("mobBar", 0, 0, 32, 4);
+    game.tex.mobBarTexEmpty = texFromCache("mobBar", 0, 6, 32, 4);
+
+    mobTypes[0].tex = texFromCache("mobs", 34, 0, 32, 32);
+    mobTypes[1].tex = texFromCache("mobs", 68, 0, 32, 32);
 
 
-    towerTypes[0].tex = texFromCache("img/towers.png", 0, 0, 32, 32);
-    towerTypes[1].tex = texFromCache("img/towers.png", 34, 0, 32, 32);
-    towerTypes[2].tex = texFromCache("img/towers.png", 68, 0, 32, 32);
-    towerTypes[3].tex = texFromCache("img/towers.png", 102, 0, 32, 32);
-    
-    towerTypes[1].shotTex = texFromCache("img/shots.png", 0, 0, 1, 32);
-    towerTypes[2].shotTex = texFromCache("img/shots.png", 3, 0, 1, 32);
+    towerTypes[0].tex = texFromCache("towers", 0, 0, 32, 32);
+    towerTypes[1].tex = texFromCache("towers", 34, 0, 32, 32);
+    towerTypes[2].tex = texFromCache("towers", 68, 0, 32, 32);
+    towerTypes[3].tex = texFromCache("towers", 102, 0, 32, 32);
+
+    towerTypes[1].shotTex = texFromCache("shots", 0, 0, 1, 32);
+    towerTypes[2].shotTex = texFromCache("shots", 3, 0, 1, 32);
+
 };
 // Textur aus loader Cache lesen, mit frame
 var texFromCache = function (img, x, y, w, h) {
-    return new PIXI.Texture(
-            PIXI.loader.resources[img].texture.baseTexture,
-            new PIXI.Rectangle(x, y, w, h));
+    if (x !== undefined) {
+        return new PIXI.Texture(
+                PIXI.loader.resources[img].texture.baseTexture,
+                new PIXI.Rectangle(x, y, w, h));
+    } else {
+        return PIXI.loader.resources[img].texture;
+    }
 };
 
-game.drawMap = function () {
+game.setupMap = function () {
     game.renderer.backgroundColor = game.map.bgColor;
     // TODO Hübsche Map malen
 
-    /* ====== Grid ====== */
+    var cont = game.mapCont;
     var grid = new PIXI.Graphics();
+    cont.addChild(grid);
+
+    /* ====== Grid ====== */
     grid.alpha = 0.5;
     grid.lineStyle(1, 0x000000);
     // Alle cellSize Pixel eine Linie
@@ -169,9 +182,13 @@ game.drawMap = function () {
             game.cellSize,
             game.cellSize);
     // Map ändert sich nicht, kann gecached werden
-    grid.cacheAsBitmap = true;
-
-    game.stage.addChild(grid);
+    cont.cacheAsBitmap = true;
+    /* ===== Standard Tower ==== */
+    var walls = game.map.walls;
+    for (i = 0; i < walls.length; i++) {
+        // TODO pfad hier nur ein mal neu berechnen
+        game.addTowerAt(0, walls[i][0], walls[i][1]);
+    }
 };
 
 /* ===== Path finding ===== */
@@ -194,14 +211,22 @@ game.findPath = function () {
 game.path = null;
 
 game.drawPath = function () {
-    var p = game.path;
-    game.pathGr.clear();
-    game.pathGr.beginFill(0x0000FF);
+    var path = game.path;
+    var cont = game.pathCont;
+    var tex = texFromCache("pathMark");
+    var spr = null;
     var i;
-    for (i = 0; i < p.length; i++) {
-        game.pathGr.drawCircle(
-                utils.cell2Pos(p[i][0]) + game.cellCenter,
-                utils.cell2Pos(p[i][1]) + game.cellCenter, 3);
+    // Alte Sprites löschen
+    for (i = 0; i < cont.children.length; i++) {
+        cont.children[i].destroy();
+    }
+    cont.removeChildren();
+    // Pfad malen
+    for (var i = 0; i < path.length; i++) {
+        spr = new PIXI.Sprite(tex);
+        spr.x = utils.cell2Pos(path[i][0]);
+        spr.y = utils.cell2Pos(path[i][1]);
+        cont.addChild(spr);
     }
 };
 
