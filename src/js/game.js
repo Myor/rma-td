@@ -62,6 +62,11 @@ var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
     var towers = game.towers.getArray();
     var mobs = game.mobs.getArray();
+    // Ein Mob pro Update spawnen
+    if (!game.mobQueue.isEmpty()) {
+        game.mobs.add(game.mobQueue.dequeue());
+
+    }
 
     for (i = 0; i < towers.length; i++) {
         tower = towers[i];

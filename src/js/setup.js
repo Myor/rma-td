@@ -83,6 +83,7 @@ game.setup = function () {
     game.mobsCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobsBarCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobs = new FastSet();
+    game.mobQueue = new Queue();
 
     // Alle Layer hinzufügen
     stage.addChild(game.mapCont);
