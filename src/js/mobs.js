@@ -25,9 +25,13 @@ mobTypes[1] = {
 
 // Konstruktor erstellt "unsichtbaren" Mob
 var Mob = function () {
+    // Textur
     this.spr = new PIXI.Sprite(game.tex.mobTexEmpty);
     this.spr.anchor.set(0.5);
+    this.spr.x = this.spr.y = -100;
+    // Textur Lebens-balken
     this.barSpr = new PIXI.Sprite(game.tex.mobBarTexEmpty);
+    this.barSpr.x = this.barSpr.y = -100;
     game.mobsCon.addChild(this.spr);
     game.mobsBarCon.addChild(this.barSpr);
 };
@@ -103,18 +107,17 @@ Mob.prototype.update = function () {
 // TODO muss sterben
 Mob.prototype.hit = function (power) {
     this.life -= power;
-    if(this.life < 0) this.life = 0;
+    if (this.life < 0) this.life = 0;
 };
 
 
 
 var mobPool = new Pool(Mob, 10);
-// TODO Mob sollten mit dem Update-loop gespawnt werden,
-// vllt. Warteschlange verwenden
+
 game.addMob = function (type) {
     var mob = mobPool.getObj();
     mob.init(type);
-    game.mobs.add(mob);
+    game.mobQueue.enqueue(mob);
 };
 
 game.removeMob = function (mob) {

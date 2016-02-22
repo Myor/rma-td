@@ -56,6 +56,33 @@ Pool.prototype.clear = function () {
     this.pool = [];
 };
 
+// Simple Queue implementierung
+// Verwendet offset, um Array operationen zu vermeiden
+function Queue() {
+    this.queue = [];
+    this.offset = 0;
+}
+Queue.prototype.size = function () {
+    return (this.queue.length - this.offset);
+};
+Queue.prototype.isEmpty = function () {
+    return this.size() === 0;
+};
+Queue.prototype.enqueue = function (item) {
+    this.queue.push(item);
+};
+
+Queue.prototype.dequeue = function () {
+    if (this.isEmpty()) return;
+    var item = this.queue[this.offset];
+    // Wenn offset doppelt so groß wie Array -> leere Felder löschen
+    if (++this.offset * 2 >= this.queue.length) {
+        this.queue = this.queue.slice(this.offset);
+        this.offset = 0;
+    }
+    return item;
+};
+
 // ===== Hilfs-Funktionen =======
 var utils = {};
 // Von Pixel zu Zelle
