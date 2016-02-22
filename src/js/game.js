@@ -1,12 +1,12 @@
 "use strict";
 
-PIXI.loader.add([
-    "img/mobs.png",
-    "img/mobBar.png",
-    "img/towers.png",
-    "img/shots.png"
-]).load(game.setup);
-
+PIXI.loader
+        .add("mobs", "img/mobs.png")
+        .add("mobBar", "img/mobBar.png")
+        .add("towers", "img/towers@2x.png")
+        .add("shots", "img/shots.png")
+        .add("pathMark", "img/pathMark@2x.png")
+        .load(game.setup);
 
 
 /* ==== Loops === */
@@ -16,7 +16,7 @@ var passed = 0; // Summe aller Frame-Zeiten
 var step = 50; // Fester Simulationsschritt
 var slowFactor = 1; // Slow-motion Faktor
 var slowStep = step * slowFactor;
-var lastTime = performance.now();
+var lastTime = 0;
 
 var frameId;
 // Game-loop
@@ -31,9 +31,6 @@ var frame = function (newTime) {
         frameTime = 500;
         console.warn("clamp frameTime");
     }
-    if (frameTime < 0) {
-        frameTime = 0;
-    }
     lastTime = newTime;
     accumulator += frameTime;
     passed += frameTime;
@@ -46,18 +43,14 @@ var frame = function (newTime) {
         game.fpsmeter.text = (1000 / frameTime) | 0;
     }
 
-    updateAnimation(passedTime(), accumulator);
+    updateAnimation(passed / slowFactor, accumulator / slowFactor);
 
     game.renderer.render(game.stage);
     frameId = requestAnimationFrame(frame);
 };
 
-var passedTime = function () {
-    return passed / slowFactor;
-};
-
 game.startGameLoop = function () {
-    frameId = requestAnimationFrame(frame);
+    requestAnimationFrame(frame, performance.now());
 };
 game.stopGameLoop = function () {
     cancelAnimationFrame(frameId);
