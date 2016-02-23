@@ -25,6 +25,7 @@ mobTypes[1] = {
 
 // Konstruktor erstellt "unsichtbaren" Mob
 var Mob = function () {
+    this.type = null;
     // Textur
     this.spr = new PIXI.Sprite(game.tex.mobTexEmpty);
     this.spr.anchor.set(0.5);
@@ -36,8 +37,7 @@ var Mob = function () {
     game.mobsBarCon.addChild(this.barSpr);
 };
 // Alles leeren und sichtbar machen (textur tauschen)
-Mob.prototype.init = function (type) {
-    this.type = mobTypes[type];
+Mob.prototype.init = function () {
     this.spr.texture = this.type.tex;
     this.barSpr.texture = game.tex.mobBarTex;
     this.life = this.type.life;
@@ -104,24 +104,33 @@ Mob.prototype.update = function () {
     this.barSpr.y = this.y;
     this.barSpr.scale.x = this.life / this.type.life;
 };
-// TODO muss sterben
-Mob.prototype.hit = function (power) {
-    this.life -= power;
-    if (this.life < 0) this.life = 0;
+Mob.prototype.isKilled = function () {
+    return this.type === null;
 };
 
+Mob.prototype.hit = function (power) {
+    if (this.isKilled()) return;
+    this.life -= power;
+    if (this.life <= 0) {
+        this.kill();
+    }
+};
 
 
 var mobPool = new Pool(Mob, 10);
-
-game.addMob = function (type) {
+// Nimmt ein Mob aus dem Pool und schiebt ihn in den Queue
+game.spawnMob = function (typeID) {
     var mob = mobPool.getObj();
-    mob.init(type);
+    mob.type = mobTypes[typeID];
     game.mobQueue.enqueue(mob);
 };
-
+// Mob sichtbar machen und zum Update loop hinzufügen
+game.addMob = function (mob) {
+    mob.init();
+    game.mobs.add(mob);
+};
+// Mob zurück in den Pool schieben und aus Update loop löschen
 game.removeMob = function (mob) {
-    mob.kill();
     mobPool.returnObj(mob);
     game.mobs.remove(mob);
 };

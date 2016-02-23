@@ -53,9 +53,9 @@ var clickHandler = function (e) {
 
 var mobHandler = function (e) {
     if (!e.target.matches("button.mob")) return;
-    var type = Number(e.target.dataset.type);
-    console.log("spawn", type);
-    game.addMob(type);
+    var typeID = Number(e.target.dataset.type);
+    console.log("spawn", typeID);
+    game.spawnMob(typeID);
 };
 
 

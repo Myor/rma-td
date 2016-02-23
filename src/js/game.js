@@ -3,7 +3,7 @@
 PIXI.loader
         .add("mobs", "img/mobs.png")
         .add("mobBar", "img/mobBar.png")
-        .add("towers", "img/towers.png")
+        .add("towers", "img/towers@2x.png")
         .add("shots", "img/shots.png")
         .add("pathMark", "img/pathMark@2x.png")
         .load(game.setup);
@@ -62,10 +62,10 @@ var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
     var towers = game.towers.getArray();
     var mobs = game.mobs.getArray();
+    
     // Ein Mob pro Update spawnen
     if (!game.mobQueue.isEmpty()) {
-        game.mobs.add(game.mobQueue.dequeue());
-
+        game.addMob(game.mobQueue.dequeue());
     }
 
     for (i = 0; i < towers.length; i++) {
@@ -94,6 +94,13 @@ var simulate = function (dt) {
     for (i = 0; i < towers.length; i++) {
         tower = towers[i];
         tower.afterCollide();
+    }
+    // Killed Mobs entfernen
+    for (i = 0; i < mobs.length; i++) {
+        mob = mobs[i];
+        if (mob.isKilled()) {
+            game.removeMob(mob);
+        }
     }
 
 };
