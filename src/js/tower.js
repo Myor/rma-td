@@ -5,8 +5,8 @@ game.addTowerAt = function (typeID, cx, cy) {
 
     // Tower vorhanden bzw. start & ziel
     if (game.collGrid.getTowerAt(cx, cy) !== null
-            || cx === game.map.start.x && cy === game.map.start.y
-            || cx === game.map.finish.x && cy === game.map.finish.y) {
+            || utils.isStart(cx, cy)
+            || utils.isFinish(cx, cy)) {
         return false;
     }
 

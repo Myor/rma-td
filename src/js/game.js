@@ -78,6 +78,12 @@ var simulate = function (dt) {
 
         mob.age += dt;
         mob.simulateToAge(mob.age);
+        
+        if(utils.isFinish(mob.cx, mob.cy)) {
+            game.hit(1);
+            mob.kill();
+            continue;
+        }
 
 //        game.testGr.drawCircle(mob.x + game.cellCenter, mob.y + game.cellCenter, 1);
 
@@ -123,4 +129,24 @@ var updateAnimation = function (time, accumulator) {
         tower.update(time);
     }
 
+};
+
+game.hit = function (power) {
+    game.life -= power;
+    if(game.life <= 0) {
+        console.log("verloren");
+    }
+    game.updateLife();
+};
+
+game.heal = function (power) {
+    game.life += power;
+    if(game.life > 100) game.life = 100;
+    game.updateLife();
+};
+
+var gamelifeEl = document.getElementById("gameLife");
+
+game.updateLife = function () {
+    gamelifeEl.textContent = game.life;
 };

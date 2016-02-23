@@ -94,6 +94,13 @@ utils.cell2Pos = function (cell) {
     return cell * game.cellSize;
 };
 
+utils.isStart = function (cx, cy) {
+    return cx === game.map.start.x && cy === game.map.start.y;
+};
+utils.isFinish = function (cx, cy) {
+    return cx === game.map.finish.x && cy === game.map.finish.y;
+};
+
 utils.dist = function (x, y) {
     return Math.sqrt(x * x + y * y);
 };

@@ -34,6 +34,9 @@ var particleConOptions = {
 game.setup = function () {
 
     game.setupTextures();
+    
+    game.life = 100;
+    game.updateLife();
 
     // TODO Mapauswahl
     game.map = map;
