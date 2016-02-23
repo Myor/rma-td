@@ -88,9 +88,9 @@ Mob.prototype.simulateToAge = function (age) {
     // Position = Zelle + Nachkomma * Laufrichtung
     this.x = utils.cell2Pos(prevX + frac * dirX);
     this.y = utils.cell2Pos(prevY + frac * dirY);
-    // Speichern für weiteren Krams
-    this.cx = prevX;
-    this.cy = prevY;
+    // Speichern für weiteren Berechnungen
+    this.cx = frac < 0.5 ? prevX: nextX;
+    this.cy = frac < 0.5 ? prevY: nextY;
     this.dirX = dirX;
     this.dirY = dirY;
     this.covered = covered;

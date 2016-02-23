@@ -10,16 +10,21 @@ game.addTowerAt = function (typeID, cx, cy) {
         return false;
     }
 
-    game.PFgrid.setWalkableAt(cx, cy, false);
-    var newPath = game.findPath();
-    if (newPath.length === 0) {
-        game.PFgrid.setWalkableAt(cx, cy, true);
-        return false;
-    }
-    game.path = newPath;
-    game.drawPath();
-
     var type = towerTypes[typeID];
+    // Wenn Tower den Weg blockieren kann
+    if (type.isBlocking) {
+        // Weg neu berechnen
+        game.PFgrid.setWalkableAt(cx, cy, false);
+        var newPath = game.findPath();
+        // Nur setzen, wenn Weg vorhanden
+        if (newPath.length === 0) {
+            game.PFgrid.setWalkableAt(cx, cy, true);
+            return false;
+        }
+        game.path = newPath;
+        game.drawPath();
+    }
+
     var tower = new Tower(type, cx, cy);
 
     game.towers.add(tower);
@@ -95,6 +100,7 @@ var towerTypes = game.towerTypes = [];
 towerTypes[0] = {
     name: "Mauer",
     desc: "Bockt Wege",
+    isBlocking: true,
     radius: 0,
     price: 10,
     sellPrice: 5,
@@ -105,6 +111,7 @@ towerTypes[0] = {
 towerTypes[1] = {
     name: "Laser",
     desc: "Pew Pew",
+    isBlocking: true,
     radius: 4,
     price: 100,
     sellPrice: 50,
@@ -171,6 +178,7 @@ towerTypes[1] = {
 towerTypes[2] = {
     name: "Laser2",
     desc: "Pew Pew²",
+    isBlocking: true,
     radius: 7,
     price: 500,
     sellPrice: 300,
@@ -232,15 +240,16 @@ towerTypes[2] = {
         }
     }
 };
-// TODO kann nicht auf pfad gelegt werden
+
 towerTypes[3] = {
     name: "Stacheln",
     desc: "",
+    isBlocking: false,
     radius: 0.4,
     price: 100,
     sellPrice: 10,
     tex: null,
-    power: 20,
+    power: 10,
     init: function () {},
     extend: {
         collide: function (mob, dist) {
