@@ -120,6 +120,7 @@ Mob.prototype.hit = function (power) {
 var mobPool = new Pool(Mob, 10);
 // Nimmt ein Mob aus dem Pool und schiebt ihn in den Queue
 game.spawnMob = function (typeID) {
+    console.log("spawn", typeID);
     var mob = mobPool.getObj();
     mob.type = mobTypes[typeID];
     game.mobQueue.enqueue(mob);

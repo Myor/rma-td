@@ -10,6 +10,7 @@ game.setupInput = function () {
     game.canvasEl.addEventListener("click", clickHandler);
     // Mob spawn
     mobSpawnBtns.addEventListener("click", mobHandler);
+    document.addEventListener("keypress", keyHandler);
     // Tower spawn
     towerPlaceBtns.addEventListener("click", placeHandler);
     towerCancelBtn.addEventListener("click", cancelHandler);
@@ -102,8 +103,15 @@ var clickHandler = function (e) {
 var mobHandler = function (e) {
     if (!e.target.matches("button.mob")) return;
     var typeID = Number(e.target.dataset.type);
-    console.log("spawn", typeID);
+
     game.spawnMob(typeID);
+};
+var keyHandler = function (e) {
+    var num = Number(String.fromCharCode(e.charCode)) - 1;
+    if(Number.isNaN(num)) return;
+    // Typ vorhanden?
+    if(towerTypes[num] === undefined) return;
+    game.spawnMob(num);
 };
 
 
