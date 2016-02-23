@@ -102,7 +102,8 @@ var simulate = function (dt) {
         tower.afterCollide();
     }
     // Killed Mobs entfernen
-    for (i = 0; i < mobs.length; i++) {
+    // Rückwärts, um keine Elemente zu überspringen
+    for (i = mobs.length - 1; i >= 0; i--) {
         mob = mobs[i];
         if (mob.isKilled()) {
             game.removeMob(mob);
