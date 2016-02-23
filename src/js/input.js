@@ -15,6 +15,8 @@ game.setupInput = function () {
     towerCancelBtn.addEventListener("click", cancelHandler);
     towerSellBtn.addEventListener("click", sellHandler);
 
+    //TowerMenu
+    showTowers.addEventListener("click", showMenu);
     // Test krams
     var startBtn = document.getElementById("start");
     var stopBtn = document.getElementById("stop");
@@ -42,7 +44,53 @@ var towerCancelBtn = document.getElementById("towerCancel");
 var towerSellBtn = document.getElementById("towerSell");
 
 
+var showMenu = function(){
+    document.getElementById("towerMenu").classList.remove("towerMenuHide");
+};
+var hideMenu = function(){
+    hideInfo();
+    document.getElementById("towerMenu").classList.add("towerMenuHide");
+}
+var showInfo = function(e){
+    document.getElementById("towerInfo").classList.remove("infoHide");
+};
+
+var showSelectedInfo = function(tower){
+    fillInfoSelected(tower);
+    document.getElementById("towerSelectedInfo").classList.remove("infoHide")
+}
+
+var hideInfo = function(){
+    document.getElementById("towerInfo").classList.add("infoHide");
+}
+
+var hideSellectedInfo = function(){
+    document.getElementById("towerSelectedInfo").classList.add("infoHide");
+}
+
+var fillTowerInfo = function(id){
+    var type = towerTypes[id];
+    var html = "<ul><li></li>"+
+                "<li>"+type.name+"</li>"+
+                "<li>"+type.desc+"</li>"+
+                "<li>Damage: "+type.power+"</li>"+
+                "<li>Speed: "+type.freq+"</li>"
+                "<li>Price: "+type.price+"</li></ul>";
+    document.getElementById("towerInfo").innerHTML = html;
+}
+
+
+var fillInfoSelected = function(tower){
+    console.log(tower);
+    console.log(tower.type.power);
+    var type = tower.type;
+    var html = "DAMAGE: "+type.power;
+    document.getElementById("towerSelectedInfo").innerHTML = html;
+}
+
 var clickHandler = function (e) {
+    hideMenu();
+
     // Nur bei Linksklick und wenn kein Tower gesetzt wird
     if (selectBlocked || e.button !== 0) return;
     var cx = utils.pos2Cell(e.offsetX);
@@ -68,13 +116,23 @@ var placeType = 0;
 
 var placeHandler = function (e) {
     // Nur bei Button klicks reagieren
-    if (!e.target.matches("button.tower")) return;
-    // Wenn setzen schon aktiv - beenden
-    if (placeBtn !== null) endPlace();
-    // Gewählten Tower merken
-    placeBtn = e.target;
-    placeType = Number(e.target.dataset.type);
-    startPlace();
+    if (e.target.matches("button.tower")){
+        hideMenu();
+        // Wenn setzen schon aktiv - beenden
+        if (placeBtn !== null) endPlace();
+        // Gewählten Tower merken
+        placeBtn = e.target;
+        placeType = Number(e.target.dataset.type);
+        startPlace();  
+    }
+    else if(e.target.matches("button.towerInfo")){
+        var towerID = Number(e.target.dataset.type);
+        fillTowerInfo(towerID);
+        showInfo();
+    }
+
+
+
 };
 var cancelHandler = function () {
     endPlace();
@@ -82,8 +140,8 @@ var cancelHandler = function () {
 
 var startPlace = function () {
     console.log("startplace", placeType);
-    placeBtn.disabled = true;
-    towerCancelBtn.disabled = false;
+//    placeBtn.disabled = true;
+//    towerCancelBtn.disabled = false;
     addPlaceListeners();
     game.setSelectedTower(null);
     selectBlocked = true;

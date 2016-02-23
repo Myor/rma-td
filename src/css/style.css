@@ -1,9 +1,10 @@
-#canvasEl {
-    display: block;
+body {
+	font-family: sans-serif;
+	font-size:12px;
 }
 
-#towers {
-    display: flex;
+#canvasEl {
+    display: block;
 }
 
 .tower,
@@ -19,4 +20,58 @@
 #mobs {
     display: flex;
 }
+
+#towerMenu{
+	background-color: #efefef;
+	position: absolute;
+	width:150px;
+	height:100%;
+	display:visible;
+	transition: transform 0.3s;
+	transition-timing-function: ease-out;
+}
+
+#towerSelectedInfo{
+	background-color: #efefef;
+	position:absolute;
+	top:0;
+	right:0;
+	padding: 10px;
+	width:100px;
+}
+#towerSelectedInfo ul{
+	list-style: none;
+	margin:0;
+	padding: 0
+}
+
+#towerInfo{
+	background-color: #efefef;
+	position:absolute;
+	top:0;
+	right:0;
+	padding: 10px;
+	width:100px;
+}
+#towerInfo ul{
+	list-style: none;
+	margin:0;
+	padding: 0
+}
+
+#gameWrapper{
+	overflow:hidden;
+	position: relative;
+	width:320px;
+	height: 480px;	
+}
+
+.towerMenuHide{
+	transform: translateX(-150px);
+}
+
+.infoHide{
+	display:none;
+}
+
 

@@ -258,7 +258,11 @@ game.getSelectedTower = function () {
 game.setSelectedTower = function (tower) {
     if (tower === null) {
         game.hideSelection();
+        hideSellectedInfo();
     } else if (selectedTower !== tower) {
+
+        showSelectedInfo(tower);
+
         console.log("select", tower);
         game.drawSelectCircle(tower.type);
         game.moveSelectionTo(tower.cx, tower.cy);

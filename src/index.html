@@ -20,13 +20,23 @@
             <button class="mob" data-type="0">0</button>
             <button class="mob" data-type="1">1</button>
         </div>
-        <div id="gameField"></div>
-        Tower
-        <div id="towers">
-            <button class="tower" data-type="0">0</button>
-            <button class="tower" data-type="1">1</button>
-            <button class="tower" data-type="2">2</button>
-            <button class="tower" data-type="3">3</button>
+        <div id="gameWrapper">
+        	<div class="towerMenuHide" id="towerMenu">
+        		<div id="towers">
+		            <div><button class="tower" data-type="0">0</button> <button class="towerInfo" data-type="0">i</button></div>
+		            <div><button class="tower" data-type="1">1</button> <button class="towerInfo" data-type="1">i</button></div>
+		            <div><button class="tower" data-type="2">2</button> <button class="towerInfo" data-type="2">i</button></div>
+		            <div><button class="tower" data-type="3">3</button> <button class="towerInfo" data-type="3">i</button></div>
+		        </div>
+        	</div>
+        	<div class="infoHide" id="towerInfo"></div>
+            <div class="infoHide" id="towerSelectedInfo"></div>
+            
+	        <div id="gameField"></div>
+	    </div>
+
+        <div id="ui">
+        		<button id="showTowers">Place Tower</button>
         </div>
         <button id="towerCancel" disabled>Cancel</button>
         <button id="towerSell">Sell Tower</button>
