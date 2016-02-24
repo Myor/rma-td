@@ -100,7 +100,7 @@ var towerTypes = game.towerTypes = [];
 
 towerTypes[0] = {
     name: "Mauer",
-    desc: "Bockt Wege",
+    desc: "Blockt Wege",
     isBlocking: true,
     radius: 0,
     price: 10,

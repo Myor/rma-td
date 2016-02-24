@@ -86,11 +86,28 @@ body {
     transition-timing-function: ease-out;
 }
 
-#towerInfo ul,
+
 #towerSelectedInfo ul {
     list-style: none;
     margin: 0;
-    padding: 0
+    padding:0px;
+}
+
+#towerInfo span{
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+#towerInfo table{
+    width: 
+}
+#towerInfo tr{
+    padding-bottom: 4px;
+    padding-left: 0px;
+}
+
+#towerInfo td{
+    padding-left: 0px;
 }
 
 #towerInfo {
@@ -107,6 +124,13 @@ body {
     right: 0;
     padding: 10px;
     width: 100px;
+}
+#infoName{
+    font-size:14px;
+}
+
+#infoDesc{
+
 }
 
 .hideLeft {

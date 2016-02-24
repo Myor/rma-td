@@ -78,13 +78,21 @@ ui.hideSelectedInfo = function () {
 
 var fillTowerInfo = function (id) {
     var type = towerTypes[id];
-    var html = "<ul>" +
-            "<li>" + type.name + "</li>" +
-            "<li>" + type.desc + "</li>" +
-            "<li>Damage: " + type.power + "</li>" +
-            "<li>Speed: " + type.freq + "</li>" +
-            "<li>Price: " + type.price + "</li></ul>";
-    towerInfo.innerHTML = html;
+
+    var nameDesc= "<span>"+type.name+"</span></br>"+type.desc;
+
+    var table = "<table>";
+    if('power' in type)
+        table += "<tr><td>Damage</td><td>"+type.power+"</td></tr>";
+    if('freq' in type)
+        table += "<tr><td>Speed</td><td>"+type.freq+"</td></tr>";
+    if('radius' in type)
+        table += "<tr><td>Radius</td><td>"+type.radius+"</td></tr>";
+
+    table += "<tr><td>Price</td><td>"+type.price+"</td></tr>";
+    table += "</table";
+
+    towerInfo.innerHTML = nameDesc+table;
 };
 
 var tName = towerSelectedInfo.querySelector(".tName");
