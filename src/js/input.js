@@ -12,8 +12,8 @@ game.setupInput = function () {
     mobSpawnBtns.addEventListener("click", mobHandler);
     document.addEventListener("keypress", keyHandler);
     // Tower spawn
-    towerPlaceBtns.addEventListener("click", placeHandler);
-    towerCancelBtn.addEventListener("click", cancelHandler);
+    towerListBtns.addEventListener("click", towerClickHandler);
+    cancelPlaceBtn.addEventListener("click", towerCancelHandler);
     // Tower verkauf
     tSellBtn.addEventListener("click", sellHandler);
 
@@ -42,14 +42,19 @@ game.setupInput = function () {
 var ui = {};
 
 var mobSpawnBtns = document.getElementById("mobs");
-
-var showTowersBtn = document.getElementById("showTowers");
+// Menüs
 var towerMenu = document.getElementById("towerMenu");
 var towerInfo = document.getElementById("towerInfo");
 var towerSelectedInfo = document.getElementById("towerSelectedInfo");
-
-var towerPlaceBtns = document.getElementById("towers");
-var towerCancelBtn = document.getElementById("towerCancel");
+// Buttons
+var showTowersBtn = document.getElementById("showTowers");
+var towerListBtns = document.getElementById("towers");
+var cancelPlaceBtn = document.getElementById("cancelPlace");
+// Selected-infos
+var tName = towerSelectedInfo.querySelector(".tName");
+var tKillCount = towerSelectedInfo.querySelector(".tKillCount");
+var tSellBtn = towerSelectedInfo.querySelector(".tSellBtn");
+var tSellPrice = towerSelectedInfo.querySelector(".tSellPrice");
 
 // ===== Menüs =====
 
@@ -94,11 +99,6 @@ var fillTowerInfo = function (id) {
 
     towerInfo.innerHTML = nameDesc+table;
 };
-
-var tName = towerSelectedInfo.querySelector(".tName");
-var tKillCount = towerSelectedInfo.querySelector(".tKillCount");
-var tSellBtn = towerSelectedInfo.querySelector(".tSellBtn");
-var tSellPrice = towerSelectedInfo.querySelector(".tSellPrice");
 
 var fillInfoSelected = function (tower) {
     var type = tower.type;
@@ -145,7 +145,7 @@ var selectBlocked = false;
 // Tower Typ zum placen speichern
 var placeType = -1;
 
-var placeHandler = function (e) {
+var towerClickHandler = function (e) {
     // Klicks auf Tower-Button
     if (e.target.matches("button.tower")) {
         ui.hideMenu();
@@ -162,14 +162,14 @@ var placeHandler = function (e) {
     }
 
 };
-var cancelHandler = function () {
+var towerCancelHandler = function () {
     endPlace();
 };
 
 var startPlace = function () {
     console.log("startplace", placeType);
 
-    towerCancelBtn.disabled = false;
+    cancelPlaceBtn.disabled = false;
     addPlaceListeners();
     game.setSelectedTower(null);
     selectBlocked = true;
@@ -178,7 +178,7 @@ var startPlace = function () {
 
 var endPlace = function () {
     console.log("endplace", placeType);
-    towerCancelBtn.disabled = true;
+    cancelPlaceBtn.disabled = true;
 
     removePlaceListeners();
     game.selectGr.visible = false;
@@ -237,10 +237,7 @@ var updatePlace = function (cx, cy) {
 var tryPlace = function (cx, cy) {
     console.log("tryplace", cx, cy);
     if (game.fieldRect.contains(cx, cy)) {
-        // Nur beenden, wenn setzen erfolgreich
-        if (game.addTowerAt(placeType, cx, cy)) {
-            endPlace();
-        }
+        game.addTowerAt(placeType, cx, cy);
     }
 };
 

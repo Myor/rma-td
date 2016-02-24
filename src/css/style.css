@@ -101,9 +101,6 @@ body {
     font-size: 14px;
 }
 
-#towerInfo table{
-    width: 
-}
 #towerInfo tr{
     padding-bottom: 4px;
     padding-left: 0px;
@@ -148,4 +145,12 @@ body {
 }
 
 
+/* ===== Menü ===== */
 
+#menu {
+    
+}
+
+#cancelPlace:disabled {
+    display: none;
+}
