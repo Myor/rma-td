@@ -38,19 +38,19 @@ body {
     background-image: url(../img/towerSheet32.png);
 }
 .tower[data-type="0"] {
-    background-position: -1px 0px;
+    background-position: -409px 0px;
 }
 .tower[data-type="1"] {
-    background-position: -35px 0px;
-}
-.tower[data-type="2"] {
     background-position: -103px 0px;
 }
+.tower[data-type="2"] {
+    background-position: -1px 0px;
+}
 .tower[data-type="3"] {
-    background-position: -171px 0px;
+    background-position: -443px 0px;
 }
 .tower[data-type="4"] {
-    background-position: -341px 0px;
+    background-position: -443px 0px;
 }
 
 #mobs {
