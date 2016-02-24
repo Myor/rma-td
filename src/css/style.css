@@ -1,5 +1,5 @@
 body {
-    font-family: sans-serif;
+    font-family: Lucida Console;
     font-size: 12px;
 }
 
@@ -25,21 +25,29 @@ body {
     cursor: pointer;
 }
 
+.towerInfo{
+    margin-left:30px;
+    background-image: url(../img/infoButton.png);
+}
+
 .tower {
     text-indent: -100px;
-    background-image: url(../img/towers.png);
+    background-image: url(../img/towerSheet32.png);
 }
 .tower[data-type="0"] {
-    background-position: 0px 0px;
+    background-position: -1px 0px;
 }
 .tower[data-type="1"] {
-    background-position: -34px 0px;
+    background-position: -35px 0px;
 }
 .tower[data-type="2"] {
-    background-position: -68px 0px;
+    background-position: -103px 0px;
 }
 .tower[data-type="3"] {
-    background-position: -102px 0px;
+    background-position: -171px 0px;
+}
+.tower[data-type="4"] {
+    background-position: -341px 0px;
 }
 
 #mobs {
@@ -47,13 +55,24 @@ body {
 }
 
 #towerMenu {
-    background-color: #efefef;
+    background-color: rgba(239,239,239,0.9) ;
+    box-shadow: 1px 0px 2px grey;
     position: absolute;
     width: 130px;
-    height: 100%;
-    padding: 10px;
+    height: calc(100% - 2px);
+    padding-left: 10px;
+    border-style:solid;
+    border-width: 1px;
+    border-left: 0px;
+    border-color: #595959;
+    border-top-right-radius:10px;
+    border-bottom-right-radius:10px;
     transition: transform 0.3s;
     transition-timing-function: ease-out;
+}
+
+.towerDiv {
+    margin-top:10px;
 }
 
 #towerSelectedInfo {
@@ -75,7 +94,14 @@ body {
 }
 
 #towerInfo {
-    background-color: #efefef;
+    background-color: rgba(239,239,239,0.9) ;
+    border-style:solid;
+    border-color: #595959;
+    border-width: 1px;
+    border-right: 0px;
+    border-top:0px;
+    border-bottom-left-radius:10px;
+    box-shadow: -1px 1px 2px grey;
     position: absolute;
     top: 0;
     right: 0;
