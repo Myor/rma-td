@@ -7,6 +7,7 @@ PIXI.loader
         .add("shots", "img/shots.png")
         .add("pathMark", "img/pathMark@2x.png")
         .add("ground", "assets/ground32.png")
+        .add("shockwave", "img/shockwave.png")
         .load(game.setup);
 
 

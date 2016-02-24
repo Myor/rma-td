@@ -263,3 +263,67 @@ towerTypes[3] = {
         }
     }
 };
+
+towerTypes[4] = {
+    name: "AoE Tower",
+    desc: "Damages all Creeps in the Radius",
+    isBlocking: true,
+    radius: 1.5,
+    price: 100,
+    sellPrice: 10,
+    tex: null,
+    power: 100,
+    freq: 20,
+    init: function () {
+        this.focus = null;
+        this.dist = 0;
+        this.reload = this.type.freq;
+        this.shooting = false;
+        this.scaling=false;
+        this.shotSpr = new PIXI.Sprite(this.type.shotTex);
+        this.shotSpr.anchor.set(0.5, 0.5);
+        this.shotSpr.x = this.x + game.cellCenter;
+        this.shotSpr.y = this.y + game.cellCenter;
+        this.shotSpr.scale.set(0.1);
+
+        game.shockCon.addChild(this.shotSpr);
+    },
+    extend: {
+        destroy: function () {
+            Tower.prototype.destroy.call(this);
+            game.shotCon.removeChild(this.shotSpr);
+            this.shotSpr.destroy();
+        },
+        update: function (time) {
+            if(this.shooting){
+                this.scaling = true;
+                this.shotSpr.scale.x += 0.05;
+                this.shotSpr.scale.y +=0.05;
+                if(this.shotSpr.scale.x > 1){
+                    this.shotSpr.scale.set(0);
+                    this.shooting = false;
+                }
+
+            }
+        },
+        beforeCollide: function () {
+            this.reload--;
+        },
+        collide: function (mob, dist) {
+            if (this.reload !== 0) return;
+
+            if (dist <= utils.cell2Pos(this.type.radius)) {
+                if(!this.shooting)
+                    this.shooting = true;
+
+                console.log("Im qoe colllide");
+                mob.hit(this.type.power, this);
+            }
+        },
+        afterCollide: function () {
+            if (this.reload === 0) {
+                this.reload = this.type.freq;
+            }
+        }
+    }
+};

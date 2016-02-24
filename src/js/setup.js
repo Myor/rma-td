@@ -104,6 +104,9 @@ game.setup = function () {
 
     // Tower Kram
     game.shotCon = new PIXI.ParticleContainer(1000, particleConOptions, 1000);
+
+    game.shockCon = new PIXI.ParticleContainer(100, particleConOptions, 100);
+
 //    game.shotCon = new PIXI.Container();
     game.towersCon = new PIXI.ParticleContainer(200, particleConOptions, 200);
     game.towers = new FastSet();
@@ -130,6 +133,7 @@ game.setup = function () {
     stage.addChild(game.pathCont);
     stage.addChild(game.selectCircleGr);
     stage.addChild(game.shotCon);
+    stage.addChild(game.shockCon);
     stage.addChild(game.towersCon);
     stage.addChild(game.selectGr);
     stage.addChild(game.mobsCon);
@@ -184,9 +188,11 @@ game.setupTextures = function () {
     towerTypes[1].tex = texFromCache("towers", 103, 0, 32, 32);
     towerTypes[2].tex = texFromCache("towers", 1, 0, 32, 32);
     towerTypes[3].tex = texFromCache("towers", 443, 0, 32, 32);
+    towerTypes[4].tex = texFromCache("towers", 35, 0, 32, 32);
 
     towerTypes[1].shotTex = texFromCache("shots", 0, 0, 1, 32);
     towerTypes[2].shotTex = texFromCache("shots", 3, 0, 1, 32);
+    towerTypes[4].shotTex = new PIXI.Texture(PIXI.loader.resources["shockwave"].texture.baseTexture);
 
 };
 // Textur aus loader Cache lesen, mit frame
