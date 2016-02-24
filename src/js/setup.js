@@ -260,16 +260,18 @@ game.getSelectedTower = function () {
 
 game.setSelectedTower = function (tower) {
     if (tower === null) {
+        // Kreis ausblenden
         game.hideSelection();
-        hideSellectedInfo();
+        // Infos ausblenden
+        ui.hideSelectedInfo();
     } else if (selectedTower !== tower) {
-
-        showSelectedInfo(tower);
-
         console.log("select", tower);
         game.drawSelectCircle(tower.type);
         game.moveSelectionTo(tower.cx, tower.cy);
+        // Kreis anzeigen
         game.showSelection();
+        // Infos anzeigen
+        ui.showSelectedInfo(tower);
     }
     selectedTower = tower;
 };

@@ -1,6 +1,13 @@
 body {
-	font-family: sans-serif;
-	font-size:12px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#gameWrapper {
+    overflow: hidden;
+    position: relative;
+    width: 320px;
+    height: 480px;	
 }
 
 #canvasEl {
@@ -8,70 +15,83 @@ body {
 }
 
 .tower,
-.mob {
+.mob,
+.towerInfo {
     width: 32px;
     height: 32px;
     background-color: transparent;
     padding: 0;
-    border: 1px solid black;
+    border: 0;
     cursor: pointer;
+}
+
+.tower {
+    text-indent: -100px;
+    background-image: url(../img/towers.png);
+}
+.tower[data-type="0"] {
+    background-position: 0px 0px;
+}
+.tower[data-type="1"] {
+    background-position: -34px 0px;
+}
+.tower[data-type="2"] {
+    background-position: -68px 0px;
+}
+.tower[data-type="3"] {
+    background-position: -102px 0px;
 }
 
 #mobs {
     display: flex;
 }
 
-#towerMenu{
-	background-color: #efefef;
-	position: absolute;
-	width:150px;
-	height:100%;
-	display:visible;
-	transition: transform 0.3s;
-	transition-timing-function: ease-out;
+#towerMenu {
+    background-color: #efefef;
+    position: absolute;
+    width: 130px;
+    height: 100%;
+    padding: 10px;
+    transition: transform 0.3s;
+    transition-timing-function: ease-out;
 }
 
-#towerSelectedInfo{
-	background-color: #efefef;
-	position:absolute;
-	top:0;
-	right:0;
-	padding: 10px;
-	width:100px;
-}
-#towerSelectedInfo ul{
-	list-style: none;
-	margin:0;
-	padding: 0
+#towerSelectedInfo {
+    background-color: rgba(200, 200, 200, 0.9);
+    position: absolute;
+    right: 0;
+    width: 130px;
+    height: 100%;
+    padding: 10px;
+    transition: transform 0.3s;
+    transition-timing-function: ease-out;
 }
 
-#towerInfo{
-	background-color: #efefef;
-	position:absolute;
-	top:0;
-	right:0;
-	padding: 10px;
-	width:100px;
-}
-#towerInfo ul{
-	list-style: none;
-	margin:0;
-	padding: 0
+#towerInfo ul,
+#towerSelectedInfo ul {
+    list-style: none;
+    margin: 0;
+    padding: 0
 }
 
-#gameWrapper{
-	overflow:hidden;
-	position: relative;
-	width:320px;
-	height: 480px;	
+#towerInfo {
+    background-color: #efefef;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    width: 100px;
 }
 
-.towerMenuHide{
-	transform: translateX(-150px);
+.hideLeft {
+    transform: translateX(-150px);
+}
+.hideRight {
+    transform: translateX(150px);
 }
 
-.infoHide{
-	display:none;
+.infoHide {
+    display:none;
 }
 
 

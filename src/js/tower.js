@@ -69,6 +69,7 @@ var randomTowers = function () {
 // Allgemeiner Tower Konstruktor
 var Tower = function (type, cx, cy) {
     this.type = type;
+    this.killCount = 0;
 
     this.cx = cx;
     this.cy = cy;
@@ -166,7 +167,7 @@ towerTypes[1] = {
                 this.reload = this.type.freq;
             }
             if (this.focus !== null) {
-                this.focus.hit(this.type.power);
+                this.focus.hit(this.type.power, this);
                 this.spr.rotation = this.shotSpr.rotation = Math.atan2(this.focus.y - this.y, this.focus.x - this.x);
                 this.shotSpr.scale.x = this.dist;
             }
@@ -233,7 +234,7 @@ towerTypes[2] = {
                 this.reload = this.type.freq;
             }
             if (this.focus !== null) {
-                this.focus.hit(this.type.power);
+                this.focus.hit(this.type.power, this);
                 this.spr.rotation = this.shotSpr.rotation = Math.atan2(this.focus.y - this.y, this.focus.x - this.x);
                 this.shotSpr.scale.x = this.dist;
             }
@@ -253,7 +254,7 @@ towerTypes[3] = {
     init: function () {},
     extend: {
         collide: function (mob, dist) {
-            mob.hit(this.type.power);
+            mob.hit(this.type.power, this);
         }
     }
 };

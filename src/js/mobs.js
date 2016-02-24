@@ -108,11 +108,12 @@ Mob.prototype.isKilled = function () {
     return this.type === null;
 };
 
-Mob.prototype.hit = function (power) {
+Mob.prototype.hit = function (power, by) {
     if (this.isKilled()) return;
     this.life -= power;
     if (this.life <= 0) {
         this.kill();
+        by.killCount++;
     }
 };
 
