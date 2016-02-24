@@ -23,6 +23,11 @@ var frameId;
 // http://gafferongames.com/game-physics/fix-your-timestep/
 // http://codeincomplete.com/posts/2013/12/4/javascript_game_foundations_the_game_loop/
 
+var initFrame = function (newTime) {
+    lastTime = newTime;
+    requestAnimationFrame(frame);
+};
+
 var frame = function (newTime) {
 
     var frameTime = newTime - lastTime;
@@ -50,7 +55,7 @@ var frame = function (newTime) {
 };
 
 game.startGameLoop = function () {
-    requestAnimationFrame(frame, performance.now());
+    requestAnimationFrame(initFrame);
 };
 game.stopGameLoop = function () {
     cancelAnimationFrame(frameId);
