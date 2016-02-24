@@ -104,8 +104,8 @@ Tower.prototype.afterCollide = function () {};
 var towerTypes = game.towerTypes = [];
 
 towerTypes[0] = {
-    name: "Mauer",
-    desc: "Blockt Wege",
+    name: "Wall",
+    desc: "Helps you maze.",
     isBlocking: true,
     radius: 0,
     price: 10,
@@ -115,8 +115,8 @@ towerTypes[0] = {
 };
 
 towerTypes[1] = {
-    name: "Laser",
-    desc: "Pew Pew",
+    name: "Laser Tower",
+    desc: "Standard Laser Tower",
     isBlocking: true,
     radius: 4,
     price: 100,
@@ -182,8 +182,8 @@ towerTypes[1] = {
 };
 
 towerTypes[2] = {
-    name: "Laser2",
-    desc: "Pew Pew²",
+    name: "Sharpshooter",
+    desc: "Slow Long Range Attack",
     isBlocking: true,
     radius: 7,
     price: 500,
@@ -191,7 +191,7 @@ towerTypes[2] = {
     tex: null,
     shotTex: null,
     power: 50,
-    freq: 10,
+    freq: 50,
     init: function () {
         this.focus = null;
         this.dist = 0;
@@ -248,8 +248,8 @@ towerTypes[2] = {
 };
 
 towerTypes[3] = {
-    name: "Stacheln",
-    desc: "",
+    name: "Spikes",
+    desc: "Can be placed on creep path. Will damage on contact.",
     isBlocking: false,
     radius: 0.4,
     price: 100,

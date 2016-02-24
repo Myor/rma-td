@@ -164,11 +164,9 @@ game.setupTextures = function () {
     game.tex = {};
 
     map.groundTex = [];
-    var i=0;
-    var j=0;
     var k=0;
-    for(i = 0;i<4;i++){//y
-        for(j = 0; j<4;j++){// x
+    for(var i = 0;i<4;i++){//y
+        for(var j = 0; j<4;j++){// x
             map.groundTex[k] =  texFromCache("ground", j*32, i*32, 32, 32);
             k++;
         }
@@ -182,10 +180,10 @@ game.setupTextures = function () {
     mobTypes[1].tex = texFromCache("mobs", 68, 0, 32, 32);
 
 
-    towerTypes[0].tex = texFromCache("towers", 0, 0, 32, 32);
-    towerTypes[1].tex = texFromCache("towers", 34, 0, 32, 32);
-    towerTypes[2].tex = texFromCache("towers", 68, 0, 32, 32);
-    towerTypes[3].tex = texFromCache("towers", 102, 0, 32, 32);
+    towerTypes[0].tex = texFromCache("towers", 409, 0, 32, 32);
+    towerTypes[1].tex = texFromCache("towers", 103, 0, 32, 32);
+    towerTypes[2].tex = texFromCache("towers", 1, 0, 32, 32);
+    towerTypes[3].tex = texFromCache("towers", 443, 0, 32, 32);
 
     towerTypes[1].shotTex = texFromCache("shots", 0, 0, 1, 32);
     towerTypes[2].shotTex = texFromCache("shots", 3, 0, 1, 32);
@@ -210,27 +208,24 @@ game.setupMap = function () {
     var grid = new PIXI.Graphics();
     cont.addChild(grid);
     
+    /*===Background Textures===*/
     var currentCellX=0;
     var currentCellY=0;
     for(var i=0;i<map.groundLayout.length;i++){
         var groundSprite = new PIXI.Sprite(map.groundTex[map.groundLayout[i]]);
+
         groundSprite.position.x = currentCellX * 32;
         groundSprite.position.y = currentCellY * 32;
         cont.addChild(groundSprite);
+
         currentCellX++;
-        if(currentCellX%12 === 0 && currentCellX!=0){
+
+        if(currentCellX%game.cellsX === 0 && currentCellX!=0){
             currentCellX=0;
             currentCellY++;
         }
     }
 
-/*    for(var i =0 ;i<map.groundTex.length;i++){
-        var spritt = new PIXI.Sprite(map.groundTex[i]);
-        spritt.position.x=32;
-        spritt.position.y=i*32;
-        cont.addChild(spritt);
-    }
-*/
     /* ====== Grid ====== */
     grid.alpha = 0.5;
     grid.lineStyle(1, 0x000000);
