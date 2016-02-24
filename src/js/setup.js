@@ -2,22 +2,38 @@
 
 var game = {};
 
-game.resX = 320;
-game.resY = 480;
+game.resX = 384;
+game.resY = 544;
 game.cellSize = 32;
 game.cellCenter = 16;
-game.cellsX = 10; // = resX / cellSize
-game.cellsY = 15; // = resY / cellSize
+game.cellsX = 12; // = resX / cellSize
+game.cellsY = 17; // = resY / cellSize
 // Rechteck für einfach hit-tests
 game.fieldRect = new PIXI.Rectangle(0, 0, game.cellsX, game.cellsY);
 
 // TODO Verschiedene Maps
 var map = {};
-map.start = new PIXI.Point(2, 0);
-map.finish = new PIXI.Point(6, 14);
+map.start = new PIXI.Point(2, 1);
+map.finish = new PIXI.Point(6, 15);
 map.bgColor = 0xD3D3D3;
-map.walls = [[1, 2], [2, 2], [3, 2], [4, 2], [7, 5], [6, 5], [5, 5], [4, 5], [2, 8], [3, 8], [4, 8], [4, 9], [4, 10], [4, 1], [3, 5]];
-
+map.walls = [[2, 2], [3, 2], [4, 2], [7, 5], [6, 5], [5, 5], [4, 5], [2, 8], [3, 8], [4, 8], [4, 9], [4, 10], [4, 1], [3, 5]];
+map.groundLayout =  [0,1,1,1,1,1,1,1,1,1,1,2,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    4,5,5,5,5,5,5,5,5,5,5,6,
+                    8,9,9,9,9,9,9,9,9,9,9,10];
 // ParticleContainer für gute Performance (wird auf GPU berechnet)
 // Alle bekommen die gleichen Optionen, wegen PIXI Bug
 // https://github.com/pixijs/pixi.js/issues/1953
@@ -122,6 +138,17 @@ game.setup = function () {
 game.setupTextures = function () {
     game.tex = {};
 
+    map.groundTex = [];
+    var i=0;
+    var j=0;
+    var k=0;
+    for(i = 0;i<4;i++){//y
+        for(j = 0; j<4;j++){// x
+            map.groundTex[k] =  texFromCache("ground", j*32, i*32, 32, 32);
+            k++;
+        }
+    }
+
     game.tex.mobTexEmpty = texFromCache("mobs", 0, 0, 32, 32);
     game.tex.mobBarTex = texFromCache("mobBar", 0, 0, 32, 4);
     game.tex.mobBarTexEmpty = texFromCache("mobBar", 0, 6, 32, 4);
@@ -157,7 +184,28 @@ game.setupMap = function () {
     var cont = game.mapCont;
     var grid = new PIXI.Graphics();
     cont.addChild(grid);
+    
+    var currentCellX=0;
+    var currentCellY=0;
+    for(var i=0;i<map.groundLayout.length;i++){
+        var groundSprite = new PIXI.Sprite(map.groundTex[map.groundLayout[i]]);
+        groundSprite.position.x = currentCellX * 32;
+        groundSprite.position.y = currentCellY * 32;
+        cont.addChild(groundSprite);
+        currentCellX++;
+        if(currentCellX%12 === 0 && currentCellX!=0){
+            currentCellX=0;
+            currentCellY++;
+        }
+    }
 
+/*    for(var i =0 ;i<map.groundTex.length;i++){
+        var spritt = new PIXI.Sprite(map.groundTex[i]);
+        spritt.position.x=32;
+        spritt.position.y=i*32;
+        cont.addChild(spritt);
+    }
+*/
     /* ====== Grid ====== */
     grid.alpha = 0.5;
     grid.lineStyle(1, 0x000000);

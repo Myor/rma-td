@@ -6,6 +6,7 @@ PIXI.loader
         .add("towers", "img/towers@2x.png")
         .add("shots", "img/shots.png")
         .add("pathMark", "img/pathMark@2x.png")
+        .add("ground", "assets/ground32.png")
         .load(game.setup);
 
 
