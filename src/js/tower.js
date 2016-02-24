@@ -1,18 +1,17 @@
 "use strict";
 
-
-game.addTowerAt = function (typeID, cx, cy) {
-
+// Setzt Tower, wenn möglich
+game.tryAddTowerAt = function (typeID, cx, cy) {
     // Tower vorhanden bzw. start & ziel
-    if (game.collGrid.getTowerAt(cx, cy) !== null
+    if (game.collGrid.islockedAt(cx, cy)
+            || game.collGrid.getTowerAt(cx, cy) !== null
             || utils.isStart(cx, cy)
             || utils.isFinish(cx, cy)) {
         return false;
     }
 
-    var type = towerTypes[typeID];
     // Wenn Tower den Weg blockieren kann
-    if (type.isBlocking) {
+    if (towerTypes[typeID].isBlocking) {
         // Weg neu berechnen
         game.PFgrid.setWalkableAt(cx, cy, false);
         var newPath = game.findPath();
@@ -25,18 +24,24 @@ game.addTowerAt = function (typeID, cx, cy) {
         game.drawPath();
     }
 
-    var tower = new Tower(type, cx, cy);
+    game.addTowerAt(typeID, cx, cy);
+};
+
+// Setzt Tower ohne Einschränkungen zu prüfen
+game.addTowerAt = function (typeID, cx, cy) {
+
+    var tower = new Tower(towerTypes[typeID], cx, cy);
 
     game.towers.add(tower);
-
     game.collGrid.addTower(tower);
+    game.PFgrid.setWalkableAt(cx, cy, false);
 
     return true;
 };
 
-
+// Tower für Zelle finden, null wenn keiner vorhanden
 game.getTowerAt = function (cx, cy) {
-    if (game.fieldRect.contains(cx, cy)) {
+    if (game.fieldRect.contains(cx, cy) && !game.collGrid.islockedAt(cx, cy)) {
         return game.collGrid.getTowerAt(cx, cy);
     }
     return null;

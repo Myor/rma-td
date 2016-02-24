@@ -179,3 +179,11 @@ CollisionGrid.prototype.getCollisionsAt = function (cx, cy) {
 CollisionGrid.prototype.getTowerAt = function (cx, cy) {
     return this.towerGrid[cx][cy];
 };
+// Sperrt Zelle an cx, cy
+CollisionGrid.prototype.lockAt = function (cx, cy) {
+    this.towerGrid[cx][cy] = false;
+};
+// Ist Zelle gesperrt?
+CollisionGrid.prototype.islockedAt = function (cx, cy) {
+    return this.towerGrid[cx][cy] === false;
+};

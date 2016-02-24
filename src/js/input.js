@@ -237,7 +237,7 @@ var updatePlace = function (cx, cy) {
 var tryPlace = function (cx, cy) {
     console.log("tryplace", cx, cy);
     if (game.fieldRect.contains(cx, cy)) {
-        game.addTowerAt(placeType, cx, cy);
+        game.tryAddTowerAt(placeType, cx, cy);
     }
 };
 

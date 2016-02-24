@@ -16,24 +16,46 @@ var map = {};
 map.start = new PIXI.Point(2, 1);
 map.finish = new PIXI.Point(6, 15);
 map.bgColor = 0xD3D3D3;
-map.walls = [[2, 2], [3, 2], [4, 2], [7, 5], [6, 5], [5, 5], [4, 5], [2, 8], [3, 8], [4, 8], [4, 9], [4, 10], [4, 1], [3, 5]];
-map.groundLayout =  [0,1,1,1,1,1,1,1,1,1,1,2,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    4,5,5,5,5,5,5,5,5,5,5,6,
-                    8,9,9,9,9,9,9,9,9,9,9,10];
+map.walls = [[2, 2], [3, 2], [4, 2], [7, 5], [6, 5], [5, 5], [4, 5],
+    [2, 8], [3, 8], [4, 8], [4, 9], [4, 10], [4, 1], [3, 5]];
+map.locks =
+[1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1];
+                
+map.groundLayout =
+[0,1,1,1,1,1,1,1,1,1,1,2,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+4,5,5,5,5,5,5,5,5,5,5,6,
+8,9,9,9,9,9,9,9,9,9,9,10];
+
 // ParticleContainer für gute Performance (wird auf GPU berechnet)
 // Alle bekommen die gleichen Optionen, wegen PIXI Bug
 // https://github.com/pixijs/pixi.js/issues/1953
@@ -77,9 +99,8 @@ game.setup = function () {
     game.mapCont = new PIXI.Container();
 
     // Pfad
+    game.PFgrid = new PF.Grid(game.cellsX, game.cellsY);
     game.pathCont = new PIXI.Container();
-    game.path = game.findPath();
-    game.drawPath();
 
     // Tower Kram
     game.shotCon = new PIXI.ParticleContainer(1000, particleConOptions, 1000);
@@ -122,6 +143,10 @@ game.setup = function () {
     game.testGr.beginFill(0xFF00FF);
 
     game.setupMap();
+    // Map kann Pfad geändert haben
+    game.path = game.findPath();
+    game.drawPath();
+    
     game.setupInput();
     game.startGameLoop();
 };
@@ -235,53 +260,26 @@ game.setupMap = function () {
             game.cellSize);
     // Map ändert sich nicht, kann gecached werden
     cont.cacheAsBitmap = true;
-    /* ===== Standard Tower ==== */
+    
+    // Standard Tower
     var walls = game.map.walls;
     for (i = 0; i < walls.length; i++) {
-        // TODO pfad hier nur ein mal neu berechnen
         game.addTowerAt(0, walls[i][0], walls[i][1]);
     }
-};
-
-/* ===== Path finding ===== */
-
-var PFfinder = new PF.AStarFinder({
-    allowDiagonal: false,
-    heuristic: PF.Heuristic.manhattan
-});
-
-game.PFgrid = new PF.Grid(game.cellsX, game.cellsY);
-
-game.findPath = function () {
-    return PFfinder.findPath(
-            game.map.start.x,
-            game.map.start.y,
-            game.map.finish.x,
-            game.map.finish.y,
-            game.PFgrid.clone());
-};
-game.path = null;
-
-game.drawPath = function () {
-    var path = game.path;
-    var cont = game.pathCont;
-    var tex = texFromCache("pathMark");
-    var spr = null;
-    var i;
-    // Alte Sprites löschen
-    for (i = 0; i < cont.children.length; i++) {
-        cont.children[i].destroy();
-    }
-    cont.removeChildren();
-    // Pfad malen
-    for (var i = 0; i < path.length; i++) {
-        spr = new PIXI.Sprite(tex);
-        spr.x = utils.cell2Pos(path[i][0]);
-        spr.y = utils.cell2Pos(path[i][1]);
-        cont.addChild(spr);
+    // Blockierte Zellen
+    var locks = game.map.locks;
+    
+    var currentCellX = 0;
+    var currentCellY = 0;
+    for (var i = 0; i < locks.length; i++) {
+        if(locks[i] === 1) game.lockCell(currentCellX, currentCellY);
+        currentCellX++;
+        if (currentCellX % 12 === 0 && currentCellX != 0) {
+            currentCellX = 0;
+            currentCellY++;
+        }
     }
 };
-
 
 /* ==== Tower Radius Anzeige ==== */
 var selectedTower = null;
