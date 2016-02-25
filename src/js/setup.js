@@ -25,15 +25,31 @@ var particleConOptions = {
     alpha: false
 };
 
+var mainMenu = document.getElementById("mainMenu");
+var exitBtn = document.getElementById("exitBtn");
+
 game.setup = function () {
+    mainMenu.style.display = "";
+    mainMenu.addEventListener("click", function (e) {
+        if (!e.target.matches("button")) return;
+
+        game.map = game.maps[e.target.dataset.map];
+        game.startGame();
+    });
+    
+    exitBtn.addEventListener("click", function () {
+        game.exitGame();
+    });
+    
+};
+
+game.startGame = function () {
 
     game.setupTextures();
-    
+
     game.life = 100;
     game.updateLife();
 
-    // TODO Mapauswahl
-    game.map = game.maps[0];
     game.map.init();
 
     game.renderer = PIXI.autoDetectRenderer(game.resX, game.resY, {
@@ -46,8 +62,8 @@ game.setup = function () {
     // Position für Input merken
     game.canvasoffsetX = game.canvasEl.offsetLeft;
     game.canvasoffsetY = game.canvasEl.offsetTop;
-
     game.collGrid = new CollisionGrid(game.cellsX, game.cellsY);
+
 
     var stage = new PIXI.Container();
     game.stage = stage;
@@ -76,9 +92,9 @@ game.setup = function () {
     game.selectGr = new PIXI.Graphics();
     game.selectGr.beginFill(0xFFFFFF, 0.5);
     game.selectGr.drawRect(-game.cellCenter, -game.cellCenter, game.cellSize, game.cellSize);
-    
+
     game.setSelectedTower(null);
-    
+
     // Mob Kram
     game.mobsCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobsBarCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
@@ -99,27 +115,60 @@ game.setup = function () {
     game.fpsmeter = new PIXI.Text("0", {font: "16px Arial"});
     stage.addChild(game.fpsmeter);
 
-    game.testGr = new PIXI.Graphics();
-    stage.addChild(game.testGr);
-    game.testGr.beginFill(0xFF00FF);
+//    game.testGr = new PIXI.Graphics();
+//    stage.addChild(game.testGr);
+//    game.testGr.beginFill(0xFF00FF);
 
     game.setupMap();
     // Map kann Pfad geändert haben
     game.path = game.findPath();
     game.drawPath();
-    
+
     game.setupInput();
     game.startGameLoop();
 };
 
-//game.cleanup = function () {
-//    game.map = null;
-//    game.renderer.destroy(true);
-//    game.renderer = null;
-//    game.stage.destroy(true);
-//    game.stage = null;
-//    game.collGrid = null;
-//};
+game.exitGame = function () {
+    game.stopGameLoop();
+    game.setSelectedTower(null);
+    // Stage mit allen Inhalten löschen
+    // TODO hier werden auch texturen gelöscht, was bugs erzeugt :-/
+    game.stage.destroy(true);
+    game.stage = null;
+    // Renderer mit Canvas löschen
+    game.renderer.destroy(true);
+    game.renderer = null;
+    game.canvasEl = null;
+    // Alle Referenzen auf Objekte löschen
+    game.collGrid = null;
+    
+    game.map = null;
+    game.mapCont = null;
+    
+    game.pathCont = null;
+
+    game.shotCon = null;
+
+    game.shockCon = null;
+
+    game.towersCon = null;
+    game.towers = null;
+
+    game.selectCircleGr = null;
+
+    game.selectGr = null;
+
+    game.mobsCon = null;
+    game.mobsBarCon = null;
+    game.mobs = null;
+    game.mobQueue = null;
+
+    game.fpsmeter = null;
+
+    game.PFgrid = null;
+    game.path = null;
+    
+};
 
 game.setupTextures = function () {
     game.tex = {};
@@ -172,41 +221,12 @@ game.setupMap = function () {
         }
     }
 
-    /* ====== Grid ====== */
-    var grid = new PIXI.Graphics();
-//    cont.addChild(grid);
-    grid.alpha = 0.5;
-    grid.lineStyle(1, 0x000000);
-    // Alle cellSize Pixel eine Linie
-    var i;
-    for (i = game.cellSize; i < game.resX; i += game.cellSize) {
-        grid.moveTo(i, 0);
-        grid.lineTo(i, game.resY);
-    }
-    for (i = game.cellSize; i < game.resY; i += game.cellSize) {
-        grid.moveTo(0, i);
-        grid.lineTo(game.resX, i);
-    }
-    // Start und Ziel Felder
-    grid.lineStyle(0);
-    grid.beginFill(0x00FFFF);
-    grid.drawRect(
-            utils.cell2Pos(map.start.x),
-            utils.cell2Pos(map.start.y),
-            game.cellSize,
-            game.cellSize);
-    grid.beginFill(0xFF0000);
-    grid.drawRect(
-            utils.cell2Pos(map.finish.x),
-            utils.cell2Pos(map.finish.y),
-            game.cellSize,
-            game.cellSize);
     // Map ändert sich nicht, kann gecached werden
     cont.cacheAsBitmap = true;
 
     // Standard Tower
     var walls = map.walls;
-    for (i = 0; i < walls.length; i++) {
+    for (var i = 0; i < walls.length; i++) {
         game.addTowerAt(0, walls[i][0], walls[i][1]);
     }
     // Blockierte Zellen
