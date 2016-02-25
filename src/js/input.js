@@ -19,24 +19,20 @@ game.setupInput = function () {
 
     //TowerMenu
     showTowersBtn.addEventListener("click", ui.showMenu);
-    // Test krams
-    var startBtn = document.getElementById("start");
-    var stopBtn = document.getElementById("stop");
-    startBtn.addEventListener("click", function () {
-        game.startGameLoop();
-        stopBtn.disabled = false;
-        startBtn.disabled = true;
-    });
-    stopBtn.addEventListener("click", function () {
-        game.stopGameLoop();
-        stopBtn.disabled = true;
-        startBtn.disabled = false;
-    });
 
-    document.getElementById("towerRand").addEventListener("click", function () {
-        randomTowers();
-    });
+};
 
+game.removeInput = function () {
+
+    mobSpawnBtns.removeEventListener("click", mobHandler);
+    document.removeEventListener("keypress", keyHandler);
+
+    towerListBtns.removeEventListener("click", towerClickHandler);
+    cancelPlaceBtn.removeEventListener("click", towerCancelHandler);
+
+    tSellBtn.removeEventListener("click", sellHandler);
+
+    showTowersBtn.removeEventListener("click", ui.showMenu);
 };
 
 var ui = {};
@@ -84,25 +80,25 @@ ui.hideSelectedInfo = function () {
 var fillTowerInfo = function (id) {
     var type = towerTypes[id];
 
-    var nameDesc= "<span>"+type.name+"</span></br>"+type.desc;
+    var nameDesc = "<span>" + type.name + "</span></br>" + type.desc;
 
     var table = "<table>";
-    if('power' in type)
-        table += "<tr><td>Damage</td><td>"+type.power+"</td></tr>";
-    if('freq' in type)
-        table += "<tr><td>Speed</td><td>"+type.freq+"</td></tr>";
-    if('radius' in type)
-        table += "<tr><td>Radius</td><td>"+type.radius+"</td></tr>";
+    if ('power' in type)
+        table += "<tr><td>Damage</td><td>" + type.power + "</td></tr>";
+    if ('freq' in type)
+        table += "<tr><td>Speed</td><td>" + type.freq + "</td></tr>";
+    if ('radius' in type)
+        table += "<tr><td>Radius</td><td>" + type.radius + "</td></tr>";
 
-    table += "<tr><td>Price</td><td>"+type.price+"</td></tr>";
+    table += "<tr><td>Price</td><td>" + type.price + "</td></tr>";
     table += "</table";
 
-    towerInfo.innerHTML = nameDesc+table;
+    towerInfo.innerHTML = nameDesc + table;
 };
 
 var fillInfoSelected = function (tower) {
     var type = tower.type;
-    
+
     tName.textContent = type.name;
     tKillCount.textContent = tower.killCount;
     tSellPrice.textContent = type.sellPrice;
@@ -173,7 +169,7 @@ var startPlace = function () {
     addPlaceListeners();
     game.setSelectedTower(null);
     selectBlocked = true;
-    game.drawSelectCircle(game.towerTypes[placeType]);
+    game.drawSelectCircle(towerTypes[placeType]);
 };
 
 var endPlace = function () {
@@ -251,3 +247,20 @@ var sellHandler = function () {
 
 };
 
+// Test krams
+var startBtn = document.getElementById("start");
+var stopBtn = document.getElementById("stop");
+startBtn.addEventListener("click", function () {
+    game.startGameLoop();
+    stopBtn.disabled = false;
+    startBtn.disabled = true;
+});
+stopBtn.addEventListener("click", function () {
+    game.stopGameLoop();
+    stopBtn.disabled = true;
+    startBtn.disabled = false;
+});
+
+document.getElementById("towerRand").addEventListener("click", function () {
+    randomTowers();
+});

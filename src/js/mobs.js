@@ -1,6 +1,6 @@
 "use strict";
 // TODO Some more of dem sweet mobs!
-var mobTypes = game.mobTypes = [];
+var mobTypes = [];
 
 // TODO Mob wird langsamer, je größer speed lol
 // inverse verwenden oder so

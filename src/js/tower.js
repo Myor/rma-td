@@ -65,7 +65,7 @@ var randomTowers = function () {
     for (i = 0; i < game.cellsX; i++) {
         for (j = 0; j < game.cellsY; j++) {
             if (Math.random() > 0.70) {
-                game.addTowerAt(1, i, j);
+                game.tryAddTowerAt(1, i, j);
             }
         }
     }
@@ -101,7 +101,7 @@ Tower.prototype.collide = function () {};
 Tower.prototype.afterCollide = function () {};
 
 
-var towerTypes = game.towerTypes = [];
+var towerTypes = [];
 
 towerTypes[0] = {
     name: "Wall",

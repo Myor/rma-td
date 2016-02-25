@@ -11,50 +11,6 @@ game.cellsY = 17; // = resY / cellSize
 // Rechteck für einfach hit-tests
 game.fieldRect = new PIXI.Rectangle(0, 0, game.cellsX, game.cellsY);
 
-// TODO Verschiedene Maps
-var map = {};
-map.start = new PIXI.Point(2, 1);
-map.finish = new PIXI.Point(6, 15);
-map.bgColor = 0xD3D3D3;
-map.walls = [[2, 2], [3, 2], [4, 2], [7, 5], [6, 5], [5, 5], [4, 5],
-    [2, 8], [3, 8], [4, 8], [4, 9], [4, 10], [4, 1], [3, 5]];
-map.locks =
-[1,1,1,1,1,1,1,1,1,1,1,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,1,1,1,1,1,1,1,1,1,1,1];
-                
-map.groundLayout =
-[0,1,1,1,1,1,1,1,1,1,1,2,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-4,5,5,5,5,5,5,5,5,5,5,6,
-8,9,9,9,9,9,9,9,9,9,9,10];
 
 // ParticleContainer für gute Performance (wird auf GPU berechnet)
 // Alle bekommen die gleichen Optionen, wegen PIXI Bug
@@ -69,15 +25,32 @@ var particleConOptions = {
     alpha: false
 };
 
+var mainMenu = document.getElementById("mainMenu");
+var exitBtn = document.getElementById("exitBtn");
+
 game.setup = function () {
+    mainMenu.style.display = "";
+    mainMenu.addEventListener("click", function (e) {
+        if (!e.target.matches("button")) return;
+
+        game.map = game.maps[e.target.dataset.map];
+        game.startGame();
+    });
+    
+    exitBtn.addEventListener("click", function () {
+        game.exitGame();
+    });
+    
+};
+
+game.startGame = function () {
 
     game.setupTextures();
-    
+
     game.life = 100;
     game.updateLife();
 
-    // TODO Mapauswahl
-    game.map = map;
+    game.map.init();
 
     game.renderer = PIXI.autoDetectRenderer(game.resX, game.resY, {
         antialias: true
@@ -89,8 +62,8 @@ game.setup = function () {
     // Position für Input merken
     game.canvasoffsetX = game.canvasEl.offsetLeft;
     game.canvasoffsetY = game.canvasEl.offsetTop;
-
     game.collGrid = new CollisionGrid(game.cellsX, game.cellsY);
+
 
     var stage = new PIXI.Container();
     game.stage = stage;
@@ -119,9 +92,9 @@ game.setup = function () {
     game.selectGr = new PIXI.Graphics();
     game.selectGr.beginFill(0xFFFFFF, 0.5);
     game.selectGr.drawRect(-game.cellCenter, -game.cellCenter, game.cellSize, game.cellSize);
-    
+
     game.setSelectedTower(null);
-    
+
     // Mob Kram
     game.mobsCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobsBarCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
@@ -142,39 +115,63 @@ game.setup = function () {
     game.fpsmeter = new PIXI.Text("0", {font: "16px Arial"});
     stage.addChild(game.fpsmeter);
 
-    game.testGr = new PIXI.Graphics();
-    stage.addChild(game.testGr);
-    game.testGr.beginFill(0xFF00FF);
+//    game.testGr = new PIXI.Graphics();
+//    stage.addChild(game.testGr);
+//    game.testGr.beginFill(0xFF00FF);
 
     game.setupMap();
     // Map kann Pfad geändert haben
     game.path = game.findPath();
     game.drawPath();
-    
+
     game.setupInput();
     game.startGameLoop();
 };
 
-//game.cleanup = function () {
-//    game.map = null;
-//    game.renderer.destroy(true);
-//    game.renderer = null;
-//    game.stage.destroy(true);
-//    game.stage = null;
-//    game.collGrid = null;
-//};
+game.exitGame = function () {
+    game.stopGameLoop();
+    game.setSelectedTower(null);
+    // Stage mit allen Inhalten löschen
+    // TODO hier werden auch texturen gelöscht, was bugs erzeugt :-/
+    game.stage.destroy(true);
+    game.stage = null;
+    // Renderer mit Canvas löschen
+    game.renderer.destroy(true);
+    game.renderer = null;
+    game.canvasEl = null;
+    // Alle Referenzen auf Objekte löschen
+    game.collGrid = null;
+    
+    game.map = null;
+    game.mapCont = null;
+    
+    game.pathCont = null;
+
+    game.shotCon = null;
+
+    game.shockCon = null;
+
+    game.towersCon = null;
+    game.towers = null;
+
+    game.selectCircleGr = null;
+
+    game.selectGr = null;
+
+    game.mobsCon = null;
+    game.mobsBarCon = null;
+    game.mobs = null;
+    game.mobQueue = null;
+
+    game.fpsmeter = null;
+
+    game.PFgrid = null;
+    game.path = null;
+    
+};
 
 game.setupTextures = function () {
     game.tex = {};
-
-    map.groundTex = [];
-    var k=0;
-    for(var i = 0;i<4;i++){//y
-        for(var j = 0; j<4;j++){// x
-            map.groundTex[k] =  texFromCache("ground", j*32, i*32, 32, 32);
-            k++;
-        }
-    }
 
     game.tex.mobTexEmpty = texFromCache("mobs", 0, 0, 32, 32);
     game.tex.mobBarTex = texFromCache("mobBar", 0, 0, 32, 4);
@@ -207,77 +204,37 @@ var texFromCache = function (img, x, y, w, h) {
 };
 
 game.setupMap = function () {
-    game.renderer.backgroundColor = game.map.bgColor;
-    // TODO Hübsche Map malen
-
+    var map = game.map;
     var cont = game.mapCont;
-    var grid = new PIXI.Graphics();
-    cont.addChild(grid);
-    
-    /*===Background Textures===*/
-    var currentCellX=0;
-    var currentCellY=0;
-    for(var i=0;i<map.groundLayout.length;i++){
-        var groundSprite = new PIXI.Sprite(map.groundTex[map.groundLayout[i]]);
 
-        groundSprite.position.x = currentCellX * 32;
-        groundSprite.position.y = currentCellY * 32;
-        cont.addChild(groundSprite);
+    game.renderer.backgroundColor = map.bgColor;
 
-        currentCellX++;
-
-        if(currentCellX%game.cellsX === 0 && currentCellX!=0){
-            currentCellX=0;
-            currentCellY++;
+    /* === Background Textures === */
+    var layout = map.groundLayout;
+    for (var y = 0; y < game.cellsY; y++) {
+        for (var x = 0; x < game.cellsX; x++) {
+            var index = y * game.cellsX + x;
+            var spr = new PIXI.Sprite(map.groundTex[layout[index]]);
+            spr.position.x = utils.cell2Pos(x);
+            spr.position.y = utils.cell2Pos(y);
+            cont.addChild(spr);
         }
     }
 
-    /* ====== Grid ====== */
-    grid.alpha = 0.5;
-    grid.lineStyle(1, 0x000000);
-    // Alle cellSize Pixel eine Linie
-    var i;
-    for (i = game.cellSize; i < game.resX; i += game.cellSize) {
-        grid.moveTo(i, 0);
-        grid.lineTo(i, game.resY);
-    }
-    for (i = game.cellSize; i < game.resY; i += game.cellSize) {
-        grid.moveTo(0, i);
-        grid.lineTo(game.resX, i);
-    }
-    // Start und Ziel Felder
-    grid.lineStyle(0);
-    grid.beginFill(0x00FFFF);
-    grid.drawRect(
-            utils.cell2Pos(game.map.start.x),
-            utils.cell2Pos(game.map.start.y),
-            game.cellSize,
-            game.cellSize);
-    grid.beginFill(0xFF0000);
-    grid.drawRect(
-            utils.cell2Pos(game.map.finish.x),
-            utils.cell2Pos(game.map.finish.y),
-            game.cellSize,
-            game.cellSize);
     // Map ändert sich nicht, kann gecached werden
     cont.cacheAsBitmap = true;
-    
+
     // Standard Tower
-    var walls = game.map.walls;
-    for (i = 0; i < walls.length; i++) {
+    var walls = map.walls;
+    for (var i = 0; i < walls.length; i++) {
         game.addTowerAt(0, walls[i][0], walls[i][1]);
     }
     // Blockierte Zellen
-    var locks = game.map.locks;
-    
-    var currentCellX = 0;
-    var currentCellY = 0;
-    for (var i = 0; i < locks.length; i++) {
-        if(locks[i] === 1) game.lockCell(currentCellX, currentCellY);
-        currentCellX++;
-        if (currentCellX % 12 === 0 && currentCellX != 0) {
-            currentCellX = 0;
-            currentCellY++;
+    var locks = map.locks;
+    for (var y = 0; y < game.cellsY; y++) {
+        for (var x = 0; x < game.cellsX; x++) {
+            var index = y * game.cellsX + x;
+            if (locks[index] === 1) game.lockCell(x, y);
         }
     }
 };
