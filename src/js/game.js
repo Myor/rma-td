@@ -1,13 +1,13 @@
 "use strict";
 
 PIXI.loader
-        .add("mobs", "img/mobs.png")
-        .add("mobBar", "img/mobBar.png")
-        .add("towers", "img/towerSheet32.png")
-        .add("shots", "img/shots.png")
-        .add("pathMark", "img/pathMark@2x.png")
-        .add("ground", "assets/ground32.png")
-        .add("shockwave", "img/shockwave.png")
+        .add("mobs", "assets/mobs.png")
+        .add("mobBar", "assets/mobBar.png")
+        .add("towers", "assets/towerSheet32.png")
+        .add("shots", "assets/shots.png")
+        .add("pathMark", "assets/pathOverlay.png")
+        .add("map1ground", "assets/map1ground32.png")
+        .add("shockwave", "assets/shockwave.png")
         .load(game.setup);
 
 
