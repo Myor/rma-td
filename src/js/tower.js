@@ -31,10 +31,12 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
 game.addTowerAt = function (typeID, cx, cy) {
 
     var tower = new Tower(towerTypes[typeID], cx, cy);
-
     game.towers.add(tower);
     game.collGrid.addTower(tower);
-    game.PFgrid.setWalkableAt(cx, cy, false);
+    // Blockieren, wenn nötig
+    if (towerTypes[typeID].isBlocking) {
+        game.PFgrid.setWalkableAt(cx, cy, false);
+    }
 
     return true;
 };
@@ -303,7 +305,7 @@ towerTypes[4] = {
         this.dist = 0;
         this.reload = this.type.freq;
         this.shooting = false;
-        
+
         this.shotSpr = new PIXI.Sprite(this.type.shotTex);
         this.shotSpr.anchor.set(0.5);
         this.shotSpr.x = this.x + game.cellCenter;
