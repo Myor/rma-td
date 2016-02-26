@@ -34,25 +34,25 @@ var initGameloop = function (newTime) {
 // Loop mit allen updates
 var gameloop = function (newTime) {
 
-        var frameTime = newTime - lastTime;
-        if (frameTime > 500) {
-            // Spikes abfangen
-            frameTime = 500;
-            console.warn("clamp frameTime");
-        }
-        lastTime = newTime;
-        accumulator += frameTime;
-        passed += frameTime;
+    var frameTime = newTime - lastTime;
+    if (frameTime > 500) {
+        // Spikes abfangen
+        frameTime = 500;
+        console.warn("clamp frameTime");
+    }
+    lastTime = newTime;
+    accumulator += frameTime;
+    passed += frameTime;
 
-        while (accumulator >= slowStep) {
-            simulate(step);
+    while (accumulator >= slowStep) {
+        simulate(step);
 
-            accumulator -= slowStep;
+        accumulator -= slowStep;
 
-            game.fpsmeter.text = (1000 / frameTime) | 0;
-        }
+        game.fpsmeter.text = (1000 / frameTime) | 0;
+    }
 
-        updateAnimation(passed / slowFactor, accumulator / slowFactor);
+    updateAnimation(passed / slowFactor, accumulator / slowFactor);
 
 
     game.renderer.render(game.stage);
@@ -85,14 +85,10 @@ var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
     var towers = game.towers.getArray();
     var mobs = game.mobs.getArray();
-    var wave = game.waves[game.wave];
 
     // Ein Mob pro Update spawnen
     if (!game.mobQueue.isEmpty()) {
         game.addMob(game.mobQueue.dequeue());
-    }{
-        game.wave++;
-        game.startWave(game.wave);
     }
 
     for (i = 0; i < towers.length; i++) {

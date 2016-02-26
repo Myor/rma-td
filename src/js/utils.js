@@ -28,6 +28,9 @@ FastSet.prototype.clear = function () {
 FastSet.prototype.getArray = function () {
     return this.arr;
 };
+FastSet.prototype.isEmpty = function () {
+    return this.arr.length === 0;
+};
 
 // Objekt Pool, um den Garbage Collector zu schonen
 // Class ist der Konstruktor

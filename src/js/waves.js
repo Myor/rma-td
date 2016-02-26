@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-var waves = [];
+var waves = game.waves = [];
 
 waves[0] = {
     waveID: "1",
@@ -14,14 +14,13 @@ waves[1] = {
     waveComposition: [{num: 10, type: 1}]
 };
 
-game.startWave = function (wave) { // start wave number waveNr
-	for each(comp in wave.waveComposition){
-		for(var i = 0; i<comp.num){
-			game.spawnMob(comp.type);
-		}
-	}
-};
 
-game.getWaveArray = function () {
-	return waves;
+game.startWave = function (id) {
+    game.isWaveActive = true;
+    var waveComp = waves[id].waveComposition;
+    for (var i = 0; i < waveComp.length; i++) {
+        for (var j = 0; j < waveComp[i].num; j++) {
+            game.spawnMob(waveComp[i].type);
+        }
+    }
 };
