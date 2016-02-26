@@ -40,7 +40,9 @@ game.setup = function () {
     exitBtn.addEventListener("click", function () {
         game.exitGame();
     });
-    
+    // Zum testen
+    game.map = game.maps[0];
+    game.startGame();
 };
 
 game.startGame = function () {
@@ -130,7 +132,11 @@ game.startGame = function () {
 
 game.exitGame = function () {
     game.stopGameLoop();
+    // Aktive Aktionen abbrechen
+    ui.endPlace();
+    ui.hideMenu();
     game.setSelectedTower(null);
+    
     // Stage mit allen Inhalten löschen
     // TODO hier werden auch texturen gelöscht, was bugs erzeugt :-/
     game.stage.destroy(true);

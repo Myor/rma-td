@@ -3,6 +3,10 @@ body {
     font-size: 12px;
 }
 
+.hidden {
+    display: none;
+}
+
 #gameWrapper {
     overflow: hidden;
     position: relative;
@@ -87,6 +91,10 @@ body {
     padding: 10px;
     transition: transform 0.3s;
     transition-timing-function: ease-out;
+}
+
+.tAimDiv button.active {
+    border-color: red;
 }
 
 

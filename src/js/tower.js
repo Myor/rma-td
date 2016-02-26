@@ -48,13 +48,12 @@ game.getTowerAt = function (cx, cy) {
 };
 
 game.sellTower = function (tower) {
-
+    // Pfad freigeben
     game.PFgrid.setWalkableAt(tower.cx, tower.cy, true);
     game.path = game.findPath();
     game.drawPath();
-
+    // Aus Kollisionsberechnung entfernen
     game.towers.remove(tower);
-
     game.collGrid.deleteTower(tower);
 
     tower.destroy();
@@ -95,11 +94,43 @@ Tower.prototype.destroy = function () {
     game.towersCon.removeChild(this.spr);
     this.spr.destroy();
 };
+Tower.prototype.isInRadius = function (dist) {
+    return dist <= utils.cell2Pos(this.type.radius);
+};
+Tower.prototype.angleToMob = function (mob) {
+    return Math.atan2(mob.y - this.y, mob.x - this.x);
+};
 Tower.prototype.update = function () {};
 Tower.prototype.beforeCollide = function () {};
 Tower.prototype.collide = function () {};
 Tower.prototype.afterCollide = function () {};
+Tower.prototype.aimFunc = null;
+// Funktionen zum Anvisieren von Mobs
+var aimFuncs = {};
 
+aimFuncs.first = function (mob, dist) {
+    return this.focus === null || mob.covered > this.focus.covered;
+};
+aimFuncs.last = function (mob, dist) {
+    return this.focus === null || mob.covered < this.focus.covered;
+};
+aimFuncs.strong = function (mob, dist) {
+    return this.focus === null || mob.life > this.focus.life;
+};
+aimFuncs.weak = function (mob, dist) {
+    return this.focus === null || mob.life < this.focus.life;
+};
+aimFuncs.close = function (mob, dist) {
+    return this.focus === null || dist < this.dist;
+};
+
+aimFuncs.first.id = "first";
+aimFuncs.last.id = "last";
+aimFuncs.strong.id = "strong";
+aimFuncs.weak.id = "weak";
+aimFuncs.close.id = "close";
+
+// ===== Mob Typen =====
 
 var towerTypes = [];
 
@@ -108,6 +139,7 @@ towerTypes[0] = {
     desc: "Helps you maze.",
     isBlocking: true,
     radius: 0,
+    power: 0,
     price: 10,
     sellPrice: 5,
     tex: null,
@@ -124,11 +156,12 @@ towerTypes[1] = {
     tex: null,
     shotTex: null,
     power: 10,
-    freq: 3,
+    freq: 5,
     init: function () {
         this.focus = null;
         this.dist = 0;
         this.reload = this.type.freq;
+        this.aimFunc = aimFuncs.first;
 
         this.shotSpr = new PIXI.Sprite(this.type.shotTex);
         this.shotSpr.anchor.set(0, 0.5);
@@ -142,12 +175,11 @@ towerTypes[1] = {
             game.shotCon.removeChild(this.shotSpr);
             this.shotSpr.destroy();
         },
-        update: function (time) {
-            if (this.focus === null) {
-                this.shotSpr.scale.set(0);
-            } else {
-                this.shotSpr.scale.y = Math.sin(time / 50) * 0.25 + 0.75;
-            }
+        update: function () {
+            var y = this.shotSpr.scale.y;
+            y -= 0.1;
+            if (y < 0) y = 0;
+            this.shotSpr.scale.y = y;
         },
         beforeCollide: function () {
             this.reload--;
@@ -155,26 +187,22 @@ towerTypes[1] = {
             this.dist = 0;
         },
         collide: function (mob, dist) {
-            if (this.reload !== 0) return;
+            if (this.reload > 0) return;
 
-            if (dist <= utils.cell2Pos(this.type.radius)) {
-                if (this.focus === null) {
-                    this.focus = mob;
-                    this.dist = dist;
-                } else if (mob.covered > this.focus.covered) {
-                    this.focus = mob;
-                    this.dist = dist;
-                }
+            if (this.isInRadius(dist) && this.aimFunc(mob, dist)) {
+                this.focus = mob;
+                this.dist = dist;
             }
         },
         afterCollide: function () {
-            if (this.reload === 0) {
+            if (this.reload <= 0) {
                 this.reload = this.type.freq;
             }
             if (this.focus !== null) {
                 this.focus.hit(this.type.power, this);
-                this.spr.rotation = this.shotSpr.rotation = Math.atan2(this.focus.y - this.y, this.focus.x - this.x);
+                this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
                 this.shotSpr.scale.x = this.dist;
+                this.shotSpr.scale.y = 1;
             }
         }
     }
@@ -196,6 +224,7 @@ towerTypes[2] = {
         this.focus = null;
         this.dist = 0;
         this.reload = this.type.freq;
+        this.aimFunc = aimFuncs.first;
 
         this.shotSpr = new PIXI.Sprite(this.type.shotTex);
         this.shotSpr.anchor.set(0, 0.5);
@@ -209,12 +238,11 @@ towerTypes[2] = {
             game.shotCon.removeChild(this.shotSpr);
             this.shotSpr.destroy();
         },
-        update: function (time) {
-            if (this.focus === null) {
-                this.shotSpr.scale.set(0);
-            } else {
-                this.shotSpr.scale.y = Math.sin(time / 50) * 0.25 + 0.75;
-            }
+        update: function () {
+            var y = this.shotSpr.scale.y;
+            y -= 0.03;
+            if (y < 0) y = 0;
+            this.shotSpr.scale.y = y;
         },
         beforeCollide: function () {
             this.reload--;
@@ -222,33 +250,29 @@ towerTypes[2] = {
             this.dist = 0;
         },
         collide: function (mob, dist) {
-            if (this.reload !== 0) return;
+            if (this.reload > 0) return;
 
-            if (dist <= utils.cell2Pos(this.type.radius)) {
-                if (this.focus === null) {
-                    this.focus = mob;
-                    this.dist = dist;
-                } else if (mob.covered > this.focus.covered) {
-                    this.focus = mob;
-                    this.dist = dist;
-                }
+            if (this.isInRadius(dist) && this.aimFunc(mob, dist)) {
+                this.focus = mob;
+                this.dist = dist;
             }
         },
         afterCollide: function () {
-            if (this.reload === 0) {
+            if (this.reload <= 0) {
                 this.reload = this.type.freq;
             }
             if (this.focus !== null) {
                 this.focus.hit(this.type.power, this);
-                this.spr.rotation = this.shotSpr.rotation = Math.atan2(this.focus.y - this.y, this.focus.x - this.x);
+                this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
                 this.shotSpr.scale.x = this.dist;
+                this.shotSpr.scale.y = 1;
             }
         }
     }
 };
 
 towerTypes[3] = {
-    name: "Spikes",
+    name: "Slime",
     desc: "Can be placed on creep path. Will damage on contact.",
     isBlocking: false,
     radius: 0.4,
@@ -279,9 +303,9 @@ towerTypes[4] = {
         this.dist = 0;
         this.reload = this.type.freq;
         this.shooting = false;
-        this.scaling=false;
+        
         this.shotSpr = new PIXI.Sprite(this.type.shotTex);
-        this.shotSpr.anchor.set(0.5, 0.5);
+        this.shotSpr.anchor.set(0.5);
         this.shotSpr.x = this.x + game.cellCenter;
         this.shotSpr.y = this.y + game.cellCenter;
         this.shotSpr.scale.set(0.1);
@@ -291,37 +315,32 @@ towerTypes[4] = {
     extend: {
         destroy: function () {
             Tower.prototype.destroy.call(this);
-            game.shotCon.removeChild(this.shotSpr);
+            game.shockCon.removeChild(this.shotSpr);
             this.shotSpr.destroy();
         },
-        update: function (time) {
-            if(this.shooting){
-                this.scaling = true;
+        update: function () {
+            if (this.shooting) {
                 this.shotSpr.scale.x += 0.05;
-                this.shotSpr.scale.y +=0.05;
-                if(this.shotSpr.scale.x > 1){
+                this.shotSpr.scale.y += 0.05;
+                if (this.shotSpr.scale.x > 1) {
                     this.shotSpr.scale.set(0);
                     this.shooting = false;
                 }
-
             }
         },
         beforeCollide: function () {
             this.reload--;
         },
         collide: function (mob, dist) {
-            if (this.reload !== 0) return;
+            if (this.reload > 0) return;
 
-            if (dist <= utils.cell2Pos(this.type.radius)) {
-                if(!this.shooting)
-                    this.shooting = true;
-
-                console.log("Im qoe colllide");
+            if (this.isInRadius(dist)) {
+                this.shooting = true;
                 mob.hit(this.type.power, this);
             }
         },
         afterCollide: function () {
-            if (this.reload === 0) {
+            if (this.reload <= 0) {
                 this.reload = this.type.freq;
             }
         }

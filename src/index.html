@@ -11,10 +11,6 @@
         <script src="js/vendor/pathfinding-browser.js"></script>
     </head>
     <body>
-        <div>
-            <button id="stop">Stop Renderloop</button>
-            <button id="start" disabled>Start Renderloop</button>
-        </div>
         <div id="mainMenu" style="display: none">
             <button data-map="0">Map 0</button>
             <button data-map="1">Map 1</button>
@@ -28,22 +24,48 @@
         <div id="gameWrapper">
             <div class="hideLeft" id="towerMenu">
                 <div id="towers">
-                    <div class="towerDiv"><button class="tower" data-type="0">0</button> <button class="towerInfo btn" data-type="0">i</button></div>
-                    <div class="towerDiv"><button class="tower" data-type="1">1</button> <button class="towerInfo" data-type="1">i</button></div>
-                    <div class="towerDiv"><button class="tower" data-type="2">2</button> <button class="towerInfo" data-type="2">i</button></div>
-                    <div class="towerDiv"><button class="tower" data-type="3">3</button> <button class="towerInfo" data-type="3">i</button></div>
-                    <div class="towerDiv"><button class="tower" data-type="4">3</button> <button class="towerInfo" data-type="4">i</button></div>
+                    <div class="towerDiv">
+                        <button class="tower" data-type="0">0</button>
+                        <button class="towerInfo btn" data-type="0">i</button>
+                    </div>
+                    <div class="towerDiv">
+                        <button class="tower" data-type="1">1</button>
+                        <button class="towerInfo" data-type="1">i</button>
+                    </div>
+                    <div class="towerDiv">
+                        <button class="tower" data-type="2">2</button>
+                        <button class="towerInfo" data-type="2">i</button>
+                    </div>
+                    <div class="towerDiv">
+                        <button class="tower" data-type="3">3</button>
+                        <button class="towerInfo" data-type="3">i</button>
+                    </div>
+                    <div class="towerDiv">
+                        <button class="tower" data-type="4">3</button>
+                        <button class="towerInfo" data-type="4">i</button>
+                    </div>
                 </div>
             </div>
             <div class="infoHide" id="towerInfo"></div>
             <div class="hideRight" id="towerSelectedInfo">
                 <div class="tName"></div>
-                <div class="tKills">
-                    Kills: <span class="tKillCount"></span>
+                <div>Kills: <span class="tKillCount"></span></div>
+                <div>Radius: <span class="tRadius"></span></div>
+                <div>Damage: <span class="tPower"></span></div>
+                <div class="tUpgrade">
+                    <div class="tCurrentDiv">Level <span class="tCurrentLvl"></span></div>
+                    <button class="tNextBtn">Level <span class="tNextLvl"></span></button>
+                    <div class="tNextDiv"><span class="tNextPrice"></span>$</div>
                 </div>
-                <div class="tUpgrade"></div>
-                <div class="tSell">
+                <div class="tSellDiv">
                     <button class="tSellBtn">Verkaufen (+<span class="tSellPrice"></span>$)</button> 
+                </div>
+                <div class="tAimDiv">
+                    <button data-aim="first">First</button>
+                    <button data-aim="last">Last</button>
+                    <button data-aim="strong">Strong</button>
+                    <button data-aim="weak">Weak</button>
+                    <button data-aim="close">Close</button>
                 </div>
             </div>
 
