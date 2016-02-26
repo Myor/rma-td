@@ -9,9 +9,9 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
             || utils.isFinish(cx, cy)) {
         return false;
     }
-
+    var type = towerTypes[typeID];
     // Wenn Tower den Weg blockieren kann
-    if (towerTypes[typeID].isBlocking) {
+    if (type.isBlocking) {
         // Weg neu berechnen
         game.PFgrid.setWalkableAt(cx, cy, false);
         var newPath = game.findPath();
@@ -24,21 +24,21 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
         game.drawPath();
     }
 
-    game.addTowerAt(typeID, cx, cy);
+    game.addTowerAt(type, cx, cy);
 };
 
 // Setzt Tower ohne Einschränkungen zu prüfen
-game.addTowerAt = function (typeID, cx, cy) {
+game.addTowerAt = function (type, cx, cy) {
 
-    var tower = new Tower(towerTypes[typeID], cx, cy);
+    var tower = new Tower(type, cx, cy);
     game.towers.add(tower);
     game.collGrid.addTower(tower);
     // Blockieren, wenn nötig
-    if (towerTypes[typeID].isBlocking) {
+    if (type.isBlocking) {
         game.PFgrid.setWalkableAt(cx, cy, false);
     }
 
-    return true;
+    return tower;
 };
 
 // Tower für Zelle finden, null wenn keiner vorhanden
@@ -54,11 +54,23 @@ game.sellTower = function (tower) {
     game.PFgrid.setWalkableAt(tower.cx, tower.cy, true);
     game.path = game.findPath();
     game.drawPath();
+    
+    game.deleteTower(tower);
+};
+
+game.deleteTower = function (tower) {
     // Aus Kollisionsberechnung entfernen
     game.towers.remove(tower);
     game.collGrid.deleteTower(tower);
-
+    // Aufräumen
     tower.destroy();
+};
+
+game.upgradeTower = function (tower) {
+    var nextType = tower.type.next;
+    
+    game.deleteTower(tower);
+    return game.addTowerAt(nextType, tower.cx, tower. cy);
 };
 
 var randomTowers = function () {
@@ -139,6 +151,7 @@ var towerTypes = [];
 towerTypes[0] = {
     name: "Wall",
     desc: "Helps you maze.",
+    level: 0,
     isBlocking: true,
     radius: 0,
     power: 0,
@@ -151,6 +164,7 @@ towerTypes[0] = {
 towerTypes[1] = {
     name: "Laser Tower",
     desc: "Standard Laser Tower",
+    level: 0,
     isBlocking: true,
     radius: 2,
     price: 15,
@@ -214,6 +228,7 @@ towerTypes[1] = {
 towerTypes[2] = {
     name: "Sharpshooter",
     desc: "Slow Long Range Attack",
+    level: 1,
     isBlocking: true,
     radius: 7,
     price: 500,
@@ -276,6 +291,7 @@ towerTypes[2] = {
 towerTypes[3] = {
     name: "Slime",
     desc: "Can be placed on creep path. Will damage on contact.",
+    level: 0,
     isBlocking: false,
     radius: 0.4,
     price: 100,
@@ -293,6 +309,7 @@ towerTypes[3] = {
 towerTypes[4] = {
     name: "AoE Tower",
     desc: "Damages all Creeps in the Radius",
+    level: 0,
     isBlocking: true,
     radius: 1.5,
     price: 100,
@@ -348,3 +365,5 @@ towerTypes[4] = {
         }
     }
 };
+
+towerTypes[1].next = towerTypes[2];
