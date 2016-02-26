@@ -5,7 +5,7 @@ PIXI.loader
         .add("mobBar", "assets/mobBar.png")
         .add("towers", "assets/towerSheet32.png")
         .add("shots", "assets/shots.png")
-        .add("pathMark", "assets/pathOverlay.png")
+        .add("pathMark", "assets/pathMarker.png")
         .add("map1ground", "assets/map1ground32.png")
         .add("map2ground", "assets/map2ground32.png")
         .add("shockwave", "assets/shockwave.png")
