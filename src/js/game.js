@@ -121,7 +121,7 @@ var simulate = function (dt) {
             game.removeMob(mob);
         }
     }
-
+    //Wave abfrage
 };
 
 // Grafik update
