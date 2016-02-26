@@ -3,6 +3,13 @@ body {
     font-size: 12px;
 }
 
+button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
 .hidden {
     display: none;
 }
@@ -93,16 +100,36 @@ body {
     transition-timing-function: ease-out;
 }
 
+.tUpgrade {
+    background-color: #009900;
+    background-image: url("../assets/upgradebg.png");
+    text-align: center;
+}
+
+.tCurrentDiv {
+    line-height: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.tNextBtn {
+    background-color: transparent;
+    padding: 10px 0 10px 0;
+    margin: 0;
+    border: 0;
+    display: block;
+    width: 100%;
+    line-height: 15px;
+}
+
+
+
 .tAimDiv button.active {
     border-color: red;
 }
 
 
-#towerSelectedInfo ul {
-    list-style: none;
-    margin: 0;
-    padding:0px;
-}
+
+
 
 #towerInfo span{
     font-family: sans-serif;

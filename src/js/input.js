@@ -18,6 +18,8 @@ game.setupInput = function () {
     tSellBtn.addEventListener("click", sellHandler);
     // Tower aim setzen
     tAimDiv.addEventListener("click", setAimHandler);
+    // Tower upgraden
+    tNextBtn.addEventListener("click", upgradeHandler);
 
     //TowerMenu
     showTowersBtn.addEventListener("click", ui.showMenu);
@@ -58,6 +60,7 @@ var tNextBtn = towerSelectedInfo.querySelector(".tNextBtn");
 var tNextLvl = towerSelectedInfo.querySelector(".tNextLvl");
 var tNextPrice = towerSelectedInfo.querySelector(".tNextPrice");
 var tAimDiv = towerSelectedInfo.querySelector(".tAimDiv");
+var tAimBtnList = tAimDiv.querySelectorAll("button");
 var tSellBtn = towerSelectedInfo.querySelector(".tSellBtn");
 var tSellPrice = towerSelectedInfo.querySelector(".tSellPrice");
 
@@ -113,6 +116,14 @@ var fillInfoSelected = function (tower) {
     tKillCount.textContent = tower.killCount;
     tRadius.textContent = type.radius;
     tPower.textContent = type.power;
+    // Upgrades
+    tCurrentLvl.textContent = type.level;
+    var hasNext = type.next != null;
+    tNextLvl.textContent = hasNext ? type.next.level : "-";
+    tNextPrice.textContent = hasNext ? type.next.price : "-";
+    tNextBtn.disabled = hasNext ? false : true;
+
+
     // Aim Buttons ein / ausblenden
     if (tower.aimFunc === null) {
         tAimDiv.classList.add("hidden");
@@ -126,11 +137,14 @@ var fillInfoSelected = function (tower) {
 };
 
 // Markiert aim-Button mit Class bzw. entfernt Class
-var updateAimBtns = function (newID, oldID) {
-    if(oldID) {
-        tAimDiv.querySelector("button[data-aim='" + oldID + "']").classList.remove("active");
+var updateAimBtns = function (newID) {
+    for (var i = 0; i < tAimBtnList.length; i++) {
+        var btn = tAimBtnList[i];
+        btn.classList.remove("active");
+        if (btn.matches("button[data-aim='" + newID + "']")) {
+            btn.classList.add("active");
+        }
     }
-    tAimDiv.querySelector("button[data-aim='" + newID + "']").classList.add("active");
 };
 
 // ===== Event Handler =====
@@ -194,7 +208,7 @@ var towerCancelHandler = function () {
 ui.startPlace = function () {
     console.log("startplace", placeType);
     cancelPlaceBtn.disabled = false;
-    
+
     addPlaceListeners();
     game.setSelectedTower(null);
     selectBlocked = true;
@@ -278,12 +292,16 @@ var sellHandler = function () {
 var setAimHandler = function (e) {
     if (!e.target.matches("button")) return;
     var tower = game.getSelectedTower();
-    var oldAimFunc = tower.aimFunc;
     var newAimFunc = aimFuncs[e.target.dataset.aim];
     tower.aimFunc = newAimFunc;
-    updateAimBtns(newAimFunc.id, oldAimFunc.id);
+    updateAimBtns(newAimFunc.id);
 };
 
+var upgradeHandler = function () {
+    var tower = game.getSelectedTower();
+    var newTower = game.upgradeTower(tower);
+    game.setSelectedTower(newTower);
+};
 
 // Test krams
 

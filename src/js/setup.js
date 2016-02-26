@@ -195,7 +195,7 @@ game.setupTextures = function () {
 
     towerTypes[1].shotTex = texFromCache("shots", 0, 0, 1, 32);
     towerTypes[2].shotTex = texFromCache("shots", 3, 0, 1, 32);
-    towerTypes[4].shotTex = new PIXI.Texture(PIXI.loader.resources["shockwave"].texture.baseTexture);
+    towerTypes[4].shotTex = texFromCache("shockwave");
 
 };
 // Textur aus loader Cache lesen, mit frame
@@ -205,7 +205,7 @@ var texFromCache = function (img, x, y, w, h) {
                 PIXI.loader.resources[img].texture.baseTexture,
                 new PIXI.Rectangle(x, y, w, h));
     } else {
-        return PIXI.loader.resources[img].texture;
+        return new PIXI.Texture(PIXI.loader.resources[img].texture.baseTexture);
     }
 };
 
@@ -233,7 +233,7 @@ game.setupMap = function () {
     // Standard Tower
     var walls = map.walls;
     for (var i = 0; i < walls.length; i++) {
-        game.addTowerAt(0, walls[i][0], walls[i][1]);
+        game.addTowerAt(towerTypes[0], walls[i][0], walls[i][1]);
     }
     // Blockierte Zellen
     var locks = map.locks;
