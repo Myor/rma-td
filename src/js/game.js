@@ -133,6 +133,10 @@ var simulate = function (dt) {
         }
     }
     //Wave abfrage
+    if(game.isWaveActive && game.mobQueue.isEmpty() && game.mobs.isEmpty()) {
+        game.isWaveActive = false;
+        console.log("wave finished");
+    }
 };
 
 // Grafik update
