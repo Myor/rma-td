@@ -51,6 +51,7 @@ game.startGame = function () {
 
     game.life = 100;
     game.updateLife();
+    game.wave = 0;
 
     game.map.init();
 
@@ -102,6 +103,9 @@ game.startGame = function () {
     game.mobsBarCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobs = new FastSet();
     game.mobQueue = new Queue();
+
+    //Waves
+    game.waves = game.getWaveArray();
 
     // Alle Layer hinzufügen
     stage.addChild(game.mapCont);

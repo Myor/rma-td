@@ -70,10 +70,14 @@ var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
     var towers = game.towers.getArray();
     var mobs = game.mobs.getArray();
-    
+    var wave = game.waves[game.wave];
+
     // Ein Mob pro Update spawnen
     if (!game.mobQueue.isEmpty()) {
         game.addMob(game.mobQueue.dequeue());
+    }{
+        game.wave++;
+        game.startWave(game.wave);
     }
 
     for (i = 0; i < towers.length; i++) {
