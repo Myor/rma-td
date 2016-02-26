@@ -194,7 +194,10 @@ towerTypes[1] = {
         update: function () {
             var y = this.shotSpr.scale.y;
             y -= 0.1;
-            if (y < 0) y = 0;
+            if (y < 0) {
+                y = 0;
+                this.spr.texture = this.type.tex;
+            }
             this.shotSpr.scale.y = y;
         },
         beforeCollide: function () {
@@ -216,6 +219,7 @@ towerTypes[1] = {
             }
             if (this.focus !== null) {
                 this.focus.hit(this.type.power, this);
+                this.spr.texture = this.type.tex2;
                 this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
                 this.shotSpr.scale.x = this.dist;
                 this.shotSpr.scale.y = 1;
@@ -344,6 +348,7 @@ towerTypes[4] = {
                 if (this.shotSpr.scale.x > 1) {
                     this.shotSpr.scale.set(0);
                     this.shooting = false;
+                    this.spr.texture = this.type.tex;
                 }
             }
         },
@@ -355,12 +360,80 @@ towerTypes[4] = {
 
             if (this.isInRadius(dist)) {
                 this.shooting = true;
+                this.spr.texture = this.type.tex2;
                 mob.hit(this.type.power, this);
             }
         },
         afterCollide: function () {
             if (this.reload <= 0) {
                 this.reload = this.type.freq;
+            }
+        }
+    }
+};
+
+towerTypes[5] = {
+    name: "Ufo",
+    desc: "",
+    level: 0,
+    isBlocking: true,
+    radius: 5,
+    price: 500,
+    sellPrice: 300,
+    tex: null,
+    shotTex: null,
+    power: 2,
+    freq: 15,
+    init: function () {
+        this.focus = null;
+        this.dist = 0;
+        this.texCounter = 0;
+        this.reload = this.type.freq;
+        this.aimFunc = aimFuncs.first;
+
+        this.shotSpr = new PIXI.Sprite(this.type.shotTex[0]);
+        this.shotSpr.anchor.set(0, 0.5);
+        this.shotSpr.x = this.x + game.cellCenter;
+        this.shotSpr.y = this.y + game.cellCenter;
+        this.shotSpr.scale.set(0);
+        game.shotCon.addChild(this.shotSpr);
+    },
+    extend: {
+        destroy: function () {
+            Tower.prototype.destroy.call(this);
+            game.shotCon.removeChild(this.shotSpr);
+            this.shotSpr.destroy();
+        },
+        update: function () {
+            var y = this.shotSpr.scale.y;
+            y -= 0.02;
+            if (y < 0) y = 0;
+            this.shotSpr.scale.y = y;
+        },
+        beforeCollide: function () {
+            this.reload--;
+            this.focus = null;
+            this.dist = 0;
+        },
+        collide: function (mob, dist) {
+            if (this.reload > 0) return;
+
+            if (this.isInRadius(dist) && this.aimFunc(mob, dist)) {
+                this.focus = mob;
+                this.dist = dist;
+            }
+        },
+        afterCollide: function () {
+            if (this.reload <= 0) {
+                this.reload = this.type.freq;
+            }
+            if (this.focus !== null) {
+                this.focus.hit(this.type.power, this);
+                this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
+                this.shotSpr.width = this.dist;
+                this.shotSpr.scale.y = 1;
+                this.texCounter = (this.texCounter + 1) % 3;
+                this.shotSpr.texture = this.type.shotTex[this.texCounter];
             }
         }
     }

@@ -93,7 +93,7 @@ ui.hideSelectedInfo = function () {
 var fillTowerInfo = function (id) {
     var type = towerTypes[id];
 
-    var nameDesc = "<span>" + type.name + "</span></br>" + type.desc;
+    var nameDesc = "<div class='infoName'>" + type.name + "</div>" + type.desc;
 
     var table = "<table>";
     if ('power' in type)
@@ -104,7 +104,7 @@ var fillTowerInfo = function (id) {
         table += "<tr><td>Radius</td><td>" + type.radius + "</td></tr>";
 
     table += "<tr><td>Price</td><td>" + type.price + "</td></tr>";
-    table += "</table";
+    table += "</table>";
 
     towerInfo.innerHTML = nameDesc + table;
 };
@@ -155,8 +155,8 @@ var clickHandler = function (e) {
     // Nur bei Linksklick und wenn kein Tower gesetzt wird
     if (selectBlocked || e.button !== 0) return;
     // Zelle berechnen & auswählen
-    var cx = utils.pos2Cell(e.offsetX);
-    var cy = utils.pos2Cell(e.offsetY);
+    var cx = utils.input2Cell(e.offsetX);
+    var cy = utils.input2Cell(e.offsetY);
     game.setSelectedTower(game.getTowerAt(cx, cy));
 };
 
@@ -240,12 +240,12 @@ var removePlaceListeners = function () {
 };
 // == Maus ==
 var moveplaceHandlerMouse = function (e) {
-    updatePlace(utils.pos2Cell(e.offsetX), utils.pos2Cell(e.offsetY));
+    updatePlace(utils.input2Cell(e.offsetX), utils.input2Cell(e.offsetY));
 };
 var endPlaceHandlerMouse = function (e) {
     if (e.button === 0) {
         // Linke Maustaste
-        tryPlace(utils.pos2Cell(e.offsetX), utils.pos2Cell(e.offsetY));
+        tryPlace(utils.input2Cell(e.offsetX), utils.input2Cell(e.offsetY));
     } else if (e.button === 2) {
         // Rechte Maustaste
         ui.endPlace();
@@ -255,11 +255,11 @@ var endPlaceHandlerMouse = function (e) {
 // Touch Events haben keine "offset" Eigenschft
 var movePlaceHandlerTouch = function (e) {
     var t = e.targetTouches[0];
-    updatePlace(utils.pos2Cell(t.pageX - game.canvasoffsetX), utils.pos2Cell(t.pageY - game.canvasoffsetY));
+    updatePlace(utils.input2Cell(t.pageX - game.offsetX), utils.input2Cell(t.pageY - game.offsetY));
 };
 var endPlaceHandlerTouch = function (e) {
     var t = e.changedTouches[0];
-    tryPlace(utils.pos2Cell(t.pageX - game.canvasoffsetX), utils.pos2Cell(t.pageY - game.canvasoffsetY));
+    tryPlace(utils.input2Cell(t.pageX - game.offsetX), utils.input2Cell(t.pageY - game.offsetY));
 };
 
 // TODO hier könnte man die Textur des Towers anzeigen

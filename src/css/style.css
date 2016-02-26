@@ -1,13 +1,24 @@
 body {
     font-family: Lucida Console;
     font-size: 12px;
+    margin: 0;
+}
+:focus {
+    outline: none;
 }
 
 button {
     font-family: inherit;
     font-size: inherit;
     color: inherit;
+    border-radius: 4px;
+    border: 1px outset #CACACA;
+    background-color: #CACACA;
+    padding: 4px 6px;
     cursor: pointer;
+}
+button:active {
+    border-style: inset;
 }
 
 .hidden {
@@ -18,11 +29,46 @@ button {
     overflow: hidden;
     position: relative;
     width: 384px;
-    height: 544px;	
+    max-width: 100%;
+    /*margin: 0 auto;*/
 }
 
 #gameField canvas {
     display: block;
+    max-width: 100%;
+}
+
+
+#towerMenu,
+#towerInfo,
+#towerSelectedInfo {
+    position: absolute;
+    background-color: rgba(239, 239, 239, 0.9);
+    border: 1px solid #595959;
+}
+
+/* ===== Tower Menu ===== */
+#towerMenu {
+    width: 140px;
+    height: 100%;
+    border-left: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 1px 0px 2px #595959;
+    box-sizing: border-box;
+
+    transition: transform 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.towerDiv {
+    margin: 10px;
+}
+.towerInfo {
+    font-family: Courier New;
+    width: 32px;
+    height: 32px;
+    margin-left: 30px;
 }
 
 .tower {
@@ -31,22 +77,10 @@ button {
     background-color: transparent;
     padding: 0;
     border: 0;
-    cursor: pointer;
-}
-.towerInfo {
-    font-family: Courier New;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    border-radius: 7px;
-    border-width: 1px;
-    margin-left: 30px;
-}
-
-.tower {
     text-indent: -100px;
     background-image: url(../assets/towerSheet32.png);
 }
+
 .tower[data-type="0"] {
     background-position: -409px 0px;
 }
@@ -62,44 +96,63 @@ button {
 .tower[data-type="4"] {
     background-position: -35px 0px;
 }
-
-
-#towerMenu {
-    background-color: rgba(239,239,239,0.9) ;
-    box-shadow: 1px 0px 2px grey;
-    position: absolute;
-    width: 130px;
-    height: calc(100% - 2px);
-    padding-left: 10px;
-    border-style:solid;
-    border-width: 1px;
-    border-left: 0px;
-    border-color: #595959;
-    border-top-right-radius:10px;
-    border-bottom-right-radius:10px;
-    transition: transform 0.3s;
-    transition-timing-function: ease-out;
+.tower[data-type="5"] {
+    background-position: -342px 0px;
 }
 
-.towerDiv {
-    margin-top:10px;
-}
-
-#towerSelectedInfo {
-    background-color: rgba(200, 200, 200, 0.9);
-    position: absolute;
+/* ===== Tower Info ===== */
+#towerInfo {
+    top: 0;
     right: 0;
-    width: 130px;
+    width: 120px;
+    padding: 10px;
+    border-right: 0;
+    border-top: 0;
+    border-bottom-left-radius: 10px;
+    box-shadow: -1px 1px 2px #595959;
+}
+
+#towerInfo .infoName {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#towerInfo table {
+    border-collapse: collapse;
+    margin: 5px 0;
+}
+#towerInfo tr {
+    padding-bottom: 4px;
+}
+
+/* ===== Tower Selected Info ===== */
+#towerSelectedInfo {
+    right: 0;
+    width: 150px;
     height: 100%;
     padding: 10px;
+    border-right: 0;
+    box-sizing: border-box;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
     transition: transform 0.3s;
     transition-timing-function: ease-out;
+}
+
+.tName {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .tUpgrade {
-    background-color: #009900;
+    margin: 10px 0;
+    /* TODO hübsche grafik */
     background-image: url("../assets/upgradebg.png");
     text-align: center;
+    width: 130px;
 }
 
 .tCurrentDiv {
@@ -116,53 +169,25 @@ button {
     width: 100%;
     line-height: 15px;
 }
+.tSellBtn {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
 
-
-
+.tAimDiv button {
+    width: 45%;
+    margin: 5px 0px;
+}
 .tAimDiv button.active {
+    border-style: inset;
     border-color: red;
+    background-color: red;
 }
 
 
 
-
-
-#towerInfo span{
-    font-family: sans-serif;
-    font-size: 14px;
-}
-
-#towerInfo tr{
-    padding-bottom: 4px;
-    padding-left: 0px;
-}
-
-#towerInfo td{
-    padding-left: 0px;
-}
-
-#towerInfo {
-    background-color: rgba(239,239,239,0.9) ;
-    border-style:solid;
-    border-color: #595959;
-    border-width: 1px;
-    border-right: 0px;
-    border-top:0px;
-    border-bottom-left-radius:10px;
-    box-shadow: -1px 1px 2px grey;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px;
-    width: 100px;
-}
-#infoName{
-    font-size:14px;
-}
-
-#infoDesc{
-
-}
+/* ===== Menüs ausbelnden ===== */
 
 .hideLeft {
     transform: translateX(-150px);
@@ -170,7 +195,6 @@ button {
 .hideRight {
     transform: translateX(150px);
 }
-
 .infoHide {
     display:none;
 }
@@ -179,59 +203,43 @@ button {
 /* ===== Menü ===== */
 
 #menu {
-    position: absolute;
-    bottom: 0px;
-    width:100% ;
+    background-color: grey;
 }
 
-#showTowers{
-    left:0px;
-    font-family: Courier New;
-    cursor: pointer;
-    border-radius: 4px;
-    border-width: 1px;
+#showTowers {
     margin: 4px;
 }
 
-#cancelPlace{
-    background-image: url(../assets/cancel.png);
+#cancelPlace,
+#nextWave,
+#pauseGame {
     background-color: transparent;
-    position: absolute;
-    border:0px;
-    bottom: 0px;
-    right:0px;
     width: 32px;
     height: 32px;
-    cursor: pointer;
-    margin: 4px;
+    border: 0;
+}
+
+#cancelPlace {
+    background-image: url(../assets/buttonsSheet32.png);
+    position: absolute;
+    bottom: 0px;
+    right:0px;
 }
 
 #nextWave{
     background-image: url(../assets/buttonsSheet32.png);
     background-position: -35px 0px;
-    background-color: transparent;
     position: absolute;
-    border:0px;
     bottom: 0px;
-    right:34px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    margin: 4px;
+    right: 34px;
 }
 
 #pauseGame{
     background-image: url(../assets/buttonsSheet32.png);
     background-position: -102px 0px;
-    background-color: transparent;
     position: absolute;
-    border:0px;
     bottom: 0px;
     right:68px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    margin: 4px;
 }
 
 #cancelPlace:disabled {

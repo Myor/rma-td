@@ -26,7 +26,7 @@
                 <div id="towers">
                     <div class="towerDiv">
                         <button class="tower" data-type="0">0</button>
-                        <button class="towerInfo btn" data-type="0">i</button>
+                        <button class="towerInfo" data-type="0">i</button>
                     </div>
                     <div class="towerDiv">
                         <button class="tower" data-type="1">1</button>
@@ -41,8 +41,12 @@
                         <button class="towerInfo" data-type="3">i</button>
                     </div>
                     <div class="towerDiv">
-                        <button class="tower" data-type="4">3</button>
+                        <button class="tower" data-type="4">4</button>
                         <button class="towerInfo" data-type="4">i</button>
+                    </div>
+                    <div class="towerDiv">
+                        <button class="tower" data-type="5">5</button>
+                        <button class="towerInfo" data-type="5">i</button>
                     </div>
                 </div>
             </div>
@@ -58,11 +62,8 @@
                         Level <span class="tNextLvl"></span><br>
                         <span class="tNextPrice"></span>$
                     </button>
-                    
                 </div>
-                <div class="tSellDiv">
-                    <button class="tSellBtn">Verkaufen (+<span class="tSellPrice"></span>$)</button> 
-                </div>
+                <button class="tSellBtn">Verkaufen<br>(+<span class="tSellPrice"></span>$)</button> 
                 <div class="tAimDiv">
                     <button data-aim="first">First</button>
                     <button data-aim="last">Last</button>
@@ -71,17 +72,14 @@
                     <button data-aim="close">Close</button>
                 </div>
             </div>
+            <div id="gameField"></div>
             <div id="menu">
                 <button id="showTowers">Towers</button>
                 <button id="cancelPlace" disabled></button>
                 <button id="nextWave"></button>
                 <button id="pauseGame"></button>
-
             </div>
-            <div id="gameField"></div>
         </div>
-
-        
 
         <button id="towerRand">Random Towers</button>
         <div>

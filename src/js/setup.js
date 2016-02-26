@@ -67,11 +67,13 @@ game.startGame = function () {
     game.canvasEl = game.renderer.view;
     document.getElementById("gameField").appendChild(game.canvasEl);
 
-    // Position für Input merken
-    game.canvasoffsetX = game.canvasEl.offsetLeft;
-    game.canvasoffsetY = game.canvasEl.offsetTop;
+    // Werte für Berechnung von Input merken
+    var rec = game.canvasEl.getBoundingClientRect();
+    game.offsetX = rec.left;
+    game.offsetY = rec.top;
+    game.scale = game.resX / rec.width;
+    
     game.collGrid = new CollisionGrid(game.cellsX, game.cellsY);
-
 
     var stage = new PIXI.Container();
     game.stage = stage;
@@ -196,13 +198,23 @@ game.setupTextures = function () {
 
     towerTypes[0].tex = texFromCache("towers", 409, 0, 32, 32);
     towerTypes[1].tex = texFromCache("towers", 103, 0, 32, 32);
+    towerTypes[1].tex2 = texFromCache("towers", 137, 0, 32, 32);
     towerTypes[2].tex = texFromCache("towers", 1, 0, 32, 32);
     towerTypes[3].tex = texFromCache("towers", 443, 0, 32, 32);
     towerTypes[4].tex = texFromCache("towers", 35, 0, 32, 32);
+    towerTypes[4].tex2 = texFromCache("towers", 69, 0, 32, 32);
+    towerTypes[5].tex = texFromCache("towers", 342, 0, 32, 32);
+    towerTypes[5].tex2 = texFromCache("towers", 377, 0, 32, 32);
 
-    towerTypes[1].shotTex = texFromCache("shots", 0, 0, 1, 32);
-    towerTypes[2].shotTex = texFromCache("shots", 3, 0, 1, 32);
+    towerTypes[1].shotTex = texFromCache("shots", 1, 0, 1, 32);
+    towerTypes[2].shotTex = texFromCache("shots", 6, 0, 1, 32);
     towerTypes[4].shotTex = texFromCache("shockwave");
+    towerTypes[4].shotTex = texFromCache("shockwave");
+    towerTypes[5].shotTex = [
+        texFromCache("shots", 0, 32, 128, 32),
+        texFromCache("shots", 0, 64, 128, 32),
+        texFromCache("shots", 0, 96, 128, 32)
+    ];
 
 };
 // Textur aus loader Cache lesen, mit frame
