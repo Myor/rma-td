@@ -85,10 +85,7 @@ var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
     var towers = game.towers.getArray();
     var mobs = game.mobs.getArray();
-<<<<<<< HEAD
     var wave = game.waves[game.wave];
-=======
->>>>>>> origin/master
 
     // Ein Mob pro Update spawnen
     if (!game.mobQueue.isEmpty()) {
