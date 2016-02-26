@@ -26,51 +26,66 @@ var frameId;
 // http://gafferongames.com/game-physics/fix-your-timestep/
 // http://codeincomplete.com/posts/2013/12/4/javascript_game_foundations_the_game_loop/
 
-var initFrame = function (newTime) {
+var initGameloop = function (newTime) {
     lastTime = newTime;
-    requestAnimationFrame(frame);
+    game.renderer.render(game.stage);
+    frameId = requestAnimationFrame(gameloop);
 };
+// Loop mit allen updates
+var gameloop = function (newTime) {
 
-var frame = function (newTime) {
+        var frameTime = newTime - lastTime;
+        if (frameTime > 500) {
+            // Spikes abfangen
+            frameTime = 500;
+            console.warn("clamp frameTime");
+        }
+        lastTime = newTime;
+        accumulator += frameTime;
+        passed += frameTime;
 
-    var frameTime = newTime - lastTime;
-    if (frameTime > 500) {
-        // Spikes abfangen
-        frameTime = 500;
-        console.warn("clamp frameTime");
-    }
-    lastTime = newTime;
-    accumulator += frameTime;
-    passed += frameTime;
+        while (accumulator >= slowStep) {
+            simulate(step);
 
-    while (accumulator >= slowStep) {
-        simulate(step);
+            accumulator -= slowStep;
 
-        accumulator -= slowStep;
+            game.fpsmeter.text = (1000 / frameTime) | 0;
+        }
 
-        game.fpsmeter.text = (1000 / frameTime) | 0;
-    }
+        updateAnimation(passed / slowFactor, accumulator / slowFactor);
 
-    updateAnimation(passed / slowFactor, accumulator / slowFactor);
 
     game.renderer.render(game.stage);
-    frameId = requestAnimationFrame(frame);
+    frameId = requestAnimationFrame(gameloop);
+};
+// Loop nur zum rendern der Stage
+var renderloop = function () {
+    game.renderer.render(game.stage);
+    frameId = requestAnimationFrame(renderloop);
 };
 
 game.startGameLoop = function () {
-    requestAnimationFrame(initFrame);
+    requestAnimationFrame(initGameloop);
 };
 game.stopGameLoop = function () {
     cancelAnimationFrame(frameId);
 };
 
+game.pauseLoop = function () {
+    cancelAnimationFrame(frameId);
+    frameId = requestAnimationFrame(renderloop);
+};
+game.resumeLoop = function () {
+    cancelAnimationFrame(frameId);
+    game.startGameLoop();
+};
 
 // Physik update / Kollisionsabfragen
 var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
     var towers = game.towers.getArray();
     var mobs = game.mobs.getArray();
-    
+
     // Ein Mob pro Update spawnen
     if (!game.mobQueue.isEmpty()) {
         game.addMob(game.mobQueue.dequeue());
@@ -86,8 +101,8 @@ var simulate = function (dt) {
 
         mob.age += dt;
         mob.simulateToAge(mob.age);
-        
-        if(utils.isFinish(mob.cx, mob.cy)) {
+
+        if (utils.isFinish(mob.cx, mob.cy)) {
             game.hit(1);
             mob.kill();
             continue;
@@ -142,7 +157,7 @@ var updateAnimation = function (time, accumulator) {
 
 game.hit = function (power) {
     game.life -= power;
-    if(game.life <= 0) {
+    if (game.life <= 0) {
         console.log("verloren");
     }
     game.updateLife();
@@ -150,7 +165,7 @@ game.hit = function (power) {
 
 game.heal = function (power) {
     game.life += power;
-    if(game.life > 100) game.life = 100;
+    if (game.life > 100) game.life = 100;
     game.updateLife();
 };
 
