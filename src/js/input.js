@@ -9,7 +9,7 @@ game.setupInput = function () {
     // Klick auf Spielfeld
     game.canvasEl.addEventListener("click", clickHandler);
     // Mob spawn
-    mobSpawnBtns.addEventListener("click", mobHandler);
+    waveSpawnBtns.addEventListener("click", waveHandler);
     document.addEventListener("keypress", keyHandler);
     // Tower spawn
     towerListBtns.addEventListener("click", towerBtnsHandler);
@@ -28,7 +28,7 @@ game.setupInput = function () {
 
 game.removeInput = function () {
 
-    mobSpawnBtns.removeEventListener("click", mobHandler);
+    waveSpawnBtns.removeEventListener("click", waveHandler);
     document.removeEventListener("keypress", keyHandler);
 
     towerListBtns.removeEventListener("click", towerBtnsHandler);
@@ -41,7 +41,7 @@ game.removeInput = function () {
 };
 
 // Alle statischen Elemente
-var mobSpawnBtns = document.getElementById("mobs");
+var waveSpawnBtns = document.getElementById("waves");
 // Menüs
 var towerMenu = document.getElementById("towerMenu");
 var towerInfo = document.getElementById("towerInfo");
@@ -160,19 +160,19 @@ var clickHandler = function (e) {
     game.setSelectedTower(game.getTowerAt(cx, cy));
 };
 
-// ===== Mob Spawns =====
-var mobHandler = function (e) {
-    if (!e.target.matches("button.mob")) return;
-    var typeID = Number(e.target.dataset.type);
+// ===== Spawns =====
+var waveHandler = function (e) {
+    if (!e.target.matches("button.wave")) return;
+    var id = Number(e.target.dataset.id);
 
-    game.spawnMob(typeID);
+    game.startWave(id);
 };
 var keyHandler = function (e) {
-    var num = Number(String.fromCharCode(e.charCode)) - 1;
-    if (Number.isNaN(num)) return;
+    var id = Number(String.fromCharCode(e.charCode)) - 1;
+    if (Number.isNaN(id)) return;
     // Typ vorhanden?
-    if (towerTypes[num] === undefined) return;
-    game.spawnMob(num);
+    if (game.waves[id] === undefined) return;
+    game.startWave(id);
 };
 
 

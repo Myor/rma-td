@@ -21,12 +21,11 @@ button {
     height: 544px;	
 }
 
-#canvasEl {
+#gameField canvas {
     display: block;
 }
 
-.tower,
-.mob {
+.tower {
     width: 32px;
     height: 32px;
     background-color: transparent;
@@ -34,7 +33,7 @@ button {
     border: 0;
     cursor: pointer;
 }
-.towerInfo{
+.towerInfo {
     font-family: Courier New;
     width: 32px;
     height: 32px;
@@ -64,9 +63,6 @@ button {
     background-position: -35px 0px;
 }
 
-#mobs {
-    display: flex;
-}
 
 #towerMenu {
     background-color: rgba(239,239,239,0.9) ;

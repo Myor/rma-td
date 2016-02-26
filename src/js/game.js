@@ -82,8 +82,6 @@ game.resumeLoop = function () {
     game.startGameLoop();
 };
 
-var spawnCounter = 0;
-
 // Physik update / Kollisionsabfragen
 var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
