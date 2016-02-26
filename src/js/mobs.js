@@ -5,16 +5,34 @@ var mobTypes = [];
 // TODO Mob wird langsamer, je größer speed lol
 // inverse verwenden oder so
 mobTypes[0] = {
-    name: "Test-Mob",
+    name: "Wave1",
     desc: "blibla",
     price: 10,
     income: 1,
-    life: 100,
-    speed: 500,
+    life: 20,
+    speed: 800,
     tex: null
 };
 mobTypes[1] = {
-    name: "Test-Mob",
+    name: "Wave2",
+    desc: "blablub",
+    price: 20,
+    income: 2,
+    life: 500,
+    speed: 800,
+    tex: null
+};
+mobTypes[2] = {
+    name: "Wave3",
+    desc: "blablub",
+    price: 20,
+    income: 2,
+    life: 500,
+    speed: 800,
+    tex: null
+};
+mobTypes[3] = {
+    name: "Wave4",
     desc: "blablub",
     price: 20,
     income: 2,

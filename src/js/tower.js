@@ -152,13 +152,13 @@ towerTypes[1] = {
     name: "Laser Tower",
     desc: "Standard Laser Tower",
     isBlocking: true,
-    radius: 4,
-    price: 100,
+    radius: 2,
+    price: 15,
     sellPrice: 50,
     tex: null,
     shotTex: null,
-    power: 10,
-    freq: 5,
+    power: 5,
+    freq: 7,
     init: function () {
         this.focus = null;
         this.dist = 0;

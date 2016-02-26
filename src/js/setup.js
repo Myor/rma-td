@@ -231,10 +231,10 @@ game.setupMap = function () {
     cont.cacheAsBitmap = true;
 
     // Standard Tower
-    var walls = map.walls;
+    /*var walls = map.walls;
     for (var i = 0; i < walls.length; i++) {
         game.addTowerAt(0, walls[i][0], walls[i][1]);
-    }
+    }*/
     // Blockierte Zellen
     var locks = map.locks;
     for (var y = 0; y < game.cellsY; y++) {
