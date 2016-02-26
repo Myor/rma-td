@@ -107,8 +107,8 @@ Mob.prototype.simulateToAge = function (age) {
     this.x = utils.cell2Pos(prevX + frac * dirX);
     this.y = utils.cell2Pos(prevY + frac * dirY);
     // Speichern für weiteren Berechnungen
-    this.cx = frac < 0.5 ? prevX: nextX;
-    this.cy = frac < 0.5 ? prevY: nextY;
+    this.cx = frac < 0.5 ? prevX : nextX;
+    this.cy = frac < 0.5 ? prevY : nextY;
     this.dirX = dirX;
     this.dirY = dirY;
     this.covered = covered;
@@ -138,11 +138,12 @@ Mob.prototype.hit = function (power, by) {
 
 var mobPool = new Pool(Mob, 10);
 // Nimmt ein Mob aus dem Pool und schiebt ihn in den Queue
-game.spawnMob = function (typeID) {
-    console.log("spawn", typeID);
-    var mob = mobPool.getObj();
-    mob.type = mobTypes[typeID];
-    game.mobQueue.enqueue(mob);
+game.enqueMobs = function (typeID, num) {
+    for (var i = 0; i < num; i++) {
+        var mob = mobPool.getObj();
+        mob.type = mobTypes[typeID];
+        game.mobQueue.enqueue(mob);
+    }
 };
 // Mob sichtbar machen und zum Update loop hinzufügen
 game.addMob = function (mob) {

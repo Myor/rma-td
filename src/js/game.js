@@ -18,10 +18,11 @@ var accumulator = 0; // Sammelt die Frame-Zeiten
 var passed = 0; // Summe aller Frame-Zeiten
 var step = 50; // Fester Simulationsschritt
 var slowFactor = 1; // Slow-motion Faktor
-var slowStep = step * slowFactor;
 var lastTime = 0;
 
 var frameId;
+
+
 // Game-loop
 // http://gafferongames.com/game-physics/fix-your-timestep/
 // http://codeincomplete.com/posts/2013/12/4/javascript_game_foundations_the_game_loop/
@@ -33,6 +34,7 @@ var initGameloop = function (newTime) {
 };
 // Loop mit allen updates
 var gameloop = function (newTime) {
+    var slowStep = step * slowFactor;
 
     var frameTime = newTime - lastTime;
     if (frameTime > 500) {
@@ -80,16 +82,15 @@ game.resumeLoop = function () {
     game.startGameLoop();
 };
 
+var spawnCounter = 0;
+
 // Physik update / Kollisionsabfragen
 var simulate = function (dt) {
     var i, j, tower, mob, dist, collArray;
     var towers = game.towers.getArray();
     var mobs = game.mobs.getArray();
 
-    // Ein Mob pro Update spawnen
-    if (!game.mobQueue.isEmpty()) {
-        game.addMob(game.mobQueue.dequeue());
-    }
+    game.updateWave();
 
     for (i = 0; i < towers.length; i++) {
         tower = towers[i];
@@ -107,8 +108,6 @@ var simulate = function (dt) {
             mob.kill();
             continue;
         }
-
-//        game.testGr.drawCircle(mob.x + game.cellCenter, mob.y + game.cellCenter, 1);
 
         collArray = game.collGrid.getCollisionsAt(mob.cx, mob.cy).getArray();
 
@@ -131,11 +130,6 @@ var simulate = function (dt) {
         if (mob.isKilled()) {
             game.removeMob(mob);
         }
-    }
-    //Wave abfrage
-    if(game.isWaveActive && game.mobQueue.isEmpty() && game.mobs.isEmpty()) {
-        game.isWaveActive = false;
-        console.log("wave finished");
     }
 };
 
@@ -162,6 +156,7 @@ var updateAnimation = function (time, accumulator) {
 game.hit = function (power) {
     game.life -= power;
     if (game.life <= 0) {
+        game.life = 0;
         console.log("verloren");
     }
     game.updateLife();

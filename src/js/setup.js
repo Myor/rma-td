@@ -36,7 +36,7 @@ game.setup = function () {
         game.map = game.maps[e.target.dataset.map];
         game.startGame();
     });
-    
+
     exitBtn.addEventListener("click", function () {
         game.exitGame();
     });
@@ -51,8 +51,12 @@ game.startGame = function () {
 
     game.life = 100;
     game.updateLife();
-    game.wave = 0;
+    // Waves
+    game.currentWaveID = 0;
     game.isWaveActive = false;
+    game.currentGroup = null;
+    game.groupQueue = new Queue();
+    game.currentDelay = 0;
 
     game.map.init();
 
@@ -130,6 +134,7 @@ game.startGame = function () {
 
     game.setupInput();
     game.startGameLoop();
+//    game.lose();
 };
 
 game.exitGame = function () {
@@ -138,7 +143,7 @@ game.exitGame = function () {
     ui.endPlace();
     ui.hideMenu();
     game.setSelectedTower(null);
-    
+
     // Stage mit allen Inhalten löschen
     // TODO hier werden auch texturen gelöscht, was bugs erzeugt :-/
     game.stage.destroy(true);
@@ -149,10 +154,10 @@ game.exitGame = function () {
     game.canvasEl = null;
     // Alle Referenzen auf Objekte löschen
     game.collGrid = null;
-    
+
     game.map = null;
     game.mapCont = null;
-    
+
     game.pathCont = null;
 
     game.shotCon = null;
@@ -175,7 +180,7 @@ game.exitGame = function () {
 
     game.PFgrid = null;
     game.path = null;
-    
+
 };
 
 game.setupTextures = function () {
