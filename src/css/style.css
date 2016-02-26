@@ -156,7 +156,31 @@ body {
 /* ===== Menü ===== */
 
 #menu {
-    
+    position: absolute;
+    bottom: 0px;
+    width:100% ;
+}
+
+#showTowers{
+    left:0px;
+    font-family: Courier New;
+    cursor: pointer;
+    border-radius: 4px;
+    border-width: 1px;
+    margin: 4px;
+}
+
+#cancelPlace{
+    background-image: url(../assets/cancel.png);
+    background-color: transparent;
+    position: absolute;
+    border:0px;
+    bottom: 0px;
+    right:0px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    margin: 4px;
 }
 
 #cancelPlace:disabled {
