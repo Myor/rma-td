@@ -8,6 +8,7 @@ game.setupInput = function () {
     });
     // Klick auf Spielfeld
     game.canvasEl.addEventListener("click", clickHandler);
+    game.canvasEl.addEventListener("touchend", touchHandler);
     // Mob spawn
     waveSpawnBtns.addEventListener("click", waveHandler);
     document.addEventListener("keypress", keyHandler);
@@ -150,13 +151,23 @@ var updateAimBtns = function (newID) {
 // ===== Event Handler =====
 
 var clickHandler = function (e) {
+    // Nur bei Linksklick
+    if (e.button !== 0) return;
+    clickAt(e.offsetX, e.offsetY);
+};
+var touchHandler = function (e) {
+    var t = e.changedTouches[0];
+    clickAt(t.pageX - game.offsetX, t.pageY - game.offsetY);
+};
+
+var clickAt = function (x, y) {
     // Menü zuklappen
     ui.hideMenu();
-    // Nur bei Linksklick und wenn kein Tower gesetzt wird
-    if (selectBlocked || e.button !== 0) return;
+    // Nur wenn kein Tower gesetzt wird
+    if (selectBlocked) return;
     // Zelle berechnen & auswählen
-    var cx = utils.input2Cell(e.offsetX);
-    var cy = utils.input2Cell(e.offsetY);
+    var cx = utils.input2Cell(x);
+    var cy = utils.input2Cell(y);
     game.setSelectedTower(game.getTowerAt(cx, cy));
 };
 
