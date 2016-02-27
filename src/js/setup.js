@@ -111,6 +111,7 @@ game.startGame = function () {
     game.mobsBarCon = new PIXI.ParticleContainer(50000, particleConOptions, 10000);
     game.mobs = new FastSet();
     game.mobQueue = new Queue();
+    game.mobPool = new Pool(Mob, 10);
 
     // Alle Layer hinzufügen
     stage.addChild(game.mapCont);
@@ -178,6 +179,8 @@ game.exitGame = function () {
     game.mobsBarCon = null;
     game.mobs = null;
     game.mobQueue = null;
+    game.groupQueue = null;
+    game.mobPool = null;
 
     game.fpsmeter = null;
 
