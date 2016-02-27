@@ -151,11 +151,15 @@ var updateAnimation = function (time, accumulator) {
 
 };
 
+var gamelifeEl = document.getElementById("gameLife");
+var gameCashEl = document.getElementById("gameCash");
+
+// ==== Game Life ====
 game.hit = function (power) {
     game.life -= power;
     if (game.life <= 0) {
         game.life = 0;
-        console.log("verloren");
+//        console.log("verloren");
     }
     game.updateLife();
 };
@@ -166,8 +170,25 @@ game.heal = function (power) {
     game.updateLife();
 };
 
-var gamelifeEl = document.getElementById("gameLife");
-
 game.updateLife = function () {
     gamelifeEl.textContent = game.life;
+};
+
+// ==== Game Cash ====
+game.addCash = function (c) {
+    game.cash += c;
+    game.updateCash();
+};
+
+game.hasCash = function (price) {
+    return game.cash >= price;
+};
+
+game.removeCash = function (c) {
+    game.cash -= c;
+    game.updateCash();
+};
+
+game.updateCash = function () {
+    gameCashEl.textContent = game.cash;
 };

@@ -6,37 +6,29 @@ var mobTypes = [];
 // inverse verwenden oder so
 mobTypes[0] = {
     name: "Wave1",
-    desc: "blibla",
-    price: 10,
-    income: 1,
+    cash: 5,
     life: 20,
     speed: 800,
     tex: null
 };
 mobTypes[1] = {
     name: "Wave2",
-    desc: "blablub",
-    price: 20,
-    income: 2,
-    life: 500,
+    cash: 10,
+    life: 100,
     speed: 800,
     tex: null
 };
 mobTypes[2] = {
     name: "Wave3",
-    desc: "blablub",
-    price: 20,
-    income: 2,
+    cash: 20,
     life: 500,
     speed: 800,
     tex: null
 };
 mobTypes[3] = {
     name: "Wave4",
-    desc: "blablub",
-    price: 20,
-    income: 2,
-    life: 500,
+    cash: 50,
+    life: 1000,
     speed: 800,
     tex: null
 };
@@ -130,8 +122,9 @@ Mob.prototype.hit = function (power, by) {
     if (this.isKilled()) return;
     this.life -= power;
     if (this.life <= 0) {
-        this.kill();
         by.killCount++;
+        game.addCash(this.type.cash);
+        this.kill();
     }
 };
 

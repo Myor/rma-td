@@ -4,12 +4,13 @@ var waves = game.waves = [];
 
 waves[0] = [
     {num: 10, type: 0, delay: 5},
-    {num: 2, type: 1, delay: 20}
+    {num: 10, type: 1, delay: 0}
 ];
 
 waves[1] = [
-    {num: 20, type: 0, delay: 5},
-    {num: 10, type: 1, delay: 10}
+    {num: 10, type: 0, delay: 5},
+    {num: 10, type: 1, delay: 10},
+    {num: 10, type: 2, delay: 10}
 ];
 
 game.startNextWave = function () {

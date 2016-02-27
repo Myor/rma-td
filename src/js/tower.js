@@ -10,6 +10,9 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
         return false;
     }
     var type = towerTypes[typeID];
+
+    if(!game.hasCash(type.price)) return;
+    
     // Wenn Tower den Weg blockieren kann
     if (type.isBlocking) {
         // Weg neu berechnen
@@ -23,7 +26,7 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
         game.path = newPath;
         game.drawPath();
     }
-
+    game.removeCash(type.price);
     game.addTowerAt(type, cx, cy);
 };
 
@@ -54,7 +57,7 @@ game.sellTower = function (tower) {
     game.PFgrid.setWalkableAt(tower.cx, tower.cy, true);
     game.path = game.findPath();
     game.drawPath();
-    
+    game.addCash(tower.type.sellPrice);
     game.deleteTower(tower);
 };
 
@@ -68,6 +71,9 @@ game.deleteTower = function (tower) {
 
 game.upgradeTower = function (tower) {
     var nextType = tower.type.next;
+
+    if(!game.hasCash(nextType.price)) return;
+    game.removeCash(nextType.price);
     
     game.deleteTower(tower);
     return game.addTowerAt(nextType, tower.cx, tower. cy);

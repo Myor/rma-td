@@ -51,6 +51,8 @@ game.startGame = function () {
 
     game.life = 100;
     game.updateLife();
+    game.cash = 2000;
+    game.updateCash();
     // Waves
     game.currentWaveID = 0;
     game.isWaveActive = false;
@@ -72,7 +74,7 @@ game.startGame = function () {
     game.offsetX = rec.left;
     game.offsetY = rec.top;
     game.scale = game.resX / rec.width;
-    
+
     game.collGrid = new CollisionGrid(game.cellsX, game.cellsY);
 
     var stage = new PIXI.Container();
@@ -90,7 +92,6 @@ game.startGame = function () {
 
     game.shockCon = new PIXI.ParticleContainer(100, particleConOptions, 100);
 
-//    game.shotCon = new PIXI.Container();
     game.towersCon = new PIXI.ParticleContainer(200, particleConOptions, 200);
     game.towers = new FastSet();
 
@@ -194,6 +195,8 @@ game.setupTextures = function () {
 
     mobTypes[0].tex = texFromCache("mobs", 34, 0, 32, 32);
     mobTypes[1].tex = texFromCache("mobs", 68, 0, 32, 32);
+    mobTypes[2].tex = texFromCache("mobs", 68, 0, 32, 32);
+    mobTypes[3].tex = texFromCache("mobs", 68, 0, 32, 32);
 
 
     towerTypes[0].tex = texFromCache("towers", 409, 0, 32, 32);
