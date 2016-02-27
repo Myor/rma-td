@@ -13,26 +13,60 @@ mobTypes[0] = {
 };
 mobTypes[1] = {
     name: "Wave2",
-    cash: 10,
-    life: 100,
-    speed: 800,
+    cash: 6,
+    life: 30,
+    speed: 700,
     tex: null
 };
 mobTypes[2] = {
     name: "Wave3",
-    cash: 20,
-    life: 500,
+    cash: 8,
+    life: 40,
     speed: 800,
     tex: null
 };
 mobTypes[3] = {
     name: "Wave4",
-    cash: 50,
-    life: 1000,
+    cash: 11,
+    life: 50,
     speed: 800,
     tex: null
 };
-
+mobTypes[4] = {
+    name: "Wave5",
+    cash: 14,
+    life: 60,
+    speed: 500,
+    tex: null
+};
+mobTypes[5] = {
+    name: "Wave6",
+    cash: 18,
+    life: 75,
+    speed: 600,
+    tex: null
+};
+mobTypes[6] = {
+    name: "Wave7",
+    cash: 22,
+    life: 90,
+    speed: 700,
+    tex: null
+};
+mobTypes[7] = {
+    name: "Wave8",
+    cash: 28,
+    life: 120,
+    speed: 800,
+    tex: null
+};
+mobTypes[8] = {
+    name: "Wave9",
+    cash: 36,
+    life: 150,
+    speed: 800,
+    tex: null
+};
 // Konstruktor erstellt "unsichtbaren" Mob
 var Mob = function () {
     this.type = null;

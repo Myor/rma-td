@@ -193,10 +193,15 @@ game.setupTextures = function () {
     game.tex.mobBarTex = texFromCache("mobBar", 0, 0, 32, 4);
     game.tex.mobBarTexEmpty = texFromCache("mobBar", 0, 6, 32, 4);
 
-    mobTypes[0].tex = texFromCache("mobs", 34, 0, 32, 32);
-    mobTypes[1].tex = texFromCache("mobs", 68, 0, 32, 32);
-    mobTypes[2].tex = texFromCache("mobs", 68, 0, 32, 32);
-    mobTypes[3].tex = texFromCache("mobs", 68, 0, 32, 32);
+    mobTypes[0].tex = texFromCache("mobs", 33, 0, 32, 32);
+    mobTypes[1].tex = texFromCache("mobs", 66, 0, 32, 32);
+    mobTypes[2].tex = texFromCache("mobs", 99, 0, 32, 32);
+    mobTypes[3].tex = texFromCache("mobs", 132, 0, 32, 32);
+    mobTypes[4].tex = texFromCache("mobs", 165, 0, 32, 32);
+    mobTypes[5].tex = texFromCache("mobs", 198, 0, 32, 32);
+    mobTypes[6].tex = texFromCache("mobs", 231, 0, 32, 32);
+    mobTypes[7].tex = texFromCache("mobs", 264, 0, 32, 32);
+    mobTypes[8].tex = texFromCache("mobs", 297, 0, 32, 32);
 
 
     towerTypes[0].tex = texFromCache("towers", 409, 0, 32, 32);

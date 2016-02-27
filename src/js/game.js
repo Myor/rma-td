@@ -1,7 +1,7 @@
 "use strict";
 
 PIXI.loader
-        .add("mobs", "assets/mobs.png")
+        .add("mobs", "assets/mobSheet32.png")
         .add("mobBar", "assets/mobBar.png")
         .add("towers", "assets/towerSheet32.png")
         .add("shots", "assets/shots@2x.png")
