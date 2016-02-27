@@ -445,4 +445,56 @@ towerTypes[5] = {
     }
 };
 
+towerTypes[6] = {
+    name: "Aura Tower",
+    desc: "Boosts stats of surrounding towers",
+    level: 0,
+    isBlocking: true,
+    radius: 5,
+    price: 500,
+    sellPrice: 300,
+    tex: null,
+    shotTex: null,
+    power: 0,
+    freq: 15,
+    init: function () {
+        this.focus = null;
+        this.dist = 0;
+        this.texCounter = 0;
+        this.animUp = true;
+        this.animCounter = 0;
+    },
+    extend: {
+        destroy: function () {
+            Tower.prototype.destroy.call(this);
+        },
+        update: function () {
+            if(this.animCounter ===5){
+                this.animCounter = 0;
+
+                if(this.animUp){
+                    this.texCounter++;
+                    if(this.texCounter >3)
+                        this.animUp = false;
+                }
+                else{
+                    this.texCounter--;
+                    if(this.texCounter < 1)
+                        this.animUp = true;
+                }
+                this.spr.texture = this.type.texAnim[this.texCounter]; 
+            }
+            else{
+                this.animCounter++;
+            }
+        },
+        beforeCollide: function () {
+        },
+        collide: function (mob, dist) {
+        },
+        afterCollide: function () {
+        }
+    }
+};
+
 towerTypes[1].next = towerTypes[2];

@@ -99,6 +99,9 @@ button:active {
 .tower[data-type="5"] {
     background-position: -342px 0px;
 }
+.tower[data-type="6"] {
+    background-position: -270px 0px;
+}
 
 /* ===== Tower Info ===== */
 #towerInfo {

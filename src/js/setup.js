@@ -190,7 +190,7 @@ game.setupTextures = function () {
     game.tex = {};
 
     game.tex.mobTexEmpty = texFromCache("mobs", 0, 0, 32, 32);
-    game.tex.mobBarTex = texFromCache("mobBar", 0, 0, 32, 4);
+    game.tex.mobBarTex = texFromCache("mobBar", 0, 0, 32, 3);
     game.tex.mobBarTexEmpty = texFromCache("mobBar", 0, 6, 32, 4);
 
     mobTypes[0].tex = texFromCache("mobs", 33, 0, 32, 32);
@@ -214,6 +214,15 @@ game.setupTextures = function () {
     towerTypes[4].tex2 = texFromCache("towers", 69, 0, 32, 32);
     towerTypes[5].tex = texFromCache("towers", 342, 0, 32, 32);
     towerTypes[5].tex2 = texFromCache("towers", 377, 0, 32, 32);
+    towerTypes[6].tex = texFromCache("towers", 170, 0, 32, 32);
+    towerTypes[6].texAnim = [
+        texFromCache("towers", 170, 0, 32, 32),
+        texFromCache("towers", 204, 0, 32, 32),
+        texFromCache("towers", 238, 0, 32, 32),
+        texFromCache("towers", 272, 0, 32, 32),
+        texFromCache("towers", 306, 0, 32, 32)
+    ];
+
 
     towerTypes[1].shotTex = texFromCache("shots", 1, 0, 1, 32);
     towerTypes[2].shotTex = texFromCache("shots", 6, 0, 1, 32);
