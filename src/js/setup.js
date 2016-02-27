@@ -202,6 +202,7 @@ game.setupTextures = function () {
     mobTypes[6].tex = texFromCache("mobs", 231, 0, 32, 32);
     mobTypes[7].tex = texFromCache("mobs", 264, 0, 32, 32);
     mobTypes[8].tex = texFromCache("mobs", 297, 0, 32, 32);
+    mobTypes[9].tex = texFromCache("mobs", 331, 0, 46, 32);
 
 
     towerTypes[0].tex = texFromCache("towers", 409, 0, 32, 32);

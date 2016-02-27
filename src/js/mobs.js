@@ -67,6 +67,13 @@ mobTypes[8] = {
     speed: 800,
     tex: null
 };
+mobTypes[9] = {
+    name: "Jeep",
+    cash: 36,
+    life: 150,
+    speed: 900,
+    tex: null
+};
 // Konstruktor erstellt "unsichtbaren" Mob
 var Mob = function () {
     this.type = null;

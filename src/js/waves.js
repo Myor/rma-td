@@ -16,6 +16,7 @@ waves[1] = [
     {num: 3, type: 6, delay: 10},
     {num: 3, type: 7, delay: 10},
     {num: 3, type: 8, delay: 10},
+    {num: 3, type: 9, delay: 25}
 
 ];
 waves[2] = [
