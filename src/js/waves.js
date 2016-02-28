@@ -8,19 +8,22 @@ waves[0] = [
 ];
 
 waves[1] = [
-    {num: 3, type: 1, delay: 5},
-    {num: 3, type: 2, delay: 10},
-    {num: 3, type: 3, delay: 10},
-    {num: 3, type: 4, delay: 10},
-    {num: 3, type: 5, delay: 10},
-    {num: 3, type: 6, delay: 10},
-    {num: 3, type: 7, delay: 10},
-    {num: 3, type: 8, delay: 10},
-    {num: 3, type: 9, delay: 25}
+    {num: 2, type: 0, delay: 20},
+    {num: 2, type: 1, delay: 20},
+    {num: 2, type: 2, delay: 20},
+    {num: 2, type: 3, delay: 20},
+    {num: 2, type: 4, delay: 20},
+    {num: 2, type: 5, delay: 20},
+    {num: 2, type: 6, delay: 20},
+    {num: 2, type: 7, delay: 20},
+    {num: 2, type: 8, delay: 30},
+    {num: 2, type: 9, delay: 30},
+    {num: 2, type: 10, delay: 30},
+    {num: 2, type: 11, delay: 30}
 
 ];
 waves[2] = [
-    {num: 15, type: 3, delay: 5},
+    {num: 15, type: 3, delay: 5}
 ];
 
 waves[3] = [

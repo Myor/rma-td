@@ -159,6 +159,7 @@ game.exitGame = function () {
     game.canvasEl = null;
     // Alle Referenzen auf Objekte löschen
     game.collGrid = null;
+    game.buffColGrid = null;
 
     game.map = null;
     game.mapCont = null;
@@ -205,8 +206,10 @@ game.setupTextures = function () {
     mobTypes[5].tex = texFromCache("mobs", 198, 0, 32, 32);
     mobTypes[6].tex = texFromCache("mobs", 231, 0, 32, 32);
     mobTypes[7].tex = texFromCache("mobs", 264, 0, 32, 32);
-    mobTypes[8].tex = texFromCache("mobs", 297, 0, 32, 32);
-    mobTypes[9].tex = texFromCache("mobs", 331, 0, 46, 32);
+    mobTypes[8].tex = texFromCache("mobs", 298, 0, 48, 32);
+    mobTypes[9].tex = texFromCache("mobs", 1, 33, 64, 48);
+    mobTypes[10].tex = texFromCache("mobs", 66, 33, 72, 48);
+    mobTypes[11].tex = texFromCache("mobs", 165, 33, 98, 64);
 
 
     towerTypes[0].tex = texFromCache("towers", 409, 0, 32, 32);
