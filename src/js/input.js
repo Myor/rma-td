@@ -54,8 +54,9 @@ var cancelPlaceBtn = document.getElementById("cancelPlace");
 // Selected-infos
 var tName = towerSelectedInfo.querySelector(".tName");
 var tKillCount = towerSelectedInfo.querySelector(".tKillCount");
-var tRadius = towerSelectedInfo.querySelector(".tRadius");
 var tPower = towerSelectedInfo.querySelector(".tPower");
+var tFreq = towerSelectedInfo.querySelector(".tFreq");
+var tRadius = towerSelectedInfo.querySelector(".tRadius");
 var tCurrentLvl = towerSelectedInfo.querySelector(".tCurrentLvl");
 var tNextBtn = towerSelectedInfo.querySelector(".tNextBtn");
 var tNextLvl = towerSelectedInfo.querySelector(".tNextLvl");
@@ -100,7 +101,7 @@ var fillTowerInfo = function (id) {
     if ('power' in type)
         table += "<tr><td>Damage</td><td>" + type.power + "</td></tr>";
     if ('freq' in type)
-        table += "<tr><td>Speed</td><td>" + type.freq + "</td></tr>";
+        table += "<tr><td>Reload</td><td>" + type.freq + "</td></tr>";
     if ('radius' in type)
         table += "<tr><td>Radius</td><td>" + type.radius + "</td></tr>";
 
@@ -115,8 +116,9 @@ var fillInfoSelected = function (tower) {
 
     tName.textContent = type.name;
     tKillCount.textContent = tower.killCount;
-    tRadius.textContent = type.radius;
-    tPower.textContent = type.power;
+    tPower.textContent = "power" in type ? tower.getPower() : "-";
+    tFreq.textContent = "freq" in type ? tower.getFreq() : "-";
+    tRadius.textContent = "radius" in type ? type.radius : "-";
     // Upgrades
     tCurrentLvl.textContent = type.level;
     var hasNext = type.next != null;

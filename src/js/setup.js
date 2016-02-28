@@ -294,7 +294,7 @@ var selectedTower = null;
 
 game.drawSelectCircle = function (type) {
     game.selectCircleGr.clear();
-    if (type.radius !== 0) {
+    if ("radius" in type) {
         game.selectCircleGr.beginFill(0x000000, 0.3);
         game.selectCircleGr.drawCircle(0, 0, type.radius * game.cellSize);
     }

@@ -11,8 +11,8 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
     }
     var type = towerTypes[typeID];
 
-    if(!game.hasCash(type.price)) return;
-    
+    if (!game.hasCash(type.price)) return;
+
     // Wenn Tower den Weg blockieren kann
     if (type.isBlocking) {
         // Weg neu berechnen
@@ -36,12 +36,11 @@ game.addTowerAt = function (type, cx, cy) {
     var tower = new Tower(type, cx, cy);
     game.towers.add(tower);
 
-    if(type === towerTypes[6]){
+    if (isBuffTower(tower)) {
         game.buffColGrid.addTower(tower);
     }
-    else{
-        game.collGrid.addTower(tower);
-    }
+    game.collGrid.addTower(tower);
+
 
     game.calculateBuffs();
 
@@ -63,22 +62,25 @@ game.getTowerAt = function (cx, cy) {
 
 game.sellTower = function (tower) {
     // Pfad freigeben
-    game.PFgrid.setWalkableAt(tower.cx, tower.cy, true);
-    game.path = game.findPath();
-    game.drawPath();
+    if (tower.type.isBlocking) {
+        game.PFgrid.setWalkableAt(tower.cx, tower.cy, true);
+        game.path = game.findPath();
+        game.drawPath();
+    }
     game.addCash(tower.type.sellPrice);
     game.deleteTower(tower);
 };
 
 game.deleteTower = function (tower) {
-    if("freqMulti" in tower.type || "powerMulti" in tower.type || "radiusMulti" in tower.type){
+    if (isBuffTower(tower)) {
         game.calculateBuffs();
         game.buffColGrid.deleteTower(tower);
+    } else {
+        game.collGrid.deleteTower(tower);
     }
 
-    // Aus Kollisionsberechnung entfernen
     game.towers.remove(tower);
-    game.collGrid.deleteTower(tower);
+
     // Aufräumen
     tower.destroy();
 };
@@ -86,33 +88,37 @@ game.deleteTower = function (tower) {
 game.upgradeTower = function (tower) {
     var nextType = tower.type.next;
 
-    if(!game.hasCash(nextType.price)) return;
+    if (!game.hasCash(nextType.price)) return;
     game.removeCash(nextType.price);
-    
+
     game.deleteTower(tower);
-    return game.addTowerAt(nextType, tower.cx, tower. cy);
+    return game.addTowerAt(nextType, tower.cx, tower.cy);
 };
 
 
-game.calculateBuffs = function(){
-    var buffTowers;
+game.calculateBuffs = function () {
     var towers = game.towers.getArray();
+    var tower;
+    var buffTowers;
     for (var i = 0; i < towers.length; i++) {
-        if("power" in towers[i].type){
-            towers[i].powerMulti = 1;
-            towers[i].freqMulti  = 1;
-            towers[i].radiusMulti = 1;
+        tower = towers[i];
+        if (!isBuffTower(towers)) {
+            tower.powerMulti = 1;
+            tower.freqMulti = 1;
+            tower.radiusMulti = 1;
 
-            buffTowers = game.buffColGrid.getCollisionsAt(towers[i].cx,towers[i].cy).getArray();
-            for(var j=0;j<buffTowers.length;j++){
-                if("powerMulti" in buffTowers[j].type)
-                    towers[i].powerMulti += buffTowers[j].type.powerMulti;
+            buffTowers = game.buffColGrid.getCollisionsAt(tower.cx, tower.cy).getArray();
 
-                if("freqMulti" in buffTowers[j].type)
-                    towers[i].freqMulti += buffTowers[j].type.freqMulti;
-
-                if("radiusMulti" in buffTowers[j].type)
-                    towers[i].radiusMulti += buffTowers[j].type.radiusMulti;
+            for (var j = 0; j < buffTowers.length; j++) {
+                if ("powerAdd" in buffTowers[j].type) {
+                    tower.powerMulti += buffTowers[j].type.powerAdd;
+                }
+                if ("freqAdd" in buffTowers[j].type) {
+                    tower.freqMulti += buffTowers[j].type.freqAdd;
+                }
+                if ("radiusAdd" in buffTowers[j].type) {
+                    tower.radiusMulti += buffTowers[j].type.radiusAdd;
+                }
             }
         }
     }
@@ -129,6 +135,10 @@ var randomTowers = function () {
     }
 };
 
+var isBuffTower = function (tower) {
+    return tower.type === towerTypes[6];
+};
+
 // Allgemeiner Tower Konstruktor
 var Tower = function (type, cx, cy) {
     this.type = type;
@@ -139,9 +149,9 @@ var Tower = function (type, cx, cy) {
     this.x = utils.cell2Pos(cx);
     this.y = utils.cell2Pos(cy);
 
-    this.radiusMulti=1;
-    this.freqMulti=1;
-    this.powerMulti=1;
+    this.radiusMulti = 1;
+    this.freqMulti = 1;
+    this.powerMulti = 1;
 
     this.spr = new PIXI.Sprite(this.type.tex);
     this.spr.anchor.set(0.5);
@@ -157,11 +167,18 @@ Tower.prototype.destroy = function () {
     game.towersCon.removeChild(this.spr);
     this.spr.destroy();
 };
+// Funktionen, welche alle Tower teilen
 Tower.prototype.isInRadius = function (dist) {
     return dist <= utils.cell2Pos(this.type.radius);
 };
 Tower.prototype.angleToMob = function (mob) {
     return Math.atan2(mob.y - this.y, mob.x - this.x);
+};
+Tower.prototype.getFreq = function () {
+    return this.type.freq * this.freqMulti;
+};
+Tower.prototype.getPower = function () {
+    return this.type.power * this.powerMulti;
 };
 Tower.prototype.update = function () {};
 Tower.prototype.beforeCollide = function () {};
@@ -202,8 +219,6 @@ towerTypes[0] = {
     desc: "Helps you maze.",
     level: 0,
     isBlocking: true,
-    radius: 0,
-    power: 0,
     price: 10,
     sellPrice: 5,
     tex: null,
@@ -216,16 +231,16 @@ towerTypes[1] = {
     level: 0,
     isBlocking: true,
     radius: 2,
+    freq: 7,
+    power: 5,
     price: 15,
     sellPrice: 50,
     tex: null,
     shotTex: null,
-    power: 5,
-    freq: 7,
     init: function () {
         this.focus = null;
         this.dist = 0;
-        this.reload = this.type.freq;
+        this.reload = this.getFreq();
         this.aimFunc = aimFuncs.first;
 
         this.shotSpr = new PIXI.Sprite(this.type.shotTex);
@@ -264,10 +279,10 @@ towerTypes[1] = {
         },
         afterCollide: function () {
             if (this.reload <= 0) {
-                this.reload = this.type.freq;
+                this.reload = this.getFreq();
             }
             if (this.focus !== null) {
-                this.focus.hit(this.type.power, this);
+                this.focus.hit(this.getPower(), this);
                 this.spr.texture = this.type.tex2;
                 this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
                 this.shotSpr.scale.x = this.dist;
@@ -284,16 +299,16 @@ towerTypes[2] = {
     level: 1,
     isBlocking: true,
     radius: 7,
+    freq: 50,
+    power: 50,
     price: 500,
     sellPrice: 300,
     tex: null,
     shotTex: null,
-    power: 50,
-    freq: 50,
     init: function () {
         this.focus = null;
         this.dist = 0;
-        this.reload = this.type.freq;
+        this.reload = this.getFreq();
         this.aimFunc = aimFuncs.first;
 
         this.shotSpr = new PIXI.Sprite(this.type.shotTex);
@@ -329,10 +344,10 @@ towerTypes[2] = {
         },
         afterCollide: function () {
             if (this.reload <= 0) {
-                this.reload = this.type.freq;
+                this.reload = this.getFreq();
             }
             if (this.focus !== null) {
-                this.focus.hit(this.type.power, this);
+                this.focus.hit(this.getPower(), this);
                 this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
                 this.shotSpr.scale.x = this.dist;
                 this.shotSpr.scale.y = 1;
@@ -347,14 +362,14 @@ towerTypes[3] = {
     level: 0,
     isBlocking: false,
     radius: 0.4,
+    power: 10,
     price: 100,
     sellPrice: 10,
     tex: null,
-    power: 10,
     init: function () {},
     extend: {
         collide: function (mob, dist) {
-            mob.hit(this.type.power, this);
+            mob.hit(this.getPower(), this);
         }
     }
 };
@@ -365,15 +380,15 @@ towerTypes[4] = {
     level: 0,
     isBlocking: true,
     radius: 1.5,
+    freq: 20,
+    power: 100,
     price: 100,
     sellPrice: 10,
     tex: null,
-    power: 100,
-    freq: 20,
     init: function () {
         this.focus = null;
         this.dist = 0;
-        this.reload = this.type.freq;
+        this.reload = this.getFreq();
         this.shooting = false;
 
         this.shotSpr = new PIXI.Sprite(this.type.shotTex);
@@ -410,12 +425,12 @@ towerTypes[4] = {
             if (this.isInRadius(dist)) {
                 this.shooting = true;
                 this.spr.texture = this.type.tex2;
-                mob.hit(this.type.power, this);
+                mob.hit(this.getPower(), this);
             }
         },
         afterCollide: function () {
             if (this.reload <= 0) {
-                this.reload = this.type.freq;
+                this.reload = this.getFreq();
             }
         }
     }
@@ -427,17 +442,17 @@ towerTypes[5] = {
     level: 0,
     isBlocking: true,
     radius: 5,
+    freq: 15,
+    power: 2,
     price: 500,
     sellPrice: 300,
     tex: null,
     shotTex: null,
-    power: 2,
-    freq: 15,
     init: function () {
         this.focus = null;
         this.dist = 0;
         this.texCounter = 0;
-        this.reload = this.type.freq;
+        this.reload = this.getFreq();
         this.aimFunc = aimFuncs.first;
 
         this.shotSpr = new PIXI.Sprite(this.type.shotTex[0]);
@@ -474,10 +489,10 @@ towerTypes[5] = {
         },
         afterCollide: function () {
             if (this.reload <= 0) {
-                this.reload = this.type.freq;
+                this.reload = this.getFreq();
             }
             if (this.focus !== null) {
-                this.focus.hit(this.type.power, this);
+                this.focus.hit(this.type.getPower(), this);
                 this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
                 this.shotSpr.width = this.dist;
                 this.shotSpr.scale.y = 1;
@@ -498,50 +513,35 @@ towerTypes[6] = {
     sellPrice: 300,
     tex: null,
     shotTex: null,
-    powerMulti:0.1,
-    freqMulti:0.1,
-    radiusMulti:0.1,
-
+    powerAdd: 0.1,
+    freqAdd: 0.1,
+    radiusAdd: 0.1,
     init: function () {
         this.focus = null;
         this.dist = 0;
         this.texCounter = 0;
         this.animUp = true;
         this.animCounter = 0;
-
-        //set multiplier
-
-
     },
     extend: {
         destroy: function () {
             Tower.prototype.destroy.call(this);
         },
         update: function () {
-            if(this.animCounter ===5){
+            if ((this.animCounter = (this.animCounter + 1) % 15) === 0) {
                 this.animCounter = 0;
 
-                if(this.animUp){
+                if (this.animUp) {
                     this.texCounter++;
-                    if(this.texCounter >3)
+                    if (this.texCounter > 3)
                         this.animUp = false;
-                }
-                else{
+                } else {
                     this.texCounter--;
-                    if(this.texCounter < 1)
+                    if (this.texCounter < 1)
                         this.animUp = true;
                 }
-                this.spr.texture = this.type.texAnim[this.texCounter]; 
+                this.spr.texture = this.type.texAnim[this.texCounter];
             }
-            else{
-                this.animCounter++;
-            }
-        },
-        beforeCollide: function () {
-        },
-        collide: function (mob, dist) {
-        },
-        afterCollide: function () {
         }
     }
 };
