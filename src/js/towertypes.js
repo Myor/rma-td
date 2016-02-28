@@ -280,7 +280,7 @@ towerTypes[5] = {
                 this.reload = this.getFreq();
             }
             if (this.focus !== null) {
-                this.focus.hit(this.type.getPower(), this);
+                this.focus.hit(this.getPower(), this);
                 this.spr.rotation = this.shotSpr.rotation = this.angleToMob(this.focus);
                 this.shotSpr.width = this.dist;
                 this.shotSpr.scale.y = 1;
