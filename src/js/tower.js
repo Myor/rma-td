@@ -73,11 +73,10 @@ game.sellTower = function (tower) {
 
 game.deleteTower = function (tower) {
     if (isBuffTower(tower)) {
-        game.calculateBuffs();
         game.buffColGrid.deleteTower(tower);
-    } else {
-        game.collGrid.deleteTower(tower);
+        game.calculateBuffs();
     }
+    game.collGrid.deleteTower(tower);
 
     game.towers.remove(tower);
 
