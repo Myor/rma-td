@@ -38,6 +38,28 @@ button:active {
     max-width: 100%;
 }
 
+#gameLife,
+#gameCash {
+    pointer-events: none;
+    position: absolute;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 3px;
+    padding-left: 17px;
+    line-height: 16px;
+    color: white;
+    background-image: url("../assets/icons16.png");
+    background-repeat: no-repeat;
+}
+#gameLife {
+    top: 10px;
+    background-position-y: 0;
+}
+#gameCash {
+    top: 35px;
+    background-position-y: -16px;
+}
+
 
 #towerMenu,
 #towerInfo,
