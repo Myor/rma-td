@@ -38,7 +38,6 @@ button:active {
     font-family: sans-serif;;
     text-align:center;
     position: relative;
-    top:25%;
     height:75%;
     width: 384px;
     max-width: 100%;
@@ -298,6 +297,7 @@ button:active {
     position: absolute;
     bottom: 0px;
     right:0px;
+    left: 74px;
 }
 
 #pauseGame{

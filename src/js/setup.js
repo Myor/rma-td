@@ -44,8 +44,7 @@ game.setup = function () {
         game.exitGame();
     });
     // Zum testen
-    game.map = game.maps[0];
-    game.startGame();
+
 };
 
 game.startGame = function () {

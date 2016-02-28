@@ -1,9 +1,6 @@
 "use strict";
 
 game.setupInput = function () {
-    //PlayButton
-    playButton.addEventListener("click", ui.showGame);
-
     // Kein Kontextmenü
     game.canvasEl.addEventListener("contextmenu", function (e) {
         e.preventDefault();
@@ -75,14 +72,20 @@ var tAimBtnList = tAimDiv.querySelectorAll("button");
 var tSellBtn = towerSelectedInfo.querySelector(".tSellBtn");
 var tSellPrice = towerSelectedInfo.querySelector(".tSellPrice");
 
-var ui = {};
-// ===== Menüs =====
-
-ui.showGame = function (){
+var showGame = function (){
     mainMenu.classList.add("hidden");
     gameWrapper.classList.remove("hidden");
 
+    game.map = game.maps[0];
+    game.startGame();
 };
+
+//PlayButton ausserhalb von setupInput
+playButton.addEventListener("click", showGame);
+
+var ui = {};
+// ===== Menüs =====
+
 
 ui.showMenu = function () {
     game.setSelectedTower(null);
