@@ -97,22 +97,22 @@ game.upgradeTower = function (tower) {
 game.calculateBuffs = function(){
     var buffTowers;
     var towers = game.towers.getArray();
-    for (i = 0; i < towers.length; i++) {
+    for (var i = 0; i < towers.length; i++) {
         if("power" in towers[i].type){
             towers[i].powerMulti = 1;
             towers[i].freqMulti  = 1;
             towers[i].radiusMulti = 1;
 
             buffTowers = game.buffColGrid.getCollisionsAt(towers[i].cx,towers[i].cy).getArray();
-            for(var i=0;i<buffTowers.length;i++){
-                if("powerMulti" in buffTowers[0].type)
-                    towers[i].powerMulti += buffTowers[0].type.powerMulti;
+            for(var j=0;j<buffTowers.length;j++){
+                if("powerMulti" in buffTowers[j].type)
+                    towers[i].powerMulti += buffTowers[j].type.powerMulti;
 
-                if("freqMulti" in buffTowers[0].type)
-                    towers[i].freqMulti += buffTowers[0].type.freqMulti;
+                if("freqMulti" in buffTowers[j].type)
+                    towers[i].freqMulti += buffTowers[j].type.freqMulti;
 
-                if("radiusMulti" in buffTowers[0].type)
-                    towers[i].radiusMulti += buffTowers[0].type.radiusMulti;
+                if("radiusMulti" in buffTowers[j].type)
+                    towers[i].radiusMulti += buffTowers[j].type.radiusMulti;
             }
         }
     }
@@ -493,7 +493,7 @@ towerTypes[6] = {
     desc: "Boosts stats of surrounding towers",
     level: 0,
     isBlocking: true,
-    radius: 5,
+    radius: 1.5,
     price: 500,
     sellPrice: 300,
     tex: null,
