@@ -11,85 +11,96 @@
         <script src="js/vendor/pathfinding-browser.js"></script>
     </head>
     <body>
-        <div id="mainMenu" style="display: none">
-            <button data-map="0">Map 0</button>
-            <button data-map="1">Map 1</button>
-        </div>
-        <div><button id="exitBtn">Exit</button></div>
-        Waves
-        <div id="waves">
-            <button class="wave" data-id="0">0</button>
-            <button class="wave" data-id="1">1</button>
-        </div>
-        <button id="towerRand">Random Towers</button>
-        <div id="gameWrapper">
-            <div id="gameLife"></div>
-            <div id="gameCash"></div>
-            <div class="hideLeft" id="towerMenu">
-                <div id="towers">
-                    <div class="towerDiv">
-                        <button class="tower" data-type="0">0</button>
-                        <button class="towerInfo" data-type="0">i</button>
-                    </div>
-                    <div class="towerDiv">
-                        <button class="tower" data-type="1">1</button>
-                        <button class="towerInfo" data-type="1">i</button>
-                    </div>
-                    <div class="towerDiv">
-                        <button class="tower" data-type="2">2</button>
-                        <button class="towerInfo" data-type="2">i</button>
-                    </div>
-                    <div class="towerDiv">
-                        <button class="tower" data-type="3">3</button>
-                        <button class="towerInfo" data-type="3">i</button>
-                    </div>
-                    <div class="towerDiv">
-                        <button class="tower" data-type="4">4</button>
-                        <button class="towerInfo" data-type="4">i</button>
-                    </div>
-                    <div class="towerDiv">
-                        <button class="tower" data-type="5">5</button>
-                        <button class="towerInfo" data-type="5">i</button>
-                    </div>
-                    <div class="towerDiv">
-                        <button class="tower" data-type="6">6</button>
-                        <button class="towerInfo" data-type="6">i</button>
-                    </div>
-                </div>
+        <div class="frameT">
+            <div class="frameTC">
+                
             </div>
-            <div class="infoHide" id="towerInfo"></div>
-            <div class="hideRight" id="towerSelectedInfo">
-                <div class="tName"></div>
-                <div>Kills: <span class="tKillCount"></span></div>
-                <div>Damage: <span class="tPower"></span></div>
-                <div>Reload: <span class="tFreq"></span></div>
-                <div>Radius: <span class="tRadius"></span></div>
-                <div class="tUpgrade">
-                    <div class="tCurrentDiv">Level <span class="tCurrentLvl"></span></div>
-                    <button class="tNextBtn">
-                        Level <span class="tNextLvl"></span><br>
-                        <span class="tNextPrice"></span>$
-                    </button>
+        </div>
+        <div id="content">
+            <div id="mainMenu">
+                    <button id="playGame" disabled="disabled">Play Game</button>
+            </div>
+            <div style="display: none">
+                <div><button id="exitBtn">Exit</button></div>
+                Waves
+                <div id="waves">
+                    <button class="wave" data-id="0">0</button>
+                    <button class="wave" data-id="1">1</button>
+                </div>
+                <button id="towerRand">Random Towers</button>
+            </div>
+            <div id="gameWrapper" class="hidden">
+
+                <div id="gameLife"></div>
+                <div id="gameCash"></div>
+
+                <div class="hideLeft" id="towerMenu">
+                    <div id="towers">
+                        <div class="towerDiv">
+                            <button class="tower" data-type="0">0</button>
+                            <button class="towerInfo" data-type="0">i</button>
+                        </div>
+                        <div class="towerDiv">
+                            <button class="tower" data-type="1">1</button>
+                            <button class="towerInfo" data-type="1">i</button>
+                        </div>
+                        <div class="towerDiv">
+                            <button class="tower" data-type="2">2</button>
+                            <button class="towerInfo" data-type="2">i</button>
+                        </div>
+                        <div class="towerDiv">
+                            <button class="tower" data-type="3">3</button>
+                            <button class="towerInfo" data-type="3">i</button>
+                        </div>
+                        <div class="towerDiv">
+                            <button class="tower" data-type="4">4</button>
+                            <button class="towerInfo" data-type="4">i</button>
+                        </div>
+                        <div class="towerDiv">
+                            <button class="tower" data-type="5">5</button>
+                            <button class="towerInfo" data-type="5">i</button>
+                        </div>
+                        <div class="towerDiv">
+                            <button class="tower" data-type="6">6</button>
+                            <button class="towerInfo" data-type="6">i</button>
+                        </div>
+                    </div>
                 </div>
 
-                <button class="tSellBtn">Verkaufen<br>(+<span class="tSellPrice"></span>$)</button> 
-                <div class="tAimDiv">
-                    <button data-aim="first">First</button>
-                    <button data-aim="last">Last</button>
-                    <button data-aim="strong">Strong</button>
-                    <button data-aim="weak">Weak</button>
-                    <button data-aim="close">Close</button>
+                <div class="infoHide" id="towerInfo"></div>
+
+                <div class="hideRight" id="towerSelectedInfo">
+                    <div class="tName"></div>
+                    <div>Kills: <span class="tKillCount"></span></div>
+                    <div>Damage: <span class="tPower"></span></div>
+                    <div>Reload: <span class="tFreq"></span></div>
+                    <div>Radius: <span class="tRadius"></span></div>
+                    <div class="tUpgrade">
+                        <div class="tCurrentDiv">Level <span class="tCurrentLvl"></span></div>
+                        <button class="tNextBtn">
+                            Level <span class="tNextLvl"></span><br>
+                            <span class="tNextPrice"></span>$
+                        </button>
+                    </div>
+
+                    <button class="tSellBtn">Verkaufen<br>(+<span class="tSellPrice"></span>$)</button> 
+                    <div class="tAimDiv">
+                        <button data-aim="first">First</button>
+                        <button data-aim="last">Last</button>
+                        <button data-aim="strong">Strong</button>
+                        <button data-aim="weak">Weak</button>
+                        <button data-aim="close">Close</button>
+                    </div>
+                </div>
+                <div id="gameField"></div>
+                <div id="menu">
+                    <button id="showTowers"></button>
+                    <button id="cancelPlace" disabled></button>
+                    <button id="nextWave"></button>
+                    <button id="pauseGame"></button>
                 </div>
             </div>
-            <div id="gameField"></div>
-            <div id="menu">
-                <button id="showTowers">Towers</button>
-                <button id="cancelPlace" disabled></button>
-                <button id="nextWave"></button>
-                <button id="pauseGame"></button>
-            </div>
         </div>
-
         <script src="js/utils.js"></script>
         <script src="js/setup.js"></script>
         <script src="js/maps.js"></script>

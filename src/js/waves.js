@@ -64,11 +64,11 @@ waves[8] = [
 
 
 game.startNextWave = function () {
-    game.startWave(game.currentWaveID + 1);
+    game.startWave(game.currentWaveID);
+    game.currentWaveID++;
 };
 
 game.startWave = function (id) {
-    game.currentWaveID = id;
     game.isWaveActive = true;
     var groups = waves[id];
     for (var i = 0; i < groups.length; i++) {

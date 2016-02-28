@@ -29,13 +29,16 @@ var mainMenu = document.getElementById("mainMenu");
 var exitBtn = document.getElementById("exitBtn");
 
 game.setup = function () {
+
+    document.getElementById("playGame").disabled = false;
+    /*
     mainMenu.style.display = "";
     mainMenu.addEventListener("click", function (e) {
         if (!e.target.matches("button")) return;
 
         game.map = game.maps[e.target.dataset.map];
         game.startGame();
-    });
+    });*/
 
     exitBtn.addEventListener("click", function () {
         game.exitGame();

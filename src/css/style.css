@@ -25,12 +25,43 @@ button:active {
     display: none;
 }
 
+#content{
+    background-color: #efefef;    
+    height:100vh;
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#mainMenu{
+    font-family: sans-serif;;
+    text-align:center;
+    position: relative;
+    top:25%;
+    height:75%;
+    width: 384px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+#playGame{
+    font-size: 2vh;
+    margin: 0 auto;
+}
+
 #gameWrapper {
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     overflow: hidden;
     position: relative;
     width: 384px;
     max-width: 100%;
-    /*margin: 0 auto;*/
+    margin: 0 auto;
+}
+
+#gameField{
 }
 
 #gameField canvas {
@@ -56,7 +87,8 @@ button:active {
     background-position-y: 0;
 }
 #gameCash {
-    top: 35px;
+    top: 10px;
+    right: 10px;
     background-position-y: -16px;
 }
 
@@ -229,20 +261,36 @@ button:active {
 /* ===== Menü ===== */
 
 #menu {
-    background-color: grey;
 }
 
-#showTowers {
-    margin: 4px;
+
+
+#nextWave{
+    background-color: transparent;
+    background-image: url(../assets/nWave.png);
+    background-position: -0px 0px;
+    position: absolute;
+    border:0;
+    width:72px;
+    height:32px;
+    bottom: 0px;
+    right: 0px;
 }
 
+#showTowers,
 #cancelPlace,
-#nextWave,
 #pauseGame {
     background-color: transparent;
     width: 32px;
     height: 32px;
     border: 0;
+}
+
+#showTowers {
+    background-image: url(../assets/buy.png);
+    position: absolute;
+    bottom: 0px;
+    left: 5px;
 }
 
 #cancelPlace {
@@ -252,20 +300,12 @@ button:active {
     right:0px;
 }
 
-#nextWave{
-    background-image: url(../assets/buttonsSheet32.png);
-    background-position: -35px 0px;
-    position: absolute;
-    bottom: 0px;
-    right: 34px;
-}
-
 #pauseGame{
     background-image: url(../assets/buttonsSheet32.png);
     background-position: -102px 0px;
     position: absolute;
     bottom: 0px;
-    right:68px;
+    left:38px;
 }
 
 #cancelPlace:disabled {

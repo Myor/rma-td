@@ -1,6 +1,8 @@
 "use strict";
 
 game.setupInput = function () {
+    //PlayButton
+    playButton.addEventListener("click", ui.showGame);
 
     // Kein Kontextmenü
     game.canvasEl.addEventListener("contextmenu", function (e) {
@@ -10,7 +12,6 @@ game.setupInput = function () {
     game.canvasEl.addEventListener("click", clickHandler);
     game.canvasEl.addEventListener("touchend", touchHandler);
     // Mob spawn
-    waveSpawnBtns.addEventListener("click", waveHandler);
     document.addEventListener("keypress", keyHandler);
     // Tower spawn
     towerListBtns.addEventListener("click", towerBtnsHandler);
@@ -22,6 +23,8 @@ game.setupInput = function () {
     // Tower upgraden
     tNextBtn.addEventListener("click", upgradeHandler);
 
+    //Nächste Wave enquen
+    nextWaveButton.addEventListener("click", waveHandler);
     //TowerMenu
     showTowersBtn.addEventListener("click", ui.showMenu);
 
@@ -43,14 +46,20 @@ game.removeInput = function () {
 
 // Alle statischen Elemente
 var waveSpawnBtns = document.getElementById("waves");
+var gameWrapper = document.getElementById("gameWrapper");
 // Menüs
+var mainMenu = document.getElementById("mainMenu");
 var towerMenu = document.getElementById("towerMenu");
 var towerInfo = document.getElementById("towerInfo");
 var towerSelectedInfo = document.getElementById("towerSelectedInfo");
 // Buttons
+var nextWaveButton = document.getElementById("nextWave");
+var pauseButton = document.getElementById("pauseGame"); 
+var playButton = document.getElementById("playGame");
 var showTowersBtn = document.getElementById("showTowers");
 var towerListBtns = document.getElementById("towers");
 var cancelPlaceBtn = document.getElementById("cancelPlace");
+
 // Selected-infos
 var tName = towerSelectedInfo.querySelector(".tName");
 var tKillCount = towerSelectedInfo.querySelector(".tKillCount");
@@ -68,6 +77,12 @@ var tSellPrice = towerSelectedInfo.querySelector(".tSellPrice");
 
 var ui = {};
 // ===== Menüs =====
+
+ui.showGame = function (){
+    mainMenu.classList.add("hidden");
+    gameWrapper.classList.remove("hidden");
+
+};
 
 ui.showMenu = function () {
     game.setSelectedTower(null);
@@ -175,10 +190,7 @@ var clickAt = function (x, y) {
 
 // ===== Spawns =====
 var waveHandler = function (e) {
-    if (!e.target.matches("button.wave")) return;
-    var id = Number(e.target.dataset.id);
-
-    game.startWave(id);
+    game.startNextWave();
 };
 var keyHandler = function (e) {
     var id = Number(String.fromCharCode(e.charCode)) - 1;
