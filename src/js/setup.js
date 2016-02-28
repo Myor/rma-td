@@ -76,6 +76,7 @@ game.startGame = function () {
     game.scale = game.resX / rec.width;
 
     game.collGrid = new CollisionGrid(game.cellsX, game.cellsY);
+    game.buffColGrid = new CollisionGrid(game.cellsX, game.cellsY);
 
     var stage = new PIXI.Container();
     game.stage = stage;

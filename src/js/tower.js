@@ -35,7 +35,16 @@ game.addTowerAt = function (type, cx, cy) {
 
     var tower = new Tower(type, cx, cy);
     game.towers.add(tower);
-    game.collGrid.addTower(tower);
+
+    if(type === towerTypes[6]){
+        game.buffColGrid.addTower(tower);
+    }
+    else{
+        game.collGrid.addTower(tower);
+    }
+
+    game.calculateBuffs();
+
     // Blockieren, wenn nötig
     if (type.isBlocking) {
         game.PFgrid.setWalkableAt(cx, cy, false);
@@ -62,6 +71,11 @@ game.sellTower = function (tower) {
 };
 
 game.deleteTower = function (tower) {
+    if("freqMulti" in tower.type || "powerMulti" in tower.type || "radiusMulti" in tower.type){
+        game.calculateBuffs();
+        game.buffColGrid.deleteTower(tower);
+    }
+
     // Aus Kollisionsberechnung entfernen
     game.towers.remove(tower);
     game.collGrid.deleteTower(tower);
@@ -77,6 +91,31 @@ game.upgradeTower = function (tower) {
     
     game.deleteTower(tower);
     return game.addTowerAt(nextType, tower.cx, tower. cy);
+};
+
+
+game.calculateBuffs = function(){
+    var buffTowers;
+    var towers = game.towers.getArray();
+    for (i = 0; i < towers.length; i++) {
+        if("power" in towers[i].type){
+            towers[i].powerMulti = 1;
+            towers[i].freqMulti  = 1;
+            towers[i].radiusMulti = 1;
+
+            buffTowers = game.buffColGrid.getCollisionsAt(towers[i].cx,towers[i].cy).getArray();
+            for(var i=0;i<buffTowers.length;i++){
+                if("powerMulti" in buffTowers[0].type)
+                    towers[i].powerMulti += buffTowers[0].type.powerMulti;
+
+                if("freqMulti" in buffTowers[0].type)
+                    towers[i].freqMulti += buffTowers[0].type.freqMulti;
+
+                if("radiusMulti" in buffTowers[0].type)
+                    towers[i].radiusMulti += buffTowers[0].type.radiusMulti;
+            }
+        }
+    }
 };
 
 var randomTowers = function () {
@@ -99,6 +138,10 @@ var Tower = function (type, cx, cy) {
     this.cy = cy;
     this.x = utils.cell2Pos(cx);
     this.y = utils.cell2Pos(cy);
+
+    this.radiusMulti=1;
+    this.freqMulti=1;
+    this.powerMulti=1;
 
     this.spr = new PIXI.Sprite(this.type.tex);
     this.spr.anchor.set(0.5);
@@ -455,14 +498,20 @@ towerTypes[6] = {
     sellPrice: 300,
     tex: null,
     shotTex: null,
-    power: 0,
-    freq: 15,
+    powerMulti:0.1,
+    freqMulti:0.1,
+    radiusMulti:0.1,
+
     init: function () {
         this.focus = null;
         this.dist = 0;
         this.texCounter = 0;
         this.animUp = true;
         this.animCounter = 0;
+
+        //set multiplier
+
+
     },
     extend: {
         destroy: function () {
@@ -498,3 +547,4 @@ towerTypes[6] = {
 };
 
 towerTypes[1].next = towerTypes[2];
+

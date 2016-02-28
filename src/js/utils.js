@@ -161,7 +161,6 @@ CollisionGrid.prototype.addTower = function (tower) {
             }
         }
     }
-
 };
 
 CollisionGrid.prototype.deleteTower = function (tower) {
@@ -194,3 +193,4 @@ CollisionGrid.prototype.lockAt = function (cx, cy) {
 CollisionGrid.prototype.islockedAt = function (cx, cy) {
     return this.towerGrid[cx][cy] === false;
 };
+
