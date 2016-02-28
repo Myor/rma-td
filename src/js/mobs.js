@@ -1,93 +1,5 @@
 "use strict";
-// TODO Some more of dem sweet mobs!
-var mobTypes = [];
 
-// TODO Mob wird langsamer, je größer speed lol
-// inverse verwenden oder so
-mobTypes[0] = {
-    name: "Man0",
-    cash: 5,
-    life: 20,
-    speed: 800,
-    tex: null
-};
-mobTypes[1] = {
-    name: "Man1",
-    cash: 6,
-    life: 30,
-    speed: 700,
-    tex: null
-};
-mobTypes[2] = {
-    name: "Man2",
-    cash: 8,
-    life: 40,
-    speed: 800,
-    tex: null
-};
-mobTypes[3] = {
-    name: "Man3",
-    cash: 11,
-    life: 50,
-    speed: 800,
-    tex: null
-};
-mobTypes[4] = {
-    name: "Man4",
-    cash: 14,
-    life: 60,
-    speed: 500,
-    tex: null
-};
-mobTypes[5] = {
-    name: "Man4",
-    cash: 18,
-    life: 75,
-    speed: 600,
-    tex: null
-};
-mobTypes[6] = {
-    name: "Tank1",
-    cash: 22,
-    life: 90,
-    speed: 700,
-    tex: null
-};
-mobTypes[7] = {
-    name: "Tank2",
-    cash: 28,
-    life: 120,
-    speed: 800,
-    tex: null
-};
-mobTypes[8] = {
-    name: "Jeep",
-    cash: 36,
-    life: 150,
-    speed: 800,
-    tex: null
-};
-mobTypes[9] = {
-    name: "Heli1",
-    cash: 36,
-    life: 150,
-    speed: 900,
-    tex: null
-};
-mobTypes[10] = {
-    name: "Heli2",
-    cash: 36,
-    life: 150,
-    speed: 900,
-    tex: null
-};
-mobTypes[11] = {
-    name: "Heli3",
-    cash: 36,
-    life: 150,
-    speed: 900,
-    tex: null
-};
 // Konstruktor erstellt "unsichtbaren" Mob
 var Mob = function () {
     this.type = null;
@@ -101,6 +13,7 @@ var Mob = function () {
     game.mobsCon.addChild(this.spr);
     game.mobsBarCon.addChild(this.barSpr);
 };
+
 // Alles leeren und sichtbar machen (textur tauschen)
 Mob.prototype.init = function () {
     this.spr.texture = this.type.tex;
@@ -115,12 +28,14 @@ Mob.prototype.init = function () {
     this.covered = 0;
     this.age = 0;
 };
+
 // Unsichtbar machen
 Mob.prototype.kill = function () {
     this.type = null;
     this.spr.texture = game.tex.mobTexEmpty;
     this.barSpr.texture = game.tex.mobBarTexEmpty;
 };
+
 // Komplett löschen
 Mob.prototype.destroy = function () {
     this.type = null;
@@ -129,6 +44,7 @@ Mob.prototype.destroy = function () {
     this.spr.destroy();
     this.barSpr.destroy();
 };
+
 // Mob-daten bis age berechnen
 Mob.prototype.simulateToAge = function (age) {
     // Zurückgelegter Weg
@@ -160,6 +76,7 @@ Mob.prototype.simulateToAge = function (age) {
     this.dirY = dirY;
     this.covered = covered;
 };
+
 // Daten auf Sprites setzten
 Mob.prototype.update = function () {
     this.spr.x = this.x + game.cellCenter;
@@ -169,6 +86,7 @@ Mob.prototype.update = function () {
     this.barSpr.y = this.y;
     this.barSpr.scale.x = this.life / this.type.life;
 };
+
 Mob.prototype.isKilled = function () {
     return this.type === null;
 };
