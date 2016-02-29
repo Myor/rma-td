@@ -2,20 +2,25 @@
 
 // Alle statischen Elemente
 var gameWrapper = document.getElementById("gameWrapper");
-// Menüs
+// Game Menüs
 var mainMenu = document.getElementById("mainMenu");
 var towerMenu = document.getElementById("towerMenu");
 var towerInfo = document.getElementById("towerInfo");
 var towerSelectedInfo = document.getElementById("towerSelectedInfo");
-// Buttons
+// Buttons Game
 var nextWaveButton = document.getElementById("nextWave");
 var pauseButton = document.getElementById("pauseGame"); 
 var fastForwardButton = document.getElementById("fastForward");
-var playButton = document.getElementById("playGame");
 var showTowersBtn = document.getElementById("showTowers");
 var towerListBtns = document.getElementById("towers");
 var cancelPlaceBtn = document.getElementById("cancelPlace");
 var exitBtn = document.getElementById("exitBtn");
+// Menü
+var playButton = document.getElementById("playGame");
+var mapSelectDiv = document.getElementById("mapSelect");
+var map1Button = document.getElementById("playMap1");
+var map2Button = document.getElementById("playMap2");
+var inputGameMode1 = document.getElementById("inputGameMode1");
 
 // Selected-infos
 var tName = towerSelectedInfo.querySelector(".tName");
@@ -33,6 +38,38 @@ var tSellBtn = towerSelectedInfo.querySelector(".tSellBtn");
 var tSellPrice = towerSelectedInfo.querySelector(".tSellPrice");
 
 
+var showMapSelect = function () {
+    mapSelectDiv.classList.remove("hideMapSelect");
+};
+
+var startMap1 = function () {
+    game.map = game.maps[0];
+    setGameMode();
+    showGame();
+};
+
+var startMap2 = function () {
+    game.map = game.maps[1];
+    setGameMode();
+    showGame();
+};
+
+var showGame = function () {
+    mapSelectDiv.classList.add("hideMapSelect");
+    mainMenu.classList.add("hidden");
+    gameWrapper.classList.remove("hidden");
+
+    game.startGame();
+};
+
+var setGameMode = function () {
+    if(inputGameMode1.checked) {
+        game.cash = 2000;
+    } else {
+        game.cash = Infinity;
+    }
+};
+
 // ===== Events dynamisch erstellte Elemente =====
 game.setupInput = function () {
     // Kein Kontextmenü
@@ -42,15 +79,6 @@ game.setupInput = function () {
     // Klick auf Spielfeld
     game.canvasEl.addEventListener("click", clickHandler);
     game.canvasEl.addEventListener("touchend", touchHandler);
-};
-
-
-var showGame = function () {
-    mainMenu.classList.add("hidden");
-    gameWrapper.classList.remove("hidden");
-
-    game.map = game.maps[0];
-    game.startGame();
 };
 
 
@@ -337,7 +365,9 @@ var upgradeHandler = function () {
 
 // ===== Events bei statischen Elementen =====
 // PlayButton
-playButton.addEventListener("click", showGame);
+playButton.addEventListener("click", showMapSelect);
+map1Button.addEventListener("click", startMap1);
+map2Button.addEventListener("click", startMap2);
 // Tower spawn
 towerListBtns.addEventListener("click", towerBtnsHandler);
 cancelPlaceBtn.addEventListener("click", towerCancelHandler);

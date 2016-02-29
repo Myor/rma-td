@@ -31,7 +31,7 @@ button:active {
     display: none;
 }
 
-#content{
+#content {
     background-color: #efefef;    
     height:100vh;
     width:100%;
@@ -40,19 +40,60 @@ button:active {
     justify-content: center;
 }
 
-#mainMenu{
+#mainMenu {
     font-family: sans-serif;;
     text-align:center;
     position: relative;
-    height:75%;
-    width: 384px;
+    overflow: hidden;
+    background-image: url("../assets/header.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    width: 360px;
     max-width: 100%;
-    margin: 0 auto;
+    height: 100%;
 }
 
 #playGame{
-    font-size: 2vh;
-    margin: 0 auto;
+    font-size: 30px;
+    margin-top: 360px;
+}
+
+#mapSelect {
+    height: 200px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #efefef;
+    transition: transform 0.3s;
+    transition-timing-function: ease-out;
+    /*box-shadow: 0 0 10px black;*/
+}
+
+#playMap1,
+#playMap2 {
+    padding: 10px;
+    margin: 10px;
+}
+
+.hideMapSelect {
+    transform: translateY(200px);
+}
+
+.radioGroup input {
+    display: none;
+}
+
+.radioGroup input:checked + label {
+    background-color: red;
+}
+
+.radioGroup label {
+    font-size: 20px;
+    display: block;
+    min-width: 100px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #CACACA;
 }
 
 #gameWrapper {

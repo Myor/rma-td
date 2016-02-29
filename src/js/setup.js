@@ -37,7 +37,7 @@ game.startGame = function () {
 
     game.life = 100;
     game.updateLife();
-    game.cash = 2000;
+//    game.cash = 2000;
     game.updateCash();
 
     // Waves

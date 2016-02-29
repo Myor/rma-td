@@ -8,7 +8,7 @@
         <meta name="format-detection" content="date=no">
         <meta name="format-detection" content="address=no">
         <meta name="format-detection" content="email=no">
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
         <link rel="stylesheet" href="css/style.css">
@@ -19,7 +19,23 @@
     <body>
         <div id="content">
             <div id="mainMenu">
-                    <button id="playGame" disabled="disabled">Play Game</button>
+                <button id="playGame" disabled="disabled">Play Game</button>
+                <div id="mapSelect" class="hideMapSelect">
+                    <div>
+                        <button id="playMap1">Map1</button>
+                        <button id="playMap2">Map2</button>
+                    </div>
+                    <div>
+                        <div class="radioGroup">
+                            <input type="radio" name="inputGameMode" id="inputGameMode1" checked>
+                            <label for="inputGameMode1">Normal</label>
+                        </div>
+                        <div class="radioGroup">
+                            <input type="radio" name="inputGameMode" id="inputGameMode2">
+                            <label for="inputGameMode2">Sandbox</label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="gameWrapper" class="hidden">
