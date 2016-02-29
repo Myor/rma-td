@@ -40,7 +40,6 @@ var gameloop = function (newTime) {
     if (frameTime > 500) {
         // Spikes abfangen
         frameTime = 500;
-        console.warn("clamp frameTime");
     }
     lastTime = newTime;
     accumulator += frameTime;
@@ -50,8 +49,6 @@ var gameloop = function (newTime) {
         simulate(step);
 
         accumulator -= slowStep;
-
-        game.fpsmeter.text = (1000 / frameTime) | 0;
     }
 
     updateAnimation(passed / slowFactor, accumulator / slowFactor);

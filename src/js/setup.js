@@ -115,13 +115,6 @@ game.startGame = function () {
     stage.addChild(game.mobsCon);
     stage.addChild(game.mobsBarCon);
 
-    game.fpsmeter = new PIXI.Text("0", {font: "16px Arial"});
-    stage.addChild(game.fpsmeter);
-
-//    game.testGr = new PIXI.Graphics();
-//    stage.addChild(game.testGr);
-//    game.testGr.beginFill(0xFF00FF);
-
     game.setupMap();
     // Map kann Pfad geändert haben
     game.path = game.findPath();
@@ -129,7 +122,6 @@ game.startGame = function () {
 
     game.setupInput();
     game.startGameLoop();
-//    game.lose();
 };
 
 game.exitGame = function () {
@@ -140,7 +132,6 @@ game.exitGame = function () {
     game.setSelectedTower(null);
 
     // Stage mit allen Inhalten löschen
-    // TODO hier werden auch texturen gelöscht, was bugs erzeugt :-/
     game.stage.destroy(true);
     game.stage = null;
     // Renderer mit Canvas löschen
@@ -152,19 +143,15 @@ game.exitGame = function () {
     game.buffColGrid = null;
 
     game.map = null;
+    
     game.mapCont = null;
-
     game.pathCont = null;
-
     game.shotCon = null;
-
     game.shockCon = null;
-
     game.towersCon = null;
     game.towers = null;
 
     game.selectCircleGr = null;
-
     game.selectGr = null;
 
     game.mobsCon = null;
@@ -173,8 +160,6 @@ game.exitGame = function () {
     game.mobQueue = null;
     game.groupQueue = null;
     game.mobPool = null;
-
-    game.fpsmeter = null;
 
     game.PFgrid = null;
     game.path = null;

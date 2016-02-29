@@ -1,50 +1,6 @@
 "use strict";
 
-game.setupInput = function () {
-    // Kein Kontextmenü
-    game.canvasEl.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-    });
-    // Klick auf Spielfeld
-    game.canvasEl.addEventListener("click", clickHandler);
-    game.canvasEl.addEventListener("touchend", touchHandler);
-    // Tower spawn
-    towerListBtns.addEventListener("click", towerBtnsHandler);
-    cancelPlaceBtn.addEventListener("click", towerCancelHandler);
-    // Tower verkauf
-    tSellBtn.addEventListener("click", sellHandler);
-    // Tower aim setzen
-    tAimDiv.addEventListener("click", setAimHandler);
-    // Tower upgraden
-    tNextBtn.addEventListener("click", upgradeHandler);
-
-    //Nächste Wave enquen
-    nextWaveButton.addEventListener("click", waveHandler);
-    //Spiel Pausieren
-    pauseButton.addEventListener("click", pauseHandler);
-    //TowerMenu
-    showTowersBtn.addEventListener("click", ui.showMenu);
-    //Exit to Menu
-    exitBtn.addEventListener("click", ui.exitToMenu);
-
-};
-
-game.removeInput = function () {
-
-    waveSpawnBtns.removeEventListener("click", waveHandler);
-    document.removeEventListener("keypress", keyHandler);
-
-    towerListBtns.removeEventListener("click", towerBtnsHandler);
-    cancelPlaceBtn.removeEventListener("click", towerCancelHandler);
-
-    tSellBtn.removeEventListener("click", sellHandler);
-    tAimDiv.removeEventListener("click", setAimHandler);
-
-    showTowersBtn.removeEventListener("click", ui.showMenu);
-};
-
 // Alle statischen Elemente
-var waveSpawnBtns = document.getElementById("waves");
 var gameWrapper = document.getElementById("gameWrapper");
 // Menüs
 var mainMenu = document.getElementById("mainMenu");
@@ -75,7 +31,20 @@ var tAimBtnList = tAimDiv.querySelectorAll("button");
 var tSellBtn = towerSelectedInfo.querySelector(".tSellBtn");
 var tSellPrice = towerSelectedInfo.querySelector(".tSellPrice");
 
-var showGame = function (){
+
+// ===== Events dynamisch erstellte Elemente =====
+game.setupInput = function () {
+    // Kein Kontextmenü
+    game.canvasEl.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+    });
+    // Klick auf Spielfeld
+    game.canvasEl.addEventListener("click", clickHandler);
+    game.canvasEl.addEventListener("touchend", touchHandler);
+};
+
+
+var showGame = function () {
     mainMenu.classList.add("hidden");
     gameWrapper.classList.remove("hidden");
 
@@ -83,8 +52,6 @@ var showGame = function (){
     game.startGame();
 };
 
-//PlayButton ausserhalb von setupInput
-playButton.addEventListener("click", showGame);
 
 var ui = {};
 // ===== Menüs =====
@@ -94,11 +61,11 @@ ui.showMenu = function () {
     towerMenu.classList.remove("hideLeft");
 };
 
-ui.exitToMenu = function(){
+ui.exitToMenu = function () {
     mainMenu.classList.remove("hidden");
     gameWrapper.classList.add("hidden");
     game.exitGame();
-}
+};
 
 ui.hideMenu = function () {
     ui.hideInfo();
@@ -182,16 +149,15 @@ var waveHandler = function (e) {
     game.startNextWave();
 };
 
-var pauseHandler = function(){
-    if(game.isPaused === false){
+var pauseHandler = function () {
+    if (game.isPaused === false) {
         game.pauseLoop();
         pauseButton.style.backgroundPosition = "-34px 0px";
-    }
-    else{
+    } else {
         game.resumeLoop();
         pauseButton.style.backgroundPosition = "-102px 0px";
     }
-}
+};
 
 // ===== Event Handler =====
 
@@ -246,7 +212,6 @@ var towerCancelHandler = function () {
 };
 
 ui.startPlace = function () {
-    console.log("startplace", placeType);
     cancelPlaceBtn.disabled = false;
 
     addPlaceListeners();
@@ -256,7 +221,6 @@ ui.startPlace = function () {
 };
 
 ui.endPlace = function () {
-    console.log("endplace", placeType);
     cancelPlaceBtn.disabled = true;
 
     removePlaceListeners();
@@ -313,7 +277,6 @@ var updatePlace = function (cx, cy) {
 
 // Versuchen einen Tower zu setzen
 var tryPlace = function (cx, cy) {
-    console.log("tryplace", cx, cy);
     if (game.fieldRect.contains(cx, cy)) {
         game.tryAddTowerAt(placeType, cx, cy);
     }
@@ -323,7 +286,6 @@ var tryPlace = function (cx, cy) {
 var sellHandler = function () {
     var tower = game.getSelectedTower();
     if (tower === null) return;
-    console.log("sell", tower);
     game.sellTower(tower);
     game.setSelectedTower(null);
 
@@ -343,8 +305,25 @@ var upgradeHandler = function () {
     game.setSelectedTower(newTower);
 };
 
-// Test krams
 
-document.getElementById("towerRand").addEventListener("click", function () {
-    randomTowers();
-});
+// ===== Events bei statischen Elementen =====
+// PlayButton
+playButton.addEventListener("click", showGame);
+// Tower spawn
+towerListBtns.addEventListener("click", towerBtnsHandler);
+cancelPlaceBtn.addEventListener("click", towerCancelHandler);
+// Tower verkauf
+tSellBtn.addEventListener("click", sellHandler);
+// Tower aim setzen
+tAimDiv.addEventListener("click", setAimHandler);
+// Tower upgraden
+tNextBtn.addEventListener("click", upgradeHandler);
+
+// Nächste Wave enquen
+nextWaveButton.addEventListener("click", waveHandler);
+// Spiel Pausieren
+pauseButton.addEventListener("click", pauseHandler);
+// TowerMenu
+showTowersBtn.addEventListener("click", ui.showMenu);
+// Exit to Menu
+exitBtn.addEventListener("click", ui.exitToMenu);
