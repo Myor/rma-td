@@ -24,6 +24,8 @@ game.setupInput = function () {
     pauseButton.addEventListener("click", pauseHandler);
     //TowerMenu
     showTowersBtn.addEventListener("click", ui.showMenu);
+    //Exit to Menu
+    exitBtn.addEventListener("click", ui.exitToMenu);
 
 };
 
@@ -56,6 +58,7 @@ var playButton = document.getElementById("playGame");
 var showTowersBtn = document.getElementById("showTowers");
 var towerListBtns = document.getElementById("towers");
 var cancelPlaceBtn = document.getElementById("cancelPlace");
+var exitBtn = document.getElementById("exitBtn");
 
 // Selected-infos
 var tName = towerSelectedInfo.querySelector(".tName");
@@ -86,11 +89,17 @@ playButton.addEventListener("click", showGame);
 var ui = {};
 // ===== Menüs =====
 
-
 ui.showMenu = function () {
     game.setSelectedTower(null);
     towerMenu.classList.remove("hideLeft");
 };
+
+ui.exitToMenu = function(){
+    mainMenu.classList.remove("hidden");
+    gameWrapper.classList.add("hidden");
+    game.exitGame();
+}
+
 ui.hideMenu = function () {
     ui.hideInfo();
     towerMenu.classList.add("hideLeft");
@@ -206,17 +215,6 @@ var clickAt = function (x, y) {
     var cy = utils.input2Cell(y);
     game.setSelectedTower(game.getTowerAt(cx, cy));
 };
-
-// ===== Spawns =====
-
-/*var keyHandler = function (e) {
-    var id = Number(String.fromCharCode(e.charCode)) - 1;
-    if (Number.isNaN(id)) return;
-    // Typ vorhanden?
-    if (game.waves[id] === undefined) return;
-    game.startWave(id);
-};*/
-
 
 // ====== Tower Placing =======
 // Maus und Touch haben getrennte Events, welche sich leicht unterschiedlich Verhalten :-/
