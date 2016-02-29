@@ -4,13 +4,15 @@ var mobTypes = [];
 
 // TODO Mob wird langsamer, je größer speed lol
 // inverse verwenden oder so
-mobTypes[0] = {
+//Army men
+mobTypes[0] = { 
     name: "Man0",
     cash: 5,
     life: 20,
     speed: 800,
     tex: null
 };
+//long hair
 mobTypes[1] = {
     name: "Man1",
     cash: 6,
@@ -18,6 +20,7 @@ mobTypes[1] = {
     speed: 700,
     tex: null
 };
+//spike hair
 mobTypes[2] = {
     name: "Man2",
     cash: 8,
@@ -25,27 +28,31 @@ mobTypes[2] = {
     speed: 800,
     tex: null
 };
+//Black Spec
 mobTypes[3] = {
     name: "Man3",
-    cash: 11,
-    life: 130,
-    speed: 800,
+    cash: 10,
+    life: 115,
+    speed: 620,
     tex: null
 };
+//Red Spec
 mobTypes[4] = {
     name: "Man4",
-    cash: 10,
-    life: 105,
+    cash: 11,
+    life: 130,
     speed: 640,
     tex: null
 };
+//Green Spec
 mobTypes[5] = {
     name: "Man4",
-    cash: 18,
-    life: 75,
+    cash: 13,
+    life: 200,
     speed: 600,
     tex: null
 };
+//normal tank
 mobTypes[6] = {
     name: "Tank1",
     cash: 22,
@@ -53,6 +60,7 @@ mobTypes[6] = {
     speed: 700,
     tex: null
 };
+//fire tank
 mobTypes[7] = {
     name: "Tank2",
     cash: 28,

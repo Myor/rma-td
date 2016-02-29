@@ -15,19 +15,18 @@ waves[2] = [
 ];
 
 waves[3] = [
-    {num: 15, type: 4, delay: 12}
+    {num: 15, type: 3, delay: 12}
 ];
 
-waves[4] = [
-    {num: 10, type: 5, delay: 5},
-    {num: 10, type: 1, delay: 10},
-    {num: 10, type: 2, delay: 10}
+//Red specs
+waves[4] = [ 
+    {num: 15, type: 4, delay: 8}
 ];
 
+//red & black specs
 waves[5] = [
-    {num: 10, type: 6, delay: 5},
-    {num: 10, type: 1, delay: 10},
-    {num: 10, type: 2, delay: 10}
+    {num: 10, type: 4, delay: 2},
+    {num: 10, type: 5, delay: 13}
 ];
 
 waves[6] = [

@@ -31,6 +31,7 @@ Mob.prototype.init = function () {
 
 // Unsichtbar machen
 Mob.prototype.kill = function () {
+    console.log("I had "+this.type.life+" HP and this much speed: "+this.type.speed );
     this.type = null;
     this.spr.texture = game.tex.mobTexEmpty;
     this.barSpr.texture = game.tex.mobBarTexEmpty;
@@ -102,7 +103,7 @@ Mob.prototype.hit = function (power, by) {
 };
 
 
-// Nimmt ein Mob aus dem Pool und schiebt ihn in den Queue
+    // Nimmt ein Mob aus dem Pool und schiebt ihn in den Queue
 game.enqueMobs = function (typeID, num) {
     for (var i = 0; i < num; i++) {
         var mob = game.mobPool.getObj();
