@@ -40,9 +40,6 @@ game.startGame = function () {
     game.cash = 2000;
     game.updateCash();
 
-    game.isPaused = false;
-
-
     // Waves
     game.currentWaveID = 0;
     game.isWaveActive = false;
@@ -122,7 +119,9 @@ game.startGame = function () {
 
     game.setupInput();
 
+    game.isPaused = false;
     pauseButton.classList.remove("paused");
+    ui.normalSpeed();
     game.startGameLoop();
 };
 

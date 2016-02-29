@@ -152,13 +152,21 @@ var waveHandler = function (e) {
 };
 
 var fastHandler = function () {
-    if(slowFactor === 0.5) {
-        fastForwardButton.classList.remove("active");
-        slowFactor = 1;
+    if(slowFactor === 1) {
+        ui.doubleSpeed();
     } else {
-        fastForwardButton.classList.add("active");
-        slowFactor = 0.5;
+        ui.normalSpeed();
     }
+};
+
+ui.doubleSpeed = function () {
+    fastForwardButton.classList.add("active");
+    slowFactor = 0.5;
+};
+
+ui.normalSpeed = function () {
+    fastForwardButton.classList.remove("active");
+    slowFactor = 1;
 };
 
 var pauseHandler = function () {
