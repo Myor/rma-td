@@ -262,28 +262,26 @@ button:active {
 #menu {
 }
 
-
-
-#nextWave{
+#nextWave,
+#exitBtn {
+    position: absolute;
     background-color: transparent;
     background-image: url(../assets/wavenexit.png);
+    border: 0;
+}
+
+#nextWave {
     background-position: 0px 0px;
-    position: absolute;
-    border:0;
-    width:70px;
-    height:32px;
+    width: 70px;
+    height: 32px;
     bottom: 0px;
     right: 60px;
 }
 
-#exitBtn{
-    background-color: transparent;
-    background-image: url(../assets/wavenexit.png);
+#exitBtn {
     background-position: -72px 0px;
-    position: absolute;
-    border:0;
-    width:40px;
-    height:32px;
+    width: 40px;
+    height: 32px;
     bottom: 0px;
     right: 2px;
 }
@@ -312,12 +310,15 @@ button:active {
     left: 96px;
 }
 
-#pauseGame{
+#pauseGame {
     background-image: url(../assets/buttonsSheet32.png);
     background-position: -102px 0px;
     position: absolute;
     bottom: 0px;
-    left:48px;
+    left: 48px;
+}
+#pauseGame.paused {
+    background-position: -34px 0px
 }
 
 #cancelPlace:disabled {

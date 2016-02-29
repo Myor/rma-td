@@ -121,6 +121,8 @@ game.startGame = function () {
     game.drawPath();
 
     game.setupInput();
+
+    pauseButton.classList.remove("paused");
     game.startGameLoop();
 };
 
@@ -143,7 +145,7 @@ game.exitGame = function () {
     game.buffColGrid = null;
 
     game.map = null;
-    
+
     game.mapCont = null;
     game.pathCont = null;
     game.shotCon = null;

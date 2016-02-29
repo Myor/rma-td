@@ -152,10 +152,10 @@ var waveHandler = function (e) {
 var pauseHandler = function () {
     if (game.isPaused === false) {
         game.pauseLoop();
-        pauseButton.style.backgroundPosition = "-34px 0px";
+        pauseButton.classList.add("paused");
     } else {
         game.resumeLoop();
-        pauseButton.style.backgroundPosition = "-102px 0px";
+        pauseButton.classList.remove("paused");
     }
 };
 
