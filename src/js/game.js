@@ -176,12 +176,34 @@ var gamelifeEl = document.getElementById("gameLife");
 var gameCashEl = document.getElementById("gameCash");
 var gameRoundEl = document.getElementById("gameRound");
 
+var colorMatrix = new PIXI.filters.ColorMatrixFilter();
+//colorMatrix.brightness(1.5);
+colorMatrix.blackAndWhite();
+
+var blur = new PIXI.filters.BlurFilter();
+blur.blur = 3;
+
+
+game.lose = function () {
+    if (game.isLost) return;
+    game.isLost = true;
+    slowFactor = 2;
+    game.stage.filters = [colorMatrix, blur];
+    ui.loseGame();
+};
+
+game.win = function () {
+    if(game.isLost) return;
+    ui.winGame();
+};
+
+
 // ==== Game Life ====
 game.hit = function (power) {
     game.life -= power;
     if (game.life <= 0) {
         game.life = 0;
-//        console.log("verloren");
+        game.lose();
     }
     game.updateLife();
     if(ui.canVibrate) navigator.vibrate(40);
@@ -218,5 +240,9 @@ game.updateCash = function () {
 
 // ==== Game Wave ====
 game.updateRound = function () {
-    gameRoundEl.textContent = game.currentWaveID + "/" + (game.waves.length - 1);
+    if (game.currentWaveID === -1) {
+        gameRoundEl.textContent = "";
+    } else {
+        gameRoundEl.textContent = game.currentWaveID + "/" + (game.waves.length - 1);
+    }
 };

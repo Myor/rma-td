@@ -41,7 +41,7 @@ game.startGame = function () {
     game.updateCash();
 
     // Waves
-    game.currentWaveID = 0;
+    game.currentWaveID = -1;
     game.isWaveActive = false;
     game.currentGroup = null;
     game.groupQueue = new Queue();
@@ -120,8 +120,9 @@ game.startGame = function () {
     game.setupInput();
 
     game.isPaused = false;
-    pauseButton.classList.remove("paused");
-    ui.normalSpeed();
+    game.isLost = false;
+    game.updateRound();
+    ui.reset();
     game.startGameLoop();
 };
 

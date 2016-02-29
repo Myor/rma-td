@@ -15,6 +15,12 @@ var showTowersBtn = document.getElementById("showTowers");
 var towerListBtns = document.getElementById("towers");
 var cancelPlaceBtn = document.getElementById("cancelPlace");
 var exitBtn = document.getElementById("exitBtn");
+// Win / Lose
+var gameOverlayDiv = document.getElementById("gameOverlay");
+var winMsgDiv = document.getElementById("winMsg");
+var loseMsgDiv = document.getElementById("loseMsg");
+var exitWinBtn = document.getElementById("exitWin");
+var exitLoseBtn = document.getElementById("exitLose");
 // Menü
 var playButton = document.getElementById("playGame");
 var mapSelectDiv = document.getElementById("mapSelect");
@@ -215,6 +221,22 @@ ui.resumeGame = function () {
     game.resumeLoop();
     pauseButton.classList.remove("paused");
 };
+ui.loseGame = function () {
+    gameOverlayDiv.classList.remove("hidden");
+    loseMsgDiv.classList.remove("hidden");
+};
+ui.winGame = function () {
+    gameOverlayDiv.classList.remove("hidden");
+    winMsgDiv.classList.remove("hidden");
+};
+
+ui.reset = function () {
+    pauseButton.classList.remove("paused");
+    ui.normalSpeed();
+    gameOverlayDiv.classList.add("hidden");
+    loseMsgDiv.classList.add("hidden");
+    winMsgDiv.classList.add("hidden");
+};
 
 // ===== Event Handler =====
 
@@ -388,3 +410,5 @@ fastForwardButton.addEventListener("click", fastHandler);
 showTowersBtn.addEventListener("click", ui.showMenu);
 // Exit to Menu
 exitBtn.addEventListener("click", ui.exitToMenu);
+exitLoseBtn.addEventListener("click", ui.exitToMenu);
+exitWinBtn.addEventListener("click", ui.exitToMenu);

@@ -49,10 +49,10 @@ waves[8] = [
 
 
 game.startNextWave = function () {
-    if(game.currentWaveID >= game.waves.length) return;
+    if(game.isLastWave()) return;
+    game.currentWaveID++;
     game.startWave(game.currentWaveID);
     game.updateRound();
-    game.currentWaveID++;
 };
 
 game.startWave = function (id) {
@@ -63,6 +63,10 @@ game.startWave = function (id) {
     }
 };
 
+game.isLastWave = function () {
+    return game.currentWaveID === waves.length - 1;
+};
+
 
 game.updateWave = function () {
     if (!game.isWaveActive) return;
@@ -71,8 +75,10 @@ game.updateWave = function () {
         if (game.groupQueue.isEmpty()) {
             if (game.mobs.isEmpty()) {
                 // Nichts mehr in den Queues und alle Mobs tot
-                console.log("wave done");
                 game.isWaveActive = false;
+                if(game.isLastWave()) {
+                    game.win();
+                }
             }
         } else {
             // Mobs aus groupQueue nachfüllen
