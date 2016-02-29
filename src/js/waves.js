@@ -64,7 +64,9 @@ waves[8] = [
 
 
 game.startNextWave = function () {
+    if(game.currentWaveID >= game.waves.length) return;
     game.startWave(game.currentWaveID);
+    game.updateRound();
     game.currentWaveID++;
 };
 

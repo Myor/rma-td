@@ -75,15 +75,19 @@ button:active {
 }
 
 #gameLife,
-#gameCash {
+#gameCash,
+#gameRound {
     pointer-events: none;
     position: absolute;
     font-size: 16px;
     font-weight: bold;
+    color: white;
+    line-height: 16px;
+}
+#gameLife,
+#gameCash {
     margin-left: 3px;
     padding-left: 17px;
-    line-height: 16px;
-    color: white;
     background-image: url("../assets/icons16.png");
     background-repeat: no-repeat;
 }
@@ -95,6 +99,13 @@ button:active {
     top: 10px;
     right: 10px;
     background-position-y: -16px;
+}
+#gameRound {
+    top: 10px;
+    left: 50%;
+    width: 100px;
+    text-align: center;
+    margin-left: -50px;
 }
 
 

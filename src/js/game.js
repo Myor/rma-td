@@ -174,6 +174,7 @@ var updateAnimation = function (time, accumulator) {
 
 var gamelifeEl = document.getElementById("gameLife");
 var gameCashEl = document.getElementById("gameCash");
+var gameRoundEl = document.getElementById("gameRound");
 
 // ==== Game Life ====
 game.hit = function (power) {
@@ -213,4 +214,9 @@ game.removeCash = function (c) {
 
 game.updateCash = function () {
     gameCashEl.textContent = game.cash;
+};
+
+// ==== Game Wave ====
+game.updateRound = function () {
+    gameRoundEl.textContent = game.currentWaveID + "/" + (game.waves.length - 1);
 };
