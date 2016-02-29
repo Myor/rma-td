@@ -74,10 +74,12 @@ game.stopGameLoop = function () {
 };
 
 game.pauseLoop = function () {
+    game.isPaused = true;
     cancelAnimationFrame(frameId);
     frameId = requestAnimationFrame(renderloop);
 };
 game.resumeLoop = function () {
+    game.isPaused = false;
     cancelAnimationFrame(frameId);
     game.startGameLoop();
 };

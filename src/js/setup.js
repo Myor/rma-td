@@ -55,6 +55,10 @@ game.startGame = function () {
     game.updateLife();
     game.cash = 2000;
     game.updateCash();
+
+    game.isPaused = false;
+
+
     // Waves
     game.currentWaveID = 0;
     game.isWaveActive = false;
