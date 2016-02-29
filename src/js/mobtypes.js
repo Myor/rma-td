@@ -14,29 +14,29 @@ mobTypes[0] = {
 mobTypes[1] = {
     name: "Man1",
     cash: 6,
-    life: 30,
+    life: 100,
     speed: 700,
     tex: null
 };
 mobTypes[2] = {
     name: "Man2",
     cash: 8,
-    life: 40,
+    life: 90,
     speed: 800,
     tex: null
 };
 mobTypes[3] = {
     name: "Man3",
     cash: 11,
-    life: 50,
+    life: 130,
     speed: 800,
     tex: null
 };
 mobTypes[4] = {
     name: "Man4",
-    cash: 14,
-    life: 60,
-    speed: 500,
+    cash: 10,
+    life: 105,
+    speed: 640,
     tex: null
 };
 mobTypes[5] = {
