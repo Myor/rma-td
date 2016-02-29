@@ -6,8 +6,6 @@ var PFfinder = new PF.AStarFinder({
     heuristic: PF.Heuristic.manhattan
 });
 
-game.PFgrid = null;
-game.path = null;
 
 game.findPath = function () {
     return PFfinder.findPath(
