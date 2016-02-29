@@ -55,8 +55,8 @@ mobTypes[5] = {
 //normal tank
 mobTypes[6] = {
     name: "Tank1",
-    cash: 22,
-    life: 90,
+    cash: 16,
+    life: 250,
     speed: 700,
     tex: null
 };
