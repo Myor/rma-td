@@ -1,16 +1,38 @@
 "use strict";
 
-PIXI.loader
-        .add("mobs", "assets/mobSheet32.png")
-        .add("mobBar", "assets/mobBar.png")
-        .add("towers", "assets/towerSheet32.png")
-        .add("shots", "assets/shots@2x.png")
-        .add("pathMark", "assets/pathMarker.png")
-        .add("map1ground", "assets/map1ground32.png")
-        .add("map2ground", "assets/map2ground32.png")
-        .add("shockwave", "assets/shockwave.png")
-        .load(game.setup);
+var loadResources = function () {
+    PIXI.loader
+            .add("mobs", "assets/mobSheet32.png")
+            .add("mobBar", "assets/mobBar.png")
+            .add("towers", "assets/towerSheet32.png")
+            .add("shots", "assets/shots@2x.png")
+            .add("pathMark", "assets/pathMarker.png")
+            .add("map1ground", "assets/map1ground32.png")
+            .add("map2ground", "assets/map2ground32.png")
+            .add("shockwave", "assets/shockwave.png")
+            .load(game.setup);
+};
 
+var cordovaSetup = function () {
+    // Zurück-Button deaktivieren
+    document.addEventListener("backbutton", function (e) {
+        e.preventDefault();
+    });
+    // Beim minimieren der App pausieren
+    document.addEventListener("pause", ui.pauseGame);
+    // Vibration API
+    ui.canVibrate = window.navigator.vibrate !== undefined;
+    
+    loadResources();
+};
+
+if (window.cordova !== undefined) {
+    // In Cordova App auf deviceready warten
+    document.addEventListener("deviceready", cordovaSetup);
+} else {
+    // Im Browser
+    loadResources();
+}
 
 /* ==== Loops === */
 
@@ -161,6 +183,7 @@ game.hit = function (power) {
 //        console.log("verloren");
     }
     game.updateLife();
+    if(ui.canVibrate) navigator.vibrate(40);
 };
 
 game.heal = function (power) {

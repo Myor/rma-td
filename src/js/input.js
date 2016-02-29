@@ -55,6 +55,7 @@ var showGame = function () {
 
 
 var ui = {};
+ui.canVibrate = window.navigator.vibrate !== undefined;
 // ===== Menüs =====
 
 ui.showMenu = function () {
@@ -150,16 +151,6 @@ var waveHandler = function (e) {
     game.startNextWave();
 };
 
-var pauseHandler = function () {
-    if (game.isPaused === false) {
-        game.pauseLoop();
-        pauseButton.classList.add("paused");
-    } else {
-        game.resumeLoop();
-        pauseButton.classList.remove("paused");
-    }
-};
-
 var fastHandler = function () {
     if(slowFactor === 0.5) {
         fastForwardButton.classList.remove("active");
@@ -168,6 +159,25 @@ var fastHandler = function () {
         fastForwardButton.classList.add("active");
         slowFactor = 0.5;
     }
+};
+
+var pauseHandler = function () {
+    if (game.isPaused === false) {
+        ui.pauseGame();
+    } else {
+        ui.resumeGame();
+    }
+};
+
+ui.pauseGame = function () {
+    if(game.isPaused) return;
+    game.pauseLoop();
+    pauseButton.classList.add("paused");
+};
+ui.resumeGame = function () {
+    if(!game.isPaused) return;
+    game.resumeLoop();
+    pauseButton.classList.remove("paused");
 };
 
 // ===== Event Handler =====

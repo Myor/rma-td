@@ -11,7 +11,7 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
     }
     var type = towerTypes[typeID];
 
-    if (!game.hasCash(type.price)) return;
+    if (!game.hasCash(type.price)) return false;
 
     // Wenn Tower den Weg blockieren kann
     if (type.isBlocking) {
@@ -28,6 +28,7 @@ game.tryAddTowerAt = function (typeID, cx, cy) {
     }
     game.removeCash(type.price);
     game.addTowerAt(type, cx, cy);
+    return true;
 };
 
 // Setzt Tower ohne Einschränkungen zu prüfen
