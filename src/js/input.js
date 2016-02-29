@@ -10,6 +10,7 @@ var towerSelectedInfo = document.getElementById("towerSelectedInfo");
 // Buttons
 var nextWaveButton = document.getElementById("nextWave");
 var pauseButton = document.getElementById("pauseGame"); 
+var fastForwardButton = document.getElementById("fastForward");
 var playButton = document.getElementById("playGame");
 var showTowersBtn = document.getElementById("showTowers");
 var towerListBtns = document.getElementById("towers");
@@ -156,6 +157,16 @@ var pauseHandler = function () {
     } else {
         game.resumeLoop();
         pauseButton.classList.remove("paused");
+    }
+};
+
+var fastHandler = function () {
+    if(slowFactor === 0.5) {
+        fastForwardButton.classList.remove("active");
+        slowFactor = 1;
+    } else {
+        fastForwardButton.classList.add("active");
+        slowFactor = 0.5;
     }
 };
 
@@ -323,6 +334,8 @@ tNextBtn.addEventListener("click", upgradeHandler);
 nextWaveButton.addEventListener("click", waveHandler);
 // Spiel Pausieren
 pauseButton.addEventListener("click", pauseHandler);
+// Spiel bescheunigen
+fastForwardButton.addEventListener("click", fastHandler);
 // TowerMenu
 showTowersBtn.addEventListener("click", ui.showMenu);
 // Exit to Menu

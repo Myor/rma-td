@@ -280,7 +280,7 @@ button:active {
 
 #exitBtn {
     background-position: -72px 0px;
-    width: 40px;
+    width: 42px;
     height: 32px;
     bottom: 0px;
     right: 2px;
@@ -288,39 +288,47 @@ button:active {
 
 #showTowers,
 #cancelPlace,
-#pauseGame {
+#pauseGame,
+#fastForward {
+    position: absolute;
     background-color: transparent;
+    background-image: url(../assets/buttonsSheet32.png);
     width: 32px;
     height: 32px;
     border: 0;
 }
 
 #showTowers {
-    background-image: url(../assets/buy.png);
-    position: absolute;
+    background-position: -103px 0px;
     bottom: 0px;
     left: 5px;
 }
 
 #cancelPlace {
-    background-image: url(../assets/buttonsSheet32.png);
-    position: absolute;
+    background-position: 0px 0px;
     bottom: 0px;
-    right:0px;
-    left: 96px;
-}
-
-#pauseGame {
-    background-image: url(../assets/buttonsSheet32.png);
-    background-position: -102px 0px;
-    position: absolute;
-    bottom: 0px;
-    left: 48px;
-}
-#pauseGame.paused {
-    background-position: -34px 0px
+    left: 50px;
 }
 
 #cancelPlace:disabled {
     display: none;
+}
+
+#pauseGame {
+    background-position: -69px 0px;
+    bottom: 0px;
+    left: 100px;
+}
+#pauseGame.paused {
+    background-position: -35px 0px
+}
+
+#fastForward {
+    background-position: -137px 0px;
+    bottom: 0px;
+    left: 140px;
+    width: 53px;
+}
+#fastForward.active {
+    background-position: -205px 0px;
 }
