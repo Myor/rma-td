@@ -64,7 +64,7 @@ var showGame = function () {
 
 var setGameMode = function () {
     if(inputGameMode1.checked) {
-        game.cash = 2000;
+        game.cash = 70;
     } else {
         game.cash = Infinity;
     }
@@ -140,8 +140,8 @@ var fillInfoSelected = function (tower) {
 
     tName.textContent = type.name;
     tKillCount.textContent = tower.killCount;
-    tPower.textContent = "power" in type ? tower.getPower() : "-";
-    tFreq.textContent = "freq" in type ? tower.getFreq() : "-";
+    tPower.textContent = "power" in type ? tower.getPower().toFixed(2) : "-";
+    tFreq.textContent = "freq" in type ? tower.getFreq().toFixed(2) : "-";
     tRadius.textContent = "radius" in type ? type.radius : "-";
     // Upgrades
     tCurrentLvl.textContent = type.level;
