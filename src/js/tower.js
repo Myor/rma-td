@@ -115,10 +115,7 @@ game.calculateBuffs = function () {
                     tower.powerMulti += buffTowers[j].type.powerAdd;
                 }
                 if ("freqAdd" in buffTowers[j].type) {
-                    tower.freqMulti += buffTowers[j].type.freqAdd;
-                }
-                if ("radiusAdd" in buffTowers[j].type) {
-                    tower.radiusMulti += buffTowers[j].type.radiusAdd;
+                    tower.freqMulti -= buffTowers[j].type.freqAdd;
                 }
             }
         }

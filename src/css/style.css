@@ -73,6 +73,8 @@ button:active {
 #playMap2 {
     padding: 10px;
     margin: 10px;
+    font-size: 20px;
+    width: 40%;
 }
 
 .hideMapSelect {
@@ -198,19 +200,19 @@ button:active {
 .tower[data-type="1"] {
     background-position: -103px 0px;
 }
-.tower[data-type="2"] {
+.tower[data-type="3"] {
     background-position: -1px 0px;
 }
-.tower[data-type="3"] {
+.tower[data-type="5"] {
     background-position: -443px 0px;
 }
-.tower[data-type="4"] {
+.tower[data-type="7"] {
     background-position: -35px 0px;
 }
-.tower[data-type="5"] {
+.tower[data-type="9"] {
     background-position: -342px 0px;
 }
-.tower[data-type="6"] {
+.tower[data-type="11"] {
     background-position: -270px 0px;
 }
 

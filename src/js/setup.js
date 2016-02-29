@@ -187,34 +187,73 @@ game.setupTextures = function () {
     mobTypes[10].tex = texFromCache("mobs", 66, 33, 72, 48);
     mobTypes[11].tex = texFromCache("mobs", 165, 33, 98, 64);
 
-
+    // Mauer
     towerTypes[0].tex = texFromCache("towers", 409, 0, 32, 32);
+
+    // Laser
     towerTypes[1].tex = texFromCache("towers", 103, 0, 32, 32);
     towerTypes[1].tex2 = texFromCache("towers", 137, 0, 32, 32);
-    towerTypes[2].tex = texFromCache("towers", 1, 0, 32, 32);
-    towerTypes[3].tex = texFromCache("towers", 443, 0, 32, 32);
-    towerTypes[4].tex = texFromCache("towers", 35, 0, 32, 32);
-    towerTypes[4].tex2 = texFromCache("towers", 69, 0, 32, 32);
-    towerTypes[5].tex = texFromCache("towers", 342, 0, 32, 32);
-    towerTypes[5].tex2 = texFromCache("towers", 377, 0, 32, 32);
-    towerTypes[6].tex = texFromCache("towers", 170, 0, 32, 32);
-    towerTypes[6].texAnim = [
+    towerTypes[1].shotTex = texFromCache("shots", 13, 0, 1, 32);
+    // Laser Level 2
+    towerTypes[2].tex = towerTypes[1].tex;
+    towerTypes[2].tex2 = towerTypes[1].tex;
+    towerTypes[2].shotTex = texFromCache("shots", 17, 0, 1, 32);
+    
+    // Laser 2
+    towerTypes[3].tex = texFromCache("towers", 1, 0, 32, 32);
+    towerTypes[3].shotTex = texFromCache("shots", 6, 0, 1, 32);
+    // Laser 2 Level 2
+    towerTypes[4].tex = towerTypes[3].tex;
+    towerTypes[4].shotTex = texFromCache("shots", 1, 0, 1, 32);
+    
+    // Slime
+    towerTypes[5].tex = texFromCache("towers", 443, 0, 32, 32);
+    // Slime Level 2
+    towerTypes[6].tex = towerTypes[5].tex;
+    
+    // AoE
+    towerTypes[7].tex = texFromCache("towers", 35, 0, 32, 32);
+    towerTypes[7].tex2 = texFromCache("towers", 69, 0, 32, 32);
+    towerTypes[7].shotTex = texFromCache("shockwave");
+    // AoE Level 2
+    towerTypes[8].tex = towerTypes[7].tex;
+    towerTypes[8].tex2 = towerTypes[7].tex2;
+    towerTypes[8].shotTex = texFromCache("shockwave");
+    
+    // Ufo
+    towerTypes[9].tex = texFromCache("towers", 342, 0, 32, 32);
+    towerTypes[9].tex2 = texFromCache("towers", 377, 0, 32, 32);
+    towerTypes[9].shotTex = [
+        texFromCache("shots", 0, 32, 128, 32),
+        texFromCache("shots", 0, 64, 128, 32),
+        texFromCache("shots", 0, 96, 128, 32)
+    ];
+    // Ufo Level 2
+    towerTypes[10].tex = towerTypes[9].tex;
+    towerTypes[10].tex2 = towerTypes[9].tex2;
+    towerTypes[10].shotTex = [
+        texFromCache("shots", 0, 128, 128, 32),
+        texFromCache("shots", 0, 160, 128, 32),
+        texFromCache("shots", 0, 192, 128, 32)
+    ];
+    
+    // Aura
+    towerTypes[11].tex = texFromCache("towers", 170, 0, 32, 32);
+    towerTypes[11].texAnim = [
         texFromCache("towers", 170, 0, 32, 32),
         texFromCache("towers", 204, 0, 32, 32),
         texFromCache("towers", 238, 0, 32, 32),
         texFromCache("towers", 272, 0, 32, 32),
         texFromCache("towers", 306, 0, 32, 32)
     ];
-
-
-    towerTypes[1].shotTex = texFromCache("shots", 1, 0, 1, 32);
-    towerTypes[2].shotTex = texFromCache("shots", 6, 0, 1, 32);
-    towerTypes[4].shotTex = texFromCache("shockwave");
-    towerTypes[4].shotTex = texFromCache("shockwave");
-    towerTypes[5].shotTex = [
-        texFromCache("shots", 0, 32, 128, 32),
-        texFromCache("shots", 0, 64, 128, 32),
-        texFromCache("shots", 0, 96, 128, 32)
+    // Aura Level 2
+    towerTypes[12].tex = towerTypes[11].tex;
+    towerTypes[12].texAnim = [
+        texFromCache("towers", 170, 0, 32, 32),
+        texFromCache("towers", 204, 0, 32, 32),
+        texFromCache("towers", 238, 0, 32, 32),
+        texFromCache("towers", 272, 0, 32, 32),
+        texFromCache("towers", 306, 0, 32, 32)
     ];
 
 };
