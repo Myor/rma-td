@@ -134,7 +134,7 @@ var randomTowers = function () {
 };
 
 var isBuffTower = function (tower) {
-    return tower.type === towerTypes[6];
+    return tower.type === towerTypes[11] || tower.type === towerTypes[12];
 };
 
 // Allgemeiner Tower Konstruktor
