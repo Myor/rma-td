@@ -71,8 +71,8 @@ mobTypes[7] = {
 mobTypes[8] = {
     name: "Jeep",
     cash: 36,
-    life: 150,
-    speed: 800,
+    life: 1000,
+    speed: 600,
     tex: null
 };
 mobTypes[9] = {
